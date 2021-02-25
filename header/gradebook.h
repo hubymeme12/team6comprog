@@ -28,7 +28,7 @@ class gradebook {
 		// added functionalities:
 		void pushdata(string, float);
 		void deletedata(string);
-		void deletedata(int);				
+		void deletedata(int);
 		void editname(int, string);
 		void editgrade(int, float);
 		int listnum();
@@ -112,6 +112,7 @@ void gradebook::pushdata(string name, float grade) {
 	linksize += 1;
 }
 
+// delete data through matching of name
 void gradebook::deletedata(string name) {
 	// searches for this student and re-route the other nodes
 	studentinfo* delme = searchname(first, name);
@@ -134,6 +135,42 @@ void gradebook::deletedata(string name) {
 		delme->prev->next = delme->next;
 		delme->next->prev = delme->prev;
 	}
+
+	linksize -= 1;
+}
+
+// delete data through the use of index number
+void gradebook::deletedata(int index) {
+	studentinfo* node = first;
+
+	if (index > linksize) {
+		cout << "[!] The index you are about to delete is non existent!" << endl;
+	} else {
+		for (int i = 1; i < index; i++)
+			node = node->next;
+
+		// re-route this node
+		if (node == first) {
+			// set next as the first node
+			first = node->next;
+
+			// release the previos node
+			delete node->prev;
+			node->prev = NULL;
+		} else if (node == last) {
+			// set the last as the last node
+			last = node->prev;
+
+			// release the last node
+			delete node->next;
+			node->next = NULL;
+		} else {
+			node->prev->next = node->next;
+			node->next->prev = node->prev;
+		}
+	}
+
+	linksize -= 1;
 }
 
 // edit name of student through the use of index
