@@ -151,6 +151,8 @@ void gbtable::displaytable() {
 
 			// middle part
 			cout << "| " << (i + 1) << strmultiply(" ", 2 - (i + 1 >= 10) - (i + 1 >= 100)) << " | " << name << strmultiply(" ", longest - name.size()) << " | " << fixed << setprecision(2) << grade << "   |" << endl;
+
+			koala = koala->next;
 		}
 		cout << bup << endl;
 
