@@ -162,6 +162,9 @@ int gradebook::listnum() {
 }
 
 int gradebook::largeststring(studentinfo* fnode, int largest = 0) {
+	if (fnode == NULL)
+		return largest;
+
 	if (fnode->name.size() > largest)
 		largest = fnode->name.size();
 
