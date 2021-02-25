@@ -28,8 +28,9 @@ class gradebook {
 		// added functionalities:
 		void pushdata(string, float);
 		void deletedata(string);
+		void deletedata(int);				
 		void editname(int, string);
-		void editgrade(int);					
+		void editgrade(int, float);
 		int listnum();
 		int largeststring(studentinfo*, int);
 		float displaygrade(studentinfo*);
@@ -135,6 +136,7 @@ void gradebook::deletedata(string name) {
 	}
 }
 
+// edit name of student through the use of index
 void gradebook::editname(int target, string newname) {
 	studentinfo* node = first;
 
@@ -146,6 +148,21 @@ void gradebook::editname(int target, string newname) {
 
 		// edit the name of that student
 		node->name = newname;
+	}
+}
+
+// edits grade of student through the use of index
+void gradebook::editgrade(int target, float newgrade) {
+	studentinfo* node = first;
+
+	if (target > linksize) {
+		cout << "[!] Input exceeded on the number of studetns!" << endl;
+	} else {
+		for (int i = 1; i < target; i++)
+			node = node->next;
+
+		// replace the grade of student
+		node->grade = newgrade;
 	}
 }
 
