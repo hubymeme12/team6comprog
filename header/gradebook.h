@@ -27,6 +27,9 @@ class gradebook {
 
 		// added functionalities:
 		void pushdata(string, float);
+		void deletedata(string);
+		void editname(int);					
+		void editgrade(int);					
 		int listnum();
 		int largeststring(studentinfo*, int);
 		float displaygrade(studentinfo*);
@@ -108,11 +111,35 @@ void gradebook::pushdata(string name, float grade) {
 	linksize += 1;
 }
 
-string displayname(studentinfo* node) {
+void gradebook::deletedata(string name) {
+	// searches for this student and re-route the other nodes
+	studentinfo* delme = searchname(first, name);
+
+	if (delme == first) {
+		// set next as the first node
+		first = delme->next;
+
+		// release the previos node
+		delete delme->prev;
+		delme->prev = NULL;
+	} else if (delme == last) {
+		// set the last as the last node
+		last = delme->prev;
+
+		// release the last node
+		delete delme->next;
+		delme->next = NULL;
+	} else {
+		delme->prev->next = delme->next;
+		delme->next->prev = delme->prev;
+	}
+}
+
+string gradebook::displayname(studentinfo* node) {
 	return node->name;
 }
 
-float displaygrade(studentinfo* node) {
+float gradebook::displaygrade(studentinfo* node) {
 	return node->grade;
 }
 
