@@ -6,6 +6,7 @@ using namespace std;
 #include "header/database.h"
 #include "header/authentication.h"
 #include "header/tables.h"
+#include "header/admin.h"
 
 #if defined(_WIN32)
 	#define CLEAR "cls"
@@ -15,32 +16,48 @@ using namespace std;
 	#define PAUSE "read -p \"Press enter key to continue...\" NULL"
 #endif
 
+// global variables
+admin* administrator = new admin;
+auth* authentication = administrator->getauth();
+
 // input filter
 float input(string message);
+void teacherlogin();
+void studentlogin();
 
 int main() {
 	// variables needed
 	int inp;
+	bool breakme = 1;
 
 	// initial design
-	system(CLEAR);
-	cout << "=============================" << endl;
-	cout << "      SELECTION PANEL" << endl;
-	cout << "=============================" << endl;
-	cout << " [1] Admin login" << endl;
-	cout << " [2] Teacher login" << endl;
-	cout << " [3] Student login" << endl;
-	cout << " [4] Exit" << endl << endl;
+	while (breakme) {
+		system(CLEAR);
+		cout << "=============================" << endl;
+		cout << "      SELECTION PANEL" << endl;
+		cout << "=============================" << endl;
+		cout << " [1] Admin login" << endl;
+		cout << " [2] Teacher login" << endl;
+		cout << " [3] Student login" << endl;
+		cout << " [4] Exit" << endl << endl;
 
-	inp = input(": ");
+		inp = input(": ");
 
-	switch (inp) {
-		case 1:
-		case 2:
-		case 3:
-		default:
-			cout << "[-] Exitting..." << endl;
-			break;
+		switch (inp) {
+			case 1:
+				administrator->login();
+				break;
+			case 2:
+				cout << "Soon..." << endl;
+				break;
+			case 3:
+				cour << "Soon..." << endl;
+				break;
+			default:
+				cout << "[-] Exitting..." << endl;
+				breakme = 0;
+				break;
+		}
 	}
 
 	return 0;

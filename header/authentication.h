@@ -60,7 +60,7 @@ void auth::connectDatabase() {
 	if (db == NULL)
 		cout << "[-] Can\'t connect to database! Set database first!" << endl;
 	else
-		db.connect(students, teachers);
+		db->connect(students, teachers);
 }
 
 void auth::addTeacherAccount(string username, string name, string password) {
@@ -102,7 +102,7 @@ void auth::loginStudent(string username, string password) {
 	}
 }
 
-database* auth::retrievedb() {
-	return &db;
+database* auth::retrieveDB() {
+	return db;
 }
 #endif
