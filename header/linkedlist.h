@@ -40,6 +40,7 @@ class gradebooklist {
 		void countMatchedData(gnode*, string);	// counts how many name has matched on the gradebook list (stored in arrsize)
 		bool matchData(gnode*, string);		// returns true if the gradebook has matched student id
 		string displaysubject(gnode*);			// display subject of the node
+		gradebook* access(int);				// access the nth gradebook
 
 		// debug
 		void printValues(gnode*);				// prints all content from first to last
@@ -501,6 +502,22 @@ void gradebooklist::countMatchedData(gnode* node, string name) {
 
 string gradebooklist::displaysubject(gnode* node) {
 	return node->value->getcourseName();
+}
+
+gradebook* gradebooklist::access(int index) {
+	if (index > linksize) {
+		cout << "[!] Error, size exceeded!" << endl;
+		return NULL;
+	} else {
+		gnode* node = first;
+
+		// crawl up to index th node
+		for (int i = 1; i < index; i++) {
+			node = node->next;
+		}
+
+		return node->value;
+	}
 }
 
 // prints all values
