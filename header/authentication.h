@@ -11,15 +11,15 @@ class auth {
 	private:
 		credential* teachers;
 		credential* students;
-		database db;
-		string adminuser;
-		string adminpass;
+		database* db;
 	public:
 		// constructors
 		auth();
-		auth(string, string);
+		auth(database*);
 
 		// account management
+		void setDatabase(database*);
+		void connectDatabase();
 		void addTeacherAccount(string, string, string);
 		void addStudentAccount(string, string, string);
 		void delTeacherAccount(string);
@@ -30,14 +30,8 @@ class auth {
 		void loginStudent(string, string);		// studentDatatype
 
 		// debug
-		void retrieveDB();
+		database* retrieveDB();
 };
-
-class authVisuals {
-	void credsTable(const auth smoldb) const;
-};
-
-
 
 
 //////////////////////////////////
@@ -45,27 +39,28 @@ class authVisuals {
 //////////////////////////////////
 // admin credentials initializer
 auth::auth() {
-	adminuser = "admin";
-	adminpass = "pass";
-
 	// initialize the students and teachers
 	teachers = new credential;
 	students = new credential;
-
-	// connects to database
-	db.connect(students, teachers);
 }
 
-auth::auth(string username, string password) {
-	adminuser = username;
-	adminpass = password;
-
+auth::auth(database* dbaddress) {
 	// initialize the students and teachers
 	teachers = new credential;
 	students = new credential;
 
-	// connects to database
-	db.connect(students, teachers);
+	db = dbaddress;
+}
+
+void auth::setDatabase(database* thisdb) {
+	db = thisdb;
+}
+
+void auth::connectDatabase() {
+	if (db == NULL)
+		cout << "[-] Can\'t connect to database! Set database first!" << endl;
+	else
+		db.connect(students, teachers);
 }
 
 void auth::addTeacherAccount(string username, string name, string password) {
@@ -105,5 +100,9 @@ void auth::loginStudent(string username, string password) {
 	} else {
 		cout << "[-] Invalid Username or Password!" << endl;
 	}
+}
+
+database* auth::retrievedb() {
+	return &db;
 }
 #endif
