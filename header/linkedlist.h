@@ -40,7 +40,6 @@ class gradebooklist {
 		void countMatchedData(gnode*, string);	// counts how many name has matched on the gradebook list (stored in arrsize)
 		bool matchData(gnode*, string);		// returns true if the gradebook has matched student id
 		string displaysubject(gnode*);			// display subject of the node
-		gradebook* getMatched(gnode*, string);	// returns array of the gradebook (can be used in the students: return array of gradebook with the matched name in the list : print the subjects : )
 
 		// debug
 		void printValues(gnode*);				// prints all content from first to last
@@ -91,11 +90,19 @@ struct triad {
 class tridata {
 	public:
 		tridata();
+
+		// data manipulation
 		void addData(gradebook*, string, string*, int, creds*);
 		void removeSubject(string);
 		void removeStudent(string);
 
+		// tools
+		void retrieveTnodes(tridata*, string);
+
+		// utilities
 		triad* getFirst();
+		triad* matchnodeT(triad*, string)					
+		triad* matchnodeS(triad*, string);					
 	private:
 		triad* first;
 		triad* last;
@@ -137,6 +144,34 @@ void tridata::addData(gradebook* subject, string teacherUsername, string* namesA
 		last = tnode;
 	}
 }
+
+// returns first node
+triad* tridata::getFirst() {
+	return first;
+}
+
+// retrieves all nodes with matched teacher name
+void tridata::retrieveTnodes(tridata* storage, string name) {
+	if (storage == NULL) {
+		cout << "[!] Use tridata object address! not null pointer!" << endl;
+	} else {
+		// crawl the node from the first and push the data to storage
+		triad* pseudonode = first;
+
+		// matches the teacher name
+		while (pseudonode != NULL) {
+			// look for the teacher name
+			if (pseudonode->teacher == name) {
+				// push to the storage
+				storage->addData(psudeonode->subject, pseudonode->teacher, pseudonode->sudents);
+			}
+		}
+	}
+}
+
+//////////////////
+//	END	//
+//////////////////
 
 
 //////////////////////////////////

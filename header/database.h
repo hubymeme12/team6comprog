@@ -15,8 +15,8 @@ class database {
 		credential* teacher;
 	public:
 		// data retrieval
-		gradebook* retrieveTeacher(string username);
-		gradebook* retrieveStudent(string username);
+		gradebooklist* retrieveTeacher(string teachername);
+		gradebooklist* retrieveStudent(string username);
 
 		// setup
 		void connect(credential* stud, credential* teac);
@@ -31,19 +31,26 @@ class database {
 		void deleteFromStudent(string* subject, string Sname);
 };
 
-struct databaseVisuals {
-	void displayTable(const database &db) const;
-};
-
 //////////////////////////////////
 //	Database definition	//
 //////////////////////////////////
+// connects address for changes
 void database::connect(credential* stud, credential* teac) {
 	student = stud;
 	teacher = teac;
 }
 
-//////////////////////////////////
-//	Visuals definition	//
-//////////////////////////////////
+// retrieves the subjects for this teacher
+gradebooklist* database::retrieveTeacher(string teachername) {
+	// makes graedebooklist where data will be pushed
+	tridata* retrievedtriads = new triad;
+	gradebooklist* retrieved = new gradebooklist;
+
+	// search if teacher name exists in triad.
+	// retrieve this gradebook from triad
+}
+
+//////////////////////////
+// 	E N D 		//
+//////////////////////////
 #endif
