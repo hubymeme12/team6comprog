@@ -28,6 +28,7 @@ class gbtable {
 
 		// visuals
 		void displaytable();
+
 	private:
 		// checks if gradebook linkedlist is passed or not (display by subject or display specific subject details)
 		// table size (number of nodes in the list)
