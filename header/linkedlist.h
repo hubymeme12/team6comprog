@@ -67,6 +67,7 @@ class credential {
 		creds* getFirst();					// gets the first node address
 		creds* findFirst(creds&);				// finds the first node of a "lost node"
 		creds* search(creds*, string);				// op function that searches for matched data and returns that node with matched data
+		creds* searchname(creds*, string);			// op function that searches for name and return the node
 		void add(string, string, string);			// pushes these values to the last list
 		void remove(creds*, string);				// removes this gradebook address from the list
 		bool matchData(creds*, string, string);			// returns true if the gradebook has matched student id
@@ -93,15 +94,17 @@ class tridata {
 
 		// data manipulation
 		void addData(gradebook*, string, string*, int, creds*);
+		void addData(gradebook*, string, credential*);
 		void removeSubject(string);
 		void removeStudent(string);
 
 		// tools
 		void retrieveTnodes(tridata*, string);
+		void retrieveSnodes(tridata*, string);
 
 		// utilities
 		triad* getFirst();
-		triad* matchnodeT(triad*, string)					
+		triad* matchnodeT(triad*, string);					
 		triad* matchnodeS(triad*, string);					
 	private:
 		triad* first;
@@ -145,6 +148,27 @@ void tridata::addData(gradebook* subject, string teacherUsername, string* namesA
 	}
 }
 
+void tridata::addData(gradebook* subj, string tname, credential* studdata) {
+	// make new node
+	triad* node = new triad;
+
+	// assign values
+	node->subject = subj;
+	node->teacher = tname;
+	node->students = studdata;
+	node->next = NULL;
+
+	// push value:
+	if (first == NULL) {
+		first = node;
+		last  = node;
+	} else {
+		last->next = node;
+		node->prev = last;
+		last = node;
+	}
+}
+
 // returns first node
 triad* tridata::getFirst() {
 	return first;
@@ -163,7 +187,23 @@ void tridata::retrieveTnodes(tridata* storage, string name) {
 			// look for the teacher name
 			if (pseudonode->teacher == name) {
 				// push to the storage
-				storage->addData(psudeonode->subject, pseudonode->teacher, pseudonode->sudents);
+				storage->addData(pseudonode->subject, pseudonode->teacher, pseudonode->students);
+			}
+		}
+	}
+}
+
+// retrieve all nodes with matched student
+void tridata::retrieveSnodes(tridata* storage, string name) {
+	if (storage == NULL) {
+		cout << "[!] Use tridata object address! not null pointer!" << endl;
+	} else {
+		triad* pseudonode = first;
+
+		while (pseudonode != NULL) {
+			// crawl to the node's credential (match the student name)
+			if(pseudonode->students->searchname(pseudonode->students->getFirst(), name) != NULL) {
+				storage->addData(pseudonode->subject, pseudonode->teacher, pseudonode->students);
 			}
 		}
 	}
@@ -211,6 +251,17 @@ creds* credential::search(creds* firstnode, string username) {
 	else
 		if (firstnode->next != NULL)
 			return search(firstnode->next, username);
+		else
+			return NULL;
+}
+
+// searches for the matched name
+creds* credential::searchname(creds* firstnode, string name) {
+	if (firstnode->name == name)
+		return firstnode;
+	else
+		if (firstnode->next!= NULL)
+			return searchname(firstnode->next, name);
 		else
 			return NULL;
 }

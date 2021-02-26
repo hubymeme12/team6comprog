@@ -15,16 +15,15 @@ class database {
 		credential* teacher;
 	public:
 		// data retrieval
-		gradebooklist* retrieveTeacher(string teachername);
-		gradebooklist* retrieveStudent(string username);
+		gradebooklist* retrieveGBTeacher(string teachername);
+		gradebooklist* retrieveGBStudent(string username);
 
 		// setup
 		void connect(credential* stud, credential* teac);
 
 		// data manipulation
-		void addSubject(string subjectname);
+		void addSubject(string subjectname);		// add subject and deltails
 		void deleteSubj(string subjectname);		// whole subject (triad deletion)
-		void deleteTeacher(string teachername);		// teachers (specific teacher will be removed)
 		void deleteStudent(string studentName);		// students (specific student will be removed)
 
 		void deleteFromTeacher(string* subject, string Tname);
@@ -34,21 +33,35 @@ class database {
 //////////////////////////////////
 //	Database definition	//
 //////////////////////////////////
+// retrieves the subjects for this teacher
+gradebooklist* database::retrieveGBTeacher(string teachername) {
+	// makes graedebooklist where data will be pushed
+	// gradebooklist that will be returned
+	// fnode that will be crawled on for retrieval
+	tridata* retrievedtriads = new tridata;
+	gradebooklist* retrieved = new gradebooklist;
+	triad* fnode;
+
+	// retrieve triads with matched teachers and push values to retrievedtriads
+	db_table.retrieveTnodes(retrievedtriads, teachername);
+	fnode = retrievedtriads->getFirst();
+
+	// recover the gradebooks
+	while (fnode != NULL) {
+		// push the gradebookdata
+		retrieved->pushBack(fnode->subject);
+		fnode = fnode->next;
+	}
+
+	return retrieved;
+}
+
 // connects address for changes
 void database::connect(credential* stud, credential* teac) {
 	student = stud;
 	teacher = teac;
 }
 
-// retrieves the subjects for this teacher
-gradebooklist* database::retrieveTeacher(string teachername) {
-	// makes graedebooklist where data will be pushed
-	tridata* retrievedtriads = new triad;
-	gradebooklist* retrieved = new gradebooklist;
-
-	// search if teacher name exists in triad.
-	// retrieve this gradebook from triad
-}
 
 //////////////////////////
 // 	E N D 		//
