@@ -8,15 +8,11 @@
 // push data to the database (will be done by the admin)
 
 class database {
-	private:
-		tridata db_table;
-
-		credential* student;
-		credential* teacher;
 	public:
 		// data retrieval
 		gradebooklist* retrieveGBTeacher(string teachername);
 		gradebooklist* retrieveGBStudent(string username);
+		tridata* retrievedata();
 
 		// setup
 		void connect(credential* stud, credential* teac);
@@ -28,6 +24,10 @@ class database {
 
 		void deleteFromTeacher(string* subject, string Tname);
 		void deleteFromStudent(string* subject, string Sname);
+	private:
+		tridata db_table;
+		credential* student;
+		credential* teacher;
 };
 
 //////////////////////////////////
@@ -56,12 +56,13 @@ gradebooklist* database::retrieveGBTeacher(string teachername) {
 	return retrieved;
 }
 
+tridata* database::retrievedata() { return &db_table; }
+
 // connects address for changes
 void database::connect(credential* stud, credential* teac) {
 	student = stud;
 	teacher = teac;
 }
-
 
 //////////////////////////
 // 	E N D 		//

@@ -71,6 +71,7 @@ class credential {
 		void add(string, string, string);			// pushes these values to the last list
 		void remove(creds*, string);				// removes this gradebook address from the list
 		bool matchData(creds*, string, string);			// returns true if the gradebook has matched student id
+		int longestfuckingname(creds*, int);			// returns the size of the longest fucking name
 
 		// debugging
 		void printData(creds*);
@@ -104,11 +105,12 @@ class tridata {
 
 		// utilities
 		triad* getFirst();
-		triad* matchnodeT(triad*, string);					
-		triad* matchnodeS(triad*, string);					
+		void getlongestfuckingstring(int&, int&, int&);
 	private:
 		triad* first;
 		triad* last;
+		int linksize;
+		int longestfuckingstring;
 };
 
 //////////////////////////////////
@@ -117,6 +119,7 @@ class tridata {
 tridata::tridata() {
 	first = NULL;
 	last  = NULL;
+	linksize = 0;
 }
 
 void tridata::addData(gradebook* subject, string teacherUsername, string* namesArray, int size, creds* studentlist) {
@@ -146,6 +149,9 @@ void tridata::addData(gradebook* subject, string teacherUsername, string* namesA
 
 		last = tnode;
 	}
+
+	// increment link size
+	linksize += 1;
 }
 
 void tridata::addData(gradebook* subj, string tname, credential* studdata) {
@@ -167,11 +173,48 @@ void tridata::addData(gradebook* subj, string tname, credential* studdata) {
 		node->prev = last;
 		last = node;
 	}
+
+	// increment size
+	linksize += 1;
 }
 
 // returns first node
 triad* tridata::getFirst() {
 	return first;
+}
+
+// assign their fucking values
+void tridata::getlongestfuckingstring(int &subject, int &teacher, int &students) {
+	int longest = 0;
+	int currsize;
+	triad* fuck = first;
+
+	// crawl all subjects
+	while (fuck != NULL) {
+		currsize = fuck->subject->getcourseName().size();
+		longest = longest * (longest > currsize) + currsize * (currsize >= longest);
+		fuck = fuck->next;
+	}
+
+	subject = longest;
+	longest = 0;
+	fuck = first;
+
+	// crawl all students
+	while (fuck != NULL) {
+		longest = fuck->subject->largeststring(fuck->subject->getFirst(), 0);
+		fuck = fuck->next;
+	}
+	students = longest;
+	longest = 0;
+	fuck = first;
+
+	// crawl all teachers
+	while (fuck != NULL) {
+		currsize = fuck->teacher.size();
+		longest = longest * (longest > currsize) + currsize * (currsize >= longest);
+		fuck = fuck->next;
+	}
 }
 
 // retrieves all nodes with matched teacher name
@@ -326,6 +369,19 @@ bool credential::matchData(creds* firstnode, string username, string password) {
 	}
 
 	return 0;
+}
+
+int credential::longestfuckingname(creds* fnode, int longest = 0) {
+	if (fnode == NULL)
+		return longest;
+
+	if (fnode->name.size() > longest)
+		longest = fnode->name.size();
+
+	if (fnode->next != NULL)
+		return longestfuckingname(fnode->next, longest);
+	else
+		return longest;
 }
 
 void credential::printData(creds* first) {

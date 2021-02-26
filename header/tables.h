@@ -171,7 +171,19 @@ void gbtable::displaytable() {
 //	D A T A B A S E		//
 //////////////////////////////////
 class dbtable {
+	public:
+		// constructor
+		dbtable();
+		dbtable(tridata*);
+		dbtable(creds*, creds*);
 
+		// manual data addition
+		void addData(database*);
+	private:
+		int longest;
+
+		database* db;
+		triad* db_table;
 };
 
 //////////////////////////////////////////
