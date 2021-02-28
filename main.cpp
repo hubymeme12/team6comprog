@@ -51,7 +51,7 @@ int main() {
 				cout << "Soon..." << endl;
 				break;
 			case 3:
-				cour << "Soon..." << endl;
+				cout << "Soon..." << endl;
 				break;
 			default:
 				cout << "[-] Exitting..." << endl;

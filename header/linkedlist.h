@@ -34,13 +34,13 @@ class gradebooklist {
 		gradebooklist(gradebook* value);			// use this value as first value
 
 		// utilities
-		gnode* getFirst();					// gets the first node address
+		gnode* getFirst() const;					// gets the first node address
 		void pushBack(gradebook*);			// pushes this value to the last list
 		void remove(gnode*, gradebook*);		// removes this gradebook address from the list
 		void countMatchedData(gnode*, string);	// counts how many name has matched on the gradebook list (stored in arrsize)
 		bool matchData(gnode*, string);		// returns true if the gradebook has matched student id
-		string displaysubject(gnode*);			// display subject of the node
-		gradebook* access(int);				// access the nth gradebook
+		string displaysubject(gnode*) const;			// display subject of the node
+		gradebook* access(int) const;				// access the nth gradebook
 
 		// debug
 		void printValues(gnode*);				// prints all content from first to last
@@ -424,7 +424,7 @@ gradebooklist::gradebooklist(gradebook* value) {
 }
 
 // returns the first address
-gnode* gradebooklist::getFirst() {
+gnode* gradebooklist::getFirst() const {
 	return first;
 }
 
@@ -500,11 +500,11 @@ void gradebooklist::countMatchedData(gnode* node, string name) {
 		countMatchedData(node->next, name);
 }
 
-string gradebooklist::displaysubject(gnode* node) {
+string gradebooklist::displaysubject(gnode* node) const {
 	return node->value->getcourseName();
 }
 
-gradebook* gradebooklist::access(int index) {
+gradebook* gradebooklist::access(int index) const {
 	if (index > linksize) {
 		cout << "[!] Error, size exceeded!" << endl;
 		return NULL;
