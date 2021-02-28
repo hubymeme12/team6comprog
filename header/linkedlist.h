@@ -69,6 +69,7 @@ class credential {
 		creds* findFirst(creds&);				// finds the first node of a "lost node"
 		creds* search(creds*, string);				// op function that searches for matched data and returns that node with matched data
 		creds* searchname(creds*, string);			// op function that searches for name and return the node
+		creds* getNode(int);					// get nth node
 		string printName(creds*);
 		string printUser(creds*);
 		string printPass(creds*);
@@ -322,6 +323,20 @@ creds* credential::searchname(creds* firstnode, string name) {
 			return NULL;
 }
 
+creds* credential::getNode(int index) {
+	// limiter
+	if (index > linksize) {
+		cout << "[!] Error! input value is not valid!" << endl;
+		return NULL;
+	} else {
+		creds* node = first;
+		for (int i = 1; i < index; i++) {
+			node = node->next;
+		}
+
+		return node;
+	}
+}
 
 // for table printing
 string credential::printName(creds* address) { return address->name; }

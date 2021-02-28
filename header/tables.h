@@ -129,8 +129,8 @@ void gbtable::settbsize() {
 // displays table
 // precondition: use this function if there are already students/subjects assigned in the gradebook/list
 void gbtable::displaytable() {
-	updateData();
-	settbsize();
+	this->updateData();
+	this->settbsize();
 	if (islinked) {
 		// storage for the current node
 		gnode* maxdelta = gbl->getFirst();
@@ -367,4 +367,52 @@ string authtable::strmultiply(string str, int size) {
 //////////////////
 //	End	//
 //////////////////
+
+
+//////////////////////////////////
+//	C R E D E N T I A L	//
+//////////////////////////////////
+class credstable {
+	private:
+		credential* data;
+		int longest;
+		int tbsize;
+	public:
+		credstable(credential*);
+		void displaytable();
+		string strmultiply(string, int);
+};
+
+credstable::credstable(credential* obj) {
+	data = obj;
+
+	// setup here
+	longest = data->longestfuckingname(data->getFirst(), 4);
+	tbsize = data->getlistnum();
+}
+
+void credstable::displaytable() {
+	string name;
+	string ub = " -----  -" + strmultiply("-", longest) + "-";
+
+	cout << ub << endl;
+	cout << " NO. | NAME" << strmultiply(" ", longest - 4) << " |" << endl;
+	cout << ub << endl;
+
+	// get ready to be fucked up
+	creds* fuck = data->getFirst();
+
+	for (int i = 0; i < tbsize; i++) {
+		name = fuck->name;
+		cout << " " << (i + 1) << strmultiply(" ", 2 - (i + 1 >= 10) - (i + 1 >= 100)) << " | " << name << strmultiply(" ", longest - name.size()) << " |" << endl;
+		fuck = fuck->next;
+	}
+}
+
+string credstable::strmultiply(string str, int size) {
+	string returnme = "";
+	for (int i = 0; i < size; i++)
+		returnme += str;
+	return returnme;
+}
 #endif

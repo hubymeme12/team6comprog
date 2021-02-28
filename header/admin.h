@@ -27,7 +27,11 @@ class admin {
 		void delstudentinterface();
 		void displayaccinterface();
 		void changeaccinterface();
+		void addsubjectinterface();
 		int getFucked(string);
+
+		// function that has weird functionalities
+		void selectstudents();
 	public:
 		// constructors
 		admin();
@@ -83,7 +87,7 @@ void admin::login() {
 	if (adminuser == u && adminpass == p) {
 		maininterface();
 	} else {
-		cout << "[!] Wrong password..." << endl;
+		cout << "[!] Wrong credentials entered!" << endl;
 		system(PAUSE);
 	}
 }
@@ -127,6 +131,9 @@ void admin::maininterface() {
 				break;
 			case 5:
 				displayaccinterface();
+				break;
+			case 6:
+				addsubjectinterface();
 				break;
 			case 8:
 				changeaccinterface();
@@ -263,6 +270,42 @@ void admin::changeaccinterface() {
 		// nah shit, change ur shit
 		cout << "[!] Error, credentials entered are not valid." << endl;
 	}
+	system(PAUSE);
+}
+
+void admin::addsubjectinterface() {
+	// variables, variables...
+	int choice;
+	creds* tchr;
+	string subjname, teachername;
+
+	system(CLEAR);
+	cout << "================================" << endl;
+	cout << "         SUBJECT SETUP" << endl;
+	cout << "================================" << endl;
+	cout << "Enter subject name : ";
+	getline(cin >> ws, subjname);
+
+	// make new gradebook for this subject
+	gradebook* subj = new gradebook;
+	subj->setcourseName(subjname);
+
+	system(CLEAR);
+	// some display
+	cout << "[+] Subject : " << subjname << " Added" << endl;
+	cout << "[*] Select teacher row below to assign a teacher" << endl;
+
+	// select from the teachers
+	authtable teachtables(secret);
+	teachtables.displayteachers(); cout << endl;
+
+	// input
+	choice = getFucked("Select row : ");
+	tchr = secret->getTeachers()->getNode(choice);
+
+	// get name from this node
+	teachername = tchr->name;
+	cout << "Teacher is : " << teachername << endl;
 	system(PAUSE);
 }
 

@@ -23,6 +23,10 @@ auth* authentication = administrator->getauth();
 // input filter
 float input(string message);
 
+// weird functions
+void Tlogin();
+void Slogin();
+
 int main() {
 	// variables needed
 	int inp;
@@ -46,10 +50,10 @@ int main() {
 				administrator->login();
 				break;
 			case 2:
-				cout << "Soon..." << endl;
+				Tlogin();
 				break;
 			case 3:
-				cout << "Soon..." << endl;
+				Slogin();
 				break;
 			default:
 				cout << "[-] Exitting..." << endl;
@@ -74,4 +78,38 @@ float input(string message) {
 			return ret;
 		}
 	}
+}
+
+void Tlogin() {
+	string user, passw;
+
+	system(CLEAR);
+	cout << "==========================" << endl;
+	cout << "      TEACHER LOGIN" << endl;
+	cout << "==========================" << endl;
+	cout << "Enter username : ";
+	getline(cin >> ws, user);
+	cout << "Enter password : ";
+	getline(cin >> ws, passw);
+
+	// login these input credentials
+	authentication->loginTeacher(user, passw);
+	system(PAUSE);
+}
+
+void Slogin() {
+	string user, passw;
+
+	system(CLEAR);
+	cout << "==========================" << endl;
+	cout << "      STUDENT LOGIN" << endl;
+	cout << "==========================" << endl;
+	cout << "Enter username : ";
+	getline(cin >> ws, user);
+	cout << "Enter password : ";
+	getline(cin >> ws, passw);
+
+	// login these input credentials
+	authentication->loginStudent(user, passw);
+	system(PAUSE);
 }
