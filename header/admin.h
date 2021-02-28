@@ -128,6 +128,10 @@ void admin::addstudentinterface() {
 	cout << "====================================" << endl;
 	cout << "         ADD STUDENT CREDENTIAL" << endl;
 	cout << "====================================" << endl;
+
+	authtable stable(secret);
+	stable.displaystudents();
+
 	cout << "Enter student full name : ";
 	getline(cin >> ws, studname);
 	cout << "Enter student username : ";
@@ -137,7 +141,11 @@ void admin::addstudentinterface() {
 
 	// add this student credentials to auth
 	secret->addStudentAccount(studuname, studname, studpass);
-	cout << "[+] Student account added!" << endl;
+
+	// new interface for displaying table of new students
+	system(CLEAR);
+	cout << "[UPDATED]" << endl;
+	stable.displaystudents();
 	system(PAUSE);
 }
 
@@ -145,12 +153,13 @@ void admin::addteacherinterface() {
 	string teachname, teachuname, teachpass;
 
 	system(CLEAR);
-	authtable ttable(secret);
-	ttable.displayteachers();
-
 	cout << "====================================" << endl;
 	cout << "         ADD TEACHER CREDENTIAL" << endl;
 	cout << "====================================" << endl;
+
+	authtable ttable(secret);
+	ttable.displayteachers();
+
 	cout << "Enter teacher full name : ";
 	getline(cin >> ws, teachname);
 	cout << "Enter teacher username : ";

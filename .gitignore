@@ -1,4 +1,9 @@
 header/a.out
 header/implement.cpp
+header/.tables.h.swp
+header/.admin.h.swp
+header/.authentication.h.swp
+header/.gradebook.h.swp
+header/.linkedlist.h.swp
 a.out
 sampleinterface1.cpp

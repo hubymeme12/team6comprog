@@ -301,12 +301,11 @@ void authtable::displayteachers() {
 	this->updateData(0);
 
 	// main process
-	string ub = " -" + strmultiply("-", longestname) + "- -" + strmultiply("-", longestuser) + "- -" + strmultiply("-", longestpass) + "-";
+	string ub = " ----- -" + strmultiply("-", longestname) + "- -" + strmultiply("-", longestuser) + "- -" + strmultiply("-", longestpass) + "-";
 
-	cout << "[TEACHERS\' CREDENTIALS]" << endl;
-	cout << "[READ-ONLY]" << endl;
+	cout << "TEACHERS\' CREDENTIAL/s" << endl;
 	cout << ub << endl;
-	cout << "| NAME" + strmultiply(" ", longestname - 4) + " | USERNAME" + strmultiply(" ", longestuser - 8) + " | PASSWORD" + strmultiply(" ", longestpass - 8) + " |" << endl;
+	cout << "| NO. | NAME" + strmultiply(" ", longestname - 4) + " | USERNAME" + strmultiply(" ", longestuser - 8) + " | PASSWORD" + strmultiply(" ", longestpass - 8) + " |" << endl;
 	cout << ub << endl;
 
 	// retrieve first node for printing values, and other dynamic variables needed
@@ -321,7 +320,39 @@ void authtable::displayteachers() {
 		user = teachers->printUser(node);
 		pass = teachers->printPass(node);
 
-		cout << "| " << name << strmultiply(" ", longestname - name.size()) << " | " << user << strmultiply(" ", longestuser - user.size()) << " | " << pass << strmultiply(" ", longestpass - pass.size()) << " |" << endl;
+		cout << "| " << (i + 1) << strmultiply(" ", 2 - (i + 1 >= 10) - (i + 1 >= 100)) << " | " << name << strmultiply(" ", longestname - name.size()) << " | " << user << strmultiply(" ", longestuser - user.size()) << " | " << pass << strmultiply(" ", longestpass - pass.size()) << " |" << endl;
+		node = node->next;
+	}
+	cout << ub << endl;
+}
+
+// table for displaying students credentials
+void authtable::displaystudents() {
+	// setup for teachers table credentails
+	this->settbsize(1);
+	this->updateData(1);
+
+	// main process
+	string ub = " ----- -" + strmultiply("-", longestname) + "- -" + strmultiply("-", longestuser) + "- -" + strmultiply("-", longestpass) + "-";
+
+	cout << "STUDENTS\' CREDENTIAL/s" << endl;
+	cout << ub << endl;
+	cout << "| NO. | NAME" + strmultiply(" ", longestname - 4) + " | SR-CODE" + strmultiply(" ", longestuser - 7) + " | PASSWORD" + strmultiply(" ", longestpass - 8) + " |" << endl;
+	cout << ub << endl;
+
+	// retrieve first node for printing values, and other dynamic variables needed
+	creds* node = students->getFirst();
+	string name;
+	string user;
+	string pass;
+
+	// mid part
+	for (int i = 0; i < tbsize; i++) {
+		name = students->printName(node);
+		user = students->printUser(node);
+		pass = students->printPass(node);
+
+		cout << "| " << (i + 1) << strmultiply(" ", 2 - (i + 1 >= 10) - (i + 1 >= 100)) << " | " << name << strmultiply(" ", longestname - name.size()) << " | " << user << strmultiply(" ", longestuser - user.size()) << " | " << pass << strmultiply(" ", longestpass - pass.size()) << " |" << endl;
 		node = node->next;
 	}
 	cout << ub << endl;
