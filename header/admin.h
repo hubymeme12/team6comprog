@@ -131,8 +131,11 @@ void admin::maininterface() {
 			case 8:
 				changeaccinterface();
 				break;
-			default:
+			case 9:
 				breakme = 0;
+				break;
+			default:
+				cout << "[!] Error : Please enter proper input!" << endl;
 				break;
 		}
 	}
@@ -151,7 +154,7 @@ void admin::addstudentinterface() {
 
 	cout << "Enter student full name : ";
 	getline(cin >> ws, studname);
-	cout << "Enter student username : ";
+	cout << "Enter student sr-code : ";
 	getline(cin >> ws, studuname);
 	cout << "Enter student password : ";
 	getline(cin >> ws, studpass);

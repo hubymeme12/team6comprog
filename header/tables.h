@@ -129,8 +129,8 @@ void gbtable::settbsize() {
 // displays table
 // precondition: use this function if there are already students/subjects assigned in the gradebook/list
 void gbtable::displaytable() {
-	this->updateData();
-	this->settbsize();
+	updateData();
+	settbsize();
 	if (islinked) {
 		// storage for the current node
 		gnode* maxdelta = gbl->getFirst();

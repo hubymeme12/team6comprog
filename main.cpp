@@ -22,8 +22,6 @@ auth* authentication = administrator->getauth();
 
 // input filter
 float input(string message);
-void teacherlogin();
-void studentlogin();
 
 int main() {
 	// variables needed
