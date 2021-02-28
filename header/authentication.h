@@ -23,7 +23,9 @@ class auth {
 		void addTeacherAccount(string, string, string);
 		void addStudentAccount(string, string, string);
 		void delTeacherAccount(string);
+		void delTeacherAccount(int);
 		void delStudentAccount(string);
+		void delStudentAccount(int);
 
 		// credentials validation
 		void loginTeacher(string, string);		// teacherDatatype
@@ -78,8 +80,16 @@ void auth::delStudentAccount(string username) {
 	students->remove(students->getFirst(), username);
 }
 
+void auth::delStudentAccount(int index) {
+	students->remove(index);
+}
+
 void auth::delTeacherAccount(string username) {
 	teachers->remove(teachers->getFirst(), username);
+}
+
+void auth::delTeacherAccount(int index) {
+	teachers->remove(index);
 }
 
 void auth::loginTeacher(string username, string password) {

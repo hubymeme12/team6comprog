@@ -74,6 +74,7 @@ class credential {
 		string printPass(creds*);
 		void add(string, string, string);			// pushes these values to the last list
 		void remove(creds*, string);				// removes this gradebook address from the list
+		void remove(int);					// removes the nth node from the list
 		bool matchData(creds*, string, string);			// returns true if the gradebook has matched student id
 		int longestfuckingname(creds*, int);			// returns the size of the longest fucking name
 		int longestfuckingpass(creds*, int);
@@ -374,6 +375,33 @@ void credential::remove(creds* firstnode, string username) {
 	}
 
 	// decrement link size
+	linksize -= 1;
+}
+
+void credential::remove(int index) {
+	if (index > linksize) {
+		cout << "[-] The number you input exceeded the link size." << endl;
+	} else {
+		creds* node = first;
+		for (int i = 1; i < index; i++) {
+			node = node->next;
+		}
+
+		// re-route this node
+		if (node == first) {
+			// somehow release its value here to avoid memory leak lol
+			first = node->next;
+			first->prev = NULL;
+		} else if (node == last) {
+			last = node->prev;
+			last->next = NULL;
+		} else {
+			// ultra mega rerouttteee
+			node->next->prev = node->prev;
+			node->prev->next = node->next;
+		}
+	}
+
 	linksize -= 1;
 }
 

@@ -23,6 +23,8 @@ class admin {
 		void maininterface();
 		void addstudentinterface();
 		void addteacherinterface();
+		void delteacherinterface();
+		void displayaccinterface();
 		int getFucked(string);
 	public:
 		// constructors
@@ -98,12 +100,13 @@ void admin::maininterface() {
 		cout << " [2] Add student account" << endl;
 		cout << " [3] Delete teacher account" << endl;
 		cout << " [4] Delete student account" << endl;
+		cout << " [5] Display all accounts" << endl;
 		cout << " **SUBJECTS**" << endl;
-		cout << " [5] Add new subject" << endl;
-		cout << " [6] Delete a subject" << endl;
+		cout << " [6] Add new subject" << endl;
+		cout << " [7] Delete a subject" << endl;
 		cout << " **UTILITIES**" << endl;
-		cout << " [7] Change admin account" << endl;
-		cout << " [8] Exit" << endl << endl;
+		cout << " [8] Change admin account" << endl;
+		cout << " [9] Exit" << endl << endl;
 
 		choice = getFucked(": ");
 
@@ -113,6 +116,12 @@ void admin::maininterface() {
 				break;
 			case 2:
 				addstudentinterface();
+				break;
+			case 3:
+				delteacherinterface();
+				break;
+			case 5:
+				displayaccinterface();
 				break;
 			default:
 				breakme = 0;
@@ -177,6 +186,30 @@ void admin::addteacherinterface() {
 	system(PAUSE);
 }
 
+void admin::delteacherinterface() {
+	authtable tb(secret);
+	int index;
+
+	system(CLEAR);
+	cout << "Below is the table list of teacher\'s accounts... Enter the number of row that will be deleted account" << endl;
+	tb.displayteachers(); cout << endl;
+	index = getFucked("Row number : ");
+
+	// delete this teacher's account
+	secret->delTeacherAccount(index);
+	cout << "[+] Account number " << index << " deleted!" << endl;
+	system(PAUSE);
+}
+
+
+void admin::displayaccinterface() {
+	system(CLEAR);
+	authtable tstable(secret);
+	tstable.displayteachers();
+	cout << endl << "==========================================" << endl << endl;
+	tstable.displaystudents();
+	system(PAUSE);
+}
 
 int admin::getFucked(string out) {
 	int myass;
