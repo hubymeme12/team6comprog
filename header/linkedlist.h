@@ -421,21 +421,26 @@ void credential::remove(int index) {
 }
 
 bool credential::matchData(creds* firstnode, string username, string password) {
-	// search for username before matching to password
-	if (firstnode->user == username) {
-		if (firstnode->pass == password) {
-			// permission to retrieve username
-			// retrieve username
-			return 1;
+	if (firstnode != NULL) {
+		// search for username before matching to password
+		if (firstnode->user == username) {
+			if (firstnode->pass == password) {
+				// permission to retrieve username
+				// retrieve username
+				return 1;
+			} else {
+				return 0;
+			}
 		} else {
-			return 0;
+			if (firstnode->next != NULL)
+				return matchData(firstnode->next, username, password);
+			else
+				return 0;
 		}
 	} else {
-		if (firstnode->next != NULL)
-			return matchData(firstnode->next, username, password);
+		cout << "[!] No accounts are added yet!" << endl;
+		return 0;
 	}
-
-	return 0;
 }
 
 int credential::longestfuckingname(creds* fnode, int longest = 0) {

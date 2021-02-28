@@ -1,3 +1,6 @@
+#ifndef ADMIN_H
+#define ADMIN_H
+
 #include <iostream>
 #include "authentication.h"
 #include "database.h"
@@ -277,7 +280,8 @@ void admin::addsubjectinterface() {
 	// variables, variables...
 	int choice;
 	creds* tchr;
-	string subjname, teachername;
+	string subjname;
+	string teachername;
 
 	system(CLEAR);
 	cout << "================================" << endl;
@@ -296,8 +300,8 @@ void admin::addsubjectinterface() {
 	cout << "[*] Select teacher row below to assign a teacher" << endl;
 
 	// select from the teachers
-	authtable teachtables(secret);
-	teachtables.displayteachers(); cout << endl;
+	credstable teachtables(secret->getTeachers());
+	teachtables.displaytable();
 
 	// input
 	choice = getFucked("Select row : ");
@@ -323,3 +327,4 @@ int admin::getFucked(string out) {
 		}
 	}
 }
+#endif

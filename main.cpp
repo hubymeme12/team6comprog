@@ -7,6 +7,7 @@ using namespace std;
 #include "header/authentication.h"
 #include "header/tables.h"
 #include "header/admin.h"
+#include "header/teachers.h"
 
 #if defined(_WIN32)
 	#define CLEAR "cls"

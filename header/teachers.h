@@ -1,7 +1,10 @@
+#ifndef TEACHERS_H
+#define TEACHERS_H
+
+#include "gradebook.h"
+#include "tables.h"
+#include "linkedlist.h"
 #include <iostream>
-#include "header/gradebook.h"
-#include "header/tables.h"
-#include "header/linkedlist.h"
 using namespace std;
 
 class teacher {
@@ -58,6 +61,7 @@ void teacher::viewSubject() {
 	cout << "=====================================" << endl;
 	cout << "           LIST OF SUBJECTS" << endl;
 	cout << "=====================================" << endl;
+
 	gbtable tb(glist);
 	tb.displaytable();
 }
@@ -119,3 +123,4 @@ int teacher::error(string shite) {
 		}
 	}
 }
+#endif

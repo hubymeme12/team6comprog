@@ -4,9 +4,6 @@
 #include "linkedlist.h"
 #include "database.h"
 
-//#include "teachers."h
-//#include "students.h"
-
 class auth {
 	private:
 		credential* teachers;
@@ -96,8 +93,7 @@ void auth::loginTeacher(string username, string password) {
 	if (teachers->matchData(teachers->getFirst(), username, password)) {
 		cout << "[+] Logged In!!" << endl;
 		// do process here
-		// get gradebook from the database and pass it teacher(gradebook*)
-		// use the teacher interface here
+		// get gradebooklist from database
 	} else {
 		cout << "[-] Invalid Username or Password!" << endl;
 	}

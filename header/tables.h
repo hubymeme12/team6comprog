@@ -396,7 +396,7 @@ void credstable::displaytable() {
 	string ub = " -----  -" + strmultiply("-", longest) + "-";
 
 	cout << ub << endl;
-	cout << " NO. | NAME" << strmultiply(" ", longest - 4) << " |" << endl;
+	cout << "| NO. | NAME" << strmultiply(" ", longest - 4) << " |" << endl;
 	cout << ub << endl;
 
 	// get ready to be fucked up
@@ -404,9 +404,10 @@ void credstable::displaytable() {
 
 	for (int i = 0; i < tbsize; i++) {
 		name = fuck->name;
-		cout << " " << (i + 1) << strmultiply(" ", 2 - (i + 1 >= 10) - (i + 1 >= 100)) << " | " << name << strmultiply(" ", longest - name.size()) << " |" << endl;
+		cout << "| " << (i + 1) << strmultiply(" ", 2 - (i + 1 >= 10) - (i + 1 >= 100)) << " | " << name << strmultiply(" ", longest - name.size()) << " |" << endl;
 		fuck = fuck->next;
 	}
+	cout << ub << endl;
 }
 
 string credstable::strmultiply(string str, int size) {
