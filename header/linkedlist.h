@@ -65,20 +65,27 @@ class credential {
 		credential(string, string, string);			// first node with username and password
 
 		// utilities
-		creds* getFirst();					// gets the first node address
+		creds* getFirst() const;				// gets the first node address
 		creds* findFirst(creds&);				// finds the first node of a "lost node"
 		creds* search(creds*, string);				// op function that searches for matched data and returns that node with matched data
 		creds* searchname(creds*, string);			// op function that searches for name and return the node
+		string printName(creds*);
+		string printUser(creds*);
+		string printPass(creds*);
 		void add(string, string, string);			// pushes these values to the last list
 		void remove(creds*, string);				// removes this gradebook address from the list
 		bool matchData(creds*, string, string);			// returns true if the gradebook has matched student id
 		int longestfuckingname(creds*, int);			// returns the size of the longest fucking name
+		int longestfuckingpass(creds*, int);
+		int longestfuckinguser(creds*, int);
+		int getlistnum();					// returns the number of lists
 
 		// debugging
 		void printData(creds*);
 	private:
 		creds* first;
 		creds* last;
+		int linksize;
 };
 
 struct triad {
@@ -265,6 +272,7 @@ void tridata::retrieveSnodes(tridata* storage, string name) {
 credential::credential() {
 	first = NULL;
 	last = NULL;
+	linksize = 0;
 }
 
 // parametric constructor for assigning first node
@@ -282,10 +290,13 @@ credential::credential(string username, string name, string password) {
 	// assign as first and last node
 	first = node;
 	last  = node;
+
+	// increment linksize
+	linksize = 1;
 }
 
 // returns the first node for keeping in track
-creds* credential::getFirst() { return first; }
+creds* credential::getFirst() const { return first; }
 
 
 // searches for the matched username of the student
@@ -310,6 +321,12 @@ creds* credential::searchname(creds* firstnode, string name) {
 			return NULL;
 }
 
+
+// for table printing
+string credential::printName(creds* address) { return address->name; }
+string credential::printUser(creds* address) { return address->user; }
+string credential::printPass(creds* address) { return address->pass; }
+
 // pushback this credential node to last node
 void credential::add(string username, string name, string password) {
 	// makes new node and assign values
@@ -331,6 +348,9 @@ void credential::add(string username, string name, string password) {
 		// assign as last node
 		last = node;
 	}
+
+	// increment size
+	linksize += 1;
 }
 
 // checks for username of the student (unique) so this node can be deleted
@@ -352,6 +372,9 @@ void credential::remove(creds* firstnode, string username) {
 			remove(firstnode->next, username);
 		}
 	}
+
+	// decrement link size
+	linksize -= 1;
 }
 
 bool credential::matchData(creds* firstnode, string username, string password) {
@@ -384,6 +407,35 @@ int credential::longestfuckingname(creds* fnode, int longest = 0) {
 	else
 		return longest;
 }
+
+int credential::longestfuckinguser(creds* fnode, int longest = 0) {
+	if (fnode == NULL)
+		return longest;
+
+	if (fnode->user.size() > longest)
+		longest = fnode->user.size();
+
+	if (fnode->next != NULL)
+		return longestfuckinguser(fnode->next, longest);
+	else
+		return longest;
+}
+
+int credential::longestfuckingpass(creds* fnode, int longest = 0) {
+	if (fnode == NULL)
+		return longest;
+
+	if (fnode->pass.size() > longest)
+		longest = fnode->pass.size();
+
+	if (fnode->next != NULL)
+		return longestfuckingpass(fnode->next, longest);
+	else
+		return longest;
+}
+
+
+int credential::getlistnum() { return linksize; }
 
 void credential::printData(creds* first) {
 	if (first->next == NULL)

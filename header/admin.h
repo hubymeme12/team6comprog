@@ -145,6 +145,9 @@ void admin::addteacherinterface() {
 	string teachname, teachuname, teachpass;
 
 	system(CLEAR);
+	authtable ttable(secret);
+	ttable.displayteachers();
+
 	cout << "====================================" << endl;
 	cout << "         ADD TEACHER CREDENTIAL" << endl;
 	cout << "====================================" << endl;
@@ -157,7 +160,11 @@ void admin::addteacherinterface() {
 
 	// add this student credentials to auth
 	secret->addTeacherAccount(teachuname, teachname, teachpass);
-	cout << "[+] Teacher account added!" << endl;
+
+	// new interface for displaying the updated table
+	system(CLEAR);
+	cout << "[UPDATED]" << endl;
+	ttable.displayteachers();
 	system(PAUSE);
 }
 

@@ -31,6 +31,8 @@ class auth {
 
 		// debug
 		database* retrieveDB();
+		credential* getTeachers();
+		credential* getStudents();
 };
 
 
@@ -102,7 +104,8 @@ void auth::loginStudent(string username, string password) {
 	}
 }
 
-database* auth::retrieveDB() {
-	return db;
-}
+database* auth::retrieveDB() { return db; }
+credential* auth::getTeachers() { return teachers; }
+credential* auth::getStudents() { return students; }
+
 #endif

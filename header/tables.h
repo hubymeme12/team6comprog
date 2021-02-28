@@ -8,6 +8,19 @@ using namespace std;
 #include "gradebook.h"
 #include "authentication.h"
 
+
+//////////////////////////////////
+// 	GLOBAL UTILITIES	//
+//////////////////////////////////
+class gutilities {
+	friend string strmultiply(string str, int howmany) {
+		string returnme = "";
+		for (int i = 0; i < howmany; i++)
+			returnme += str;
+		return returnme;
+	}
+};
+
 //////////////////////////////////
 // 	G R A D E B O O K	//
 //////////////////////////////////
@@ -191,6 +204,136 @@ class dbtable {
 //	A U T H E N T I C A T I O N	//
 //////////////////////////////////////////
 class authtable {
+	public:
+		authtable();
+		authtable(auth*);
 
+		void addData(auth*);
+		void settbsize(bool);
+		void updateData(bool);
+		void displayteachers();
+		void displaystudents();
+		string strmultiply(string, int);
+	private:
+		credential* students;
+		credential* teachers;
+		gutilities utility;
+		auth* stdata;
+		int longestuser;
+		int longestname;
+		int longestpass;
+		int tbsize;
 };
+
+//////////////////////////////////////////
+//	AUTHENTICATION definition	//
+//////////////////////////////////////////
+authtable::authtable() {
+	students = NULL;
+	teachers = NULL;
+	stdata = NULL;
+	longestname = 4;
+	longestuser = 8;
+	longestpass = 8;
+	tbsize = 0;
+}
+
+authtable::authtable(auth* obj) {
+	if (obj == NULL) {
+		cout << "[!] You assigned a NULL pointer! executing default constructor..." << endl;
+		authtable();
+	} else {
+		stdata = obj;
+		teachers = stdata->getTeachers();
+		students = stdata->getStudents();
+		tbsize = 0;
+		longestname = 4;
+		longestuser = 8;
+		longestpass = 8;
+	}
+}
+
+void authtable::addData(auth* obj) {
+	stdata = obj;
+	students = stdata->getTeachers();
+	teachers = stdata->getStudents();
+}
+
+// note that 0 is for teacher and 1 is for student
+void authtable::settbsize(bool st) {
+	// teacher
+	if (st == 0) {
+		if (teachers != NULL)
+			tbsize = teachers->getlistnum();
+		else
+			tbsize = 0;
+	} else {
+		if (students != NULL)
+			tbsize = students->getlistnum();
+		else
+			tbsize = 0;
+	}
+}
+
+// update spacing of students or teachers table
+void authtable::updateData(bool st) {
+	// teaher spacing
+	if (st == 0) {
+		if (teachers != NULL) {
+			longestuser = teachers->longestfuckinguser(teachers->getFirst(), longestuser);
+			longestname = teachers->longestfuckingname(teachers->getFirst(), longestname);
+			longestpass = teachers->longestfuckingpass(teachers->getFirst(), longestpass);
+		}
+	} else {
+		if (students != NULL) {
+			longestuser = students->longestfuckinguser(students->getFirst(), longestuser);
+			longestname = students->longestfuckingname(students->getFirst(), longestname);
+			longestpass = students->longestfuckingpass(students->getFirst(), longestpass);
+		}
+	}
+}
+
+
+// table for the teacher credentials
+void authtable::displayteachers() {
+	// setup for teachers table credentails
+	this->settbsize(0);
+	this->updateData(0);
+
+	// main process
+	string ub = " -" + strmultiply("-", longestname) + "- -" + strmultiply("-", longestuser) + "- -" + strmultiply("-", longestpass) + "-";
+
+	cout << "[TEACHERS\' CREDENTIALS]" << endl;
+	cout << "[READ-ONLY]" << endl;
+	cout << ub << endl;
+	cout << "| NAME" + strmultiply(" ", longestname - 4) + " | USERNAME" + strmultiply(" ", longestuser - 8) + " | PASSWORD" + strmultiply(" ", longestpass - 8) + " |" << endl;
+	cout << ub << endl;
+
+	// retrieve first node for printing values, and other dynamic variables needed
+	creds* node = teachers->getFirst();
+	string name;
+	string user;
+	string pass;
+
+	// mid part
+	for (int i = 0; i < tbsize; i++) {
+		name = teachers->printName(node);
+		user = teachers->printUser(node);
+		pass = teachers->printPass(node);
+
+		cout << "| " << name << strmultiply(" ", longestname - name.size()) << " | " << user << strmultiply(" ", longestuser - user.size()) << " | " << pass << strmultiply(" ", longestpass - pass.size()) << " |" << endl;
+		node = node->next;
+	}
+	cout << ub << endl;
+}
+
+string authtable::strmultiply(string str, int size) {
+	string returnme = "";
+	for (int i = 0; i < size; i++)
+		returnme += str;
+	return returnme;
+}
+//////////////////
+//	End	//
+//////////////////
 #endif
