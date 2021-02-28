@@ -24,7 +24,9 @@ class admin {
 		void addstudentinterface();
 		void addteacherinterface();
 		void delteacherinterface();
+		void delstudentinterface();
 		void displayaccinterface();
+		void changeaccinterface();
 		int getFucked(string);
 	public:
 		// constructors
@@ -120,8 +122,14 @@ void admin::maininterface() {
 			case 3:
 				delteacherinterface();
 				break;
+			case 4:
+				delstudentinterface();
+				break;
 			case 5:
 				displayaccinterface();
+				break;
+			case 8:
+				changeaccinterface();
 				break;
 			default:
 				breakme = 0;
@@ -201,6 +209,20 @@ void admin::delteacherinterface() {
 	system(PAUSE);
 }
 
+void admin::delstudentinterface() {
+	authtable tb(secret);
+	int index;
+
+	system(CLEAR);
+	cout << "Below is the table list of student\'s accounts... Enter the number of row that will be deleted account" << endl;
+	tb.displayteachers(); cout << endl;
+	index = getFucked("Row number : ");
+
+	// delete this teacher's account
+	secret->delStudentAccount(index);
+	cout << "[+] Account number " << index << " deleted!" << endl;
+	system(PAUSE);
+}
 
 void admin::displayaccinterface() {
 	system(CLEAR);
@@ -208,6 +230,36 @@ void admin::displayaccinterface() {
 	tstable.displayteachers();
 	cout << endl << "==========================================" << endl << endl;
 	tstable.displaystudents();
+	system(PAUSE);
+}
+
+void admin::changeaccinterface() {
+	// some variables:
+	string newuser, newpass;
+
+	system(CLEAR);
+	cout << "================================" << endl;
+	cout << "         Account changes" << endl;
+	cout << "================================" << endl;
+	cout << "Current username : ";
+	getline(cin >> ws, newuser);
+	cout << "Current password : ";
+	getline(cin >> ws, newpass);
+
+	// check credentials
+	if (adminuser == newuser && adminpass == newpass) {
+		// allow to change password
+		cout << "Enter new username : ";
+		getline(cin >> ws, newuser);
+		cout << "Enter new password : ";
+		getline(cin >> ws, newpass);
+
+		// change password
+		changeacc(newuser, newpass);
+	} else {
+		// nah shit, change ur shit
+		cout << "[!] Error, credentials entered are not valid." << endl;
+	}
 	system(PAUSE);
 }
 
