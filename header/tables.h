@@ -383,12 +383,21 @@ class credstable {
 		string strmultiply(string, int);
 };
 
-credstable::credstable(credential* obj) {
-	data = obj;
 
-	// setup here
-	longest = data->longestfuckingname(data->getFirst(), 4);
-	tbsize = data->getlistnum();
+//////////////////////////////////
+//	CREDENTIAL DEFINITION	//
+//////////////////////////////////
+credstable::credstable(credential* obj) {
+	if (obj != NULL) {
+		data = obj;
+
+		// setup here
+		longest = data->longestfuckingname(data->getFirst(), 4);
+		tbsize = data->getlistnum();
+	} else {
+		tbsize = 0;
+		longest = 4;
+	}
 }
 
 void credstable::displaytable() {
@@ -416,4 +425,7 @@ string credstable::strmultiply(string str, int size) {
 		returnme += str;
 	return returnme;
 }
+//////////////////
+//	END	//
+//////////////////
 #endif

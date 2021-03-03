@@ -283,6 +283,10 @@ void admin::addsubjectinterface() {
 	string subjname;
 	string teachername;
 
+	// connect the authentication to database and vice versa
+	secret->setDatabase(db);
+	secret->connectDatabase();
+
 	system(CLEAR);
 	cout << "================================" << endl;
 	cout << "         SUBJECT SETUP" << endl;
@@ -309,8 +313,35 @@ void admin::addsubjectinterface() {
 
 	// get name from this node
 	teachername = tchr->name;
-	cout << "Teacher is : " << teachername << endl;
-	system(PAUSE);
+
+	// some variables
+	bool breakme = 1;
+	short num;
+	// database setup
+	db->pseudonodecopy();
+	credential* node = db->returnpseudonode();
+	while (breakme) {
+		system(CLEAR);
+		cout << "Below are list of students that are registered " << endl;
+		cout << "Select the row number of student to be enrolled" << endl;
+		cout << "Select \'0\' to add details" << endl;
+		cout << "===============================================" << endl;
+		cout << "Subject : " << subjname << endl;
+		cout << "Teacher : " << teachername << endl;
+
+		// table
+		credstable crtable(node);
+		crtable.displaytable(); cout << endl;
+
+		num = getFucked("row number : ");
+
+		if (num == 0) {
+			db->pushdata(subj, teachername, db->addednode());
+			breakme = 0;
+		} else {
+			db->addnode(subj, num);	// add this node to selected students
+		}
+	}
 }
 
 int admin::getFucked(string out) {

@@ -94,7 +94,7 @@ void Tlogin() {
 	getline(cin >> ws, passw);
 
 	// login these input credentials
-	authentication->loginTeacher(user, passw);
+	gradebooklist* retrievedgb = authentication->loginTeacher(user, passw);
 	system(PAUSE);
 }
 

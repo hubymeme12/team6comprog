@@ -9,30 +9,88 @@
 
 class database {
 	public:
-		// data retrieval
-		gradebooklist* retrieveGBTeacher(string teachername);
-		gradebooklist* retrieveGBStudent(string username);
-		tridata* retrievedata();
-
 		// setup
-		void connect(credential* stud, credential* teac);
+		void connect(credential* stud, credential* teac);		// connects the node from authentication to database
+		void pseudonodecopy();						// copies the original node (student) to pseudostudent (for table purposes)
+		void pseudonodedelete(int);					// deletes node from pseudostudent nodes
+		void addnode(gradebook*, int);					// adds node from pseudostudent to addme (that will be passed in triad)
 
-		// data manipulation
-		void addSubject(string subjectname);		// add subject and deltails
-		void deleteSubj(string subjectname);		// whole subject (triad deletion)
-		void deleteStudent(string studentName);		// students (specific student will be removed)
+		// add data
+		void pushdata(gradebook*, string, credential*);			// push these data to tridata
 
-		void deleteFromTeacher(string* subject, string Tname);
-		void deleteFromStudent(string* subject, string Sname);
+		// data retrieval
+		gradebooklist* retrieveGBTeacher(string teachername);		// retrieves gradebooks with matched teachername
+		gradebooklist* retrieveGBStudent(string username);		// retrieves gradebooks with matched student username??
+		credential* returnpseudonode();					// returns the pseudonode (for table)
+		credential* addednode();					// returns all selected node
+		tridata* retrievedata();
 	private:
 		tridata db_table;
 		credential* student;
 		credential* teacher;
+		credential* pseudostudent;
+		credential* addme;
 };
 
 //////////////////////////////////
 //	Database definition	//
 //////////////////////////////////
+// connects address for changes
+void database::connect(credential* stud, credential* teac) {
+	student = stud;
+	teacher = teac;
+}
+
+// copies the nodes for student selection
+void database::pseudonodecopy() {
+	// handler setup
+	pseudostudent = new credential;
+	addme = new credential;
+
+	if (student != NULL) {
+		// from first to last node
+		creds* node = student->getFirst();
+
+		// walk through
+		while (node != NULL) {
+			pseudostudent->add(node->user, node->name, node->pass);
+			node = node->next;
+		}
+	} else {
+		cout << "[!] Cannot copy! no students are present" << endl;
+	}
+}
+
+// deletes nth pseudo node
+void database::pseudonodedelete(int index) {
+	if (index > pseudostudent->getlistnum()) {
+		cout << "[!] Cannot delete selected node! Index exceeded the size of node" << endl;
+	} else {
+		pseudostudent->remove(index);
+	}
+}
+
+// add node to addme node from pseudostudent
+void database::addnode(gradebook* gb, int index) {
+	if (index > pseudostudent->getlistnum()) {
+		cout << "[!] Cannot add node! Index exceeded the size of node" << endl;
+	} else {
+		// retrieve this nth node
+		creds* node;
+		node = pseudostudent->getNode(index);
+		gb->pushdata(node->name, 0.0);
+		addme->add(node->user, node->name, node->pass);
+
+		// delete this nth from pseudonode
+		pseudonodedelete(index);
+	}
+}
+
+// pushes data to tridata
+void database::pushdata(gradebook* gb, string teachername, credential* stud) {
+	db_table.addData(gb, teachername, stud);
+}
+
 // retrieves the subjects for this teacher
 gradebooklist* database::retrieveGBTeacher(string teachername) {
 	// makes graedebooklist where data will be pushed
@@ -56,14 +114,9 @@ gradebooklist* database::retrieveGBTeacher(string teachername) {
 	return retrieved;
 }
 
+credential* database::returnpseudonode() { return pseudostudent; }
+credential* database::addednode() { return addme; }
 tridata* database::retrievedata() { return &db_table; }
-
-// connects address for changes
-void database::connect(credential* stud, credential* teac) {
-	student = stud;
-	teacher = teac;
-}
-
 //////////////////////////
 // 	E N D 		//
 //////////////////////////

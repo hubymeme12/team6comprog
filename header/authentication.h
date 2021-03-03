@@ -25,7 +25,7 @@ class auth {
 		void delStudentAccount(int);
 
 		// credentials validation
-		void loginTeacher(string, string);		// teacherDatatype
+		gradebooklist* loginTeacher(string, string);		// teacherDatatype
 		void loginStudent(string, string);		// studentDatatype
 
 		// debug
@@ -89,13 +89,16 @@ void auth::delTeacherAccount(int index) {
 	teachers->remove(index);
 }
 
-void auth::loginTeacher(string username, string password) {
+gradebooklist* auth::loginTeacher(string username, string password) {
 	if (teachers->matchData(teachers->getFirst(), username, password)) {
 		cout << "[+] Logged In!!" << endl;
-		// do process here
-		// get gradebooklist from database
+
+		// retrieve the gradebooklist of teacher
+		string name = teachers->search(teachers->getFirst(), username)->name;
+		return db->retrieveGBTeacher(name);
 	} else {
 		cout << "[-] Invalid Username or Password!" << endl;
+		return NULL;
 	}
 }
 
