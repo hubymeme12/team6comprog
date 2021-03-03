@@ -7,6 +7,14 @@
 #include <iostream>
 using namespace std;
 
+#if defined(_WIN32)
+	#define CLEAR "cls"
+	#define PAUSE "pause"
+#else
+	#define CLEAR "clear"
+	#define PAUSE "bash -c \"read -p \'Press Enter to continue...\'\""
+#endif
+
 class teacher {
 	private:
 		gradebooklist* glist;
@@ -17,7 +25,7 @@ class teacher {
 		void viewSubject();
 		void viewSubjectdetail();
 		void editGrade();
-		int error(string);
+		float error(string);
 };
 
 teacher::teacher(gradebooklist* obj) {
@@ -29,13 +37,15 @@ void teacher::teacherInterface() {
 	bool breakme = 1;
 
 	while (breakme) {
-		system ("cls");
+		system(CLEAR);
 		cout << "=====================================" << endl;
 		cout << "          TEACHER INTERFACE" << endl;
 		cout << "=====================================" << endl;
 		cout << " [1] View subjects" << endl;
 		cout << " [2] View subject details" << endl;
-		cout << " [3] Edit grade" << endl << endl;
+		cout << " [3] Edit grade" << endl;
+		cout << " [4] Exit" << endl << endl;
+
 		choice = error(": ");
 
 		switch (choice) {
@@ -49,15 +59,16 @@ void teacher::teacherInterface() {
 				editGrade();
 				break;
 			default:
-				cout << "end..." << endl;
+				cout << "[!] Logging out..." << endl;
 				breakme = 0;
 				break;
 		}
-		system ("pause");
+		system(PAUSE);
 	}
 }
 
 void teacher::viewSubject() {
+	system(CLEAR);
 	cout << "=====================================" << endl;
 	cout << "           LIST OF SUBJECTS" << endl;
 	cout << "=====================================" << endl;
@@ -67,6 +78,7 @@ void teacher::viewSubject() {
 }
 
 void teacher::viewSubjectdetail() {
+	system(CLEAR);
 	int x;
 	cout << "=====================================" << endl;
 	cout << "             SUBJECT DATA" << endl;
@@ -74,16 +86,19 @@ void teacher::viewSubjectdetail() {
 	gbtable tb(glist);
 	tb.displaytable();
 
-	x = error("Display data on subject number : ");
+	x = error("Display subject data (row) : ");
 
 	cout << endl;
 	gradebook* data;
 	data = glist->access(x);
+
+	system(CLEAR);
 	gbtable tbl(data);
 	tbl.displaytable();
 }
 
 void teacher::editGrade() {
+	system(CLEAR);
 	int x;
 	float y;
 	cout << "=====================================" << endl;
@@ -92,11 +107,13 @@ void teacher::editGrade() {
 	gbtable tb(glist);
 	tb.displaytable();
 
-	x = error("Select subject number you want to edit the grades : ");
+	x = error("Enter row num. : ");
 
 	cout << endl;
 	gradebook* data;
 	data = glist->access(x);
+
+	system(CLEAR);
 	gbtable tbl(data);
 	tbl.displaytable();
 
@@ -109,8 +126,8 @@ void teacher::editGrade() {
 	ntb.displaytable();
 }
 
-int teacher::error(string shite) {
-	int a;
+float teacher::error(string shite) {
+	float a;
 
 	while (1) {
 		cout << shite;

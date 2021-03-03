@@ -11,7 +11,7 @@ using namespace std;
         #define PAUSE "pause"
 #else
         #define CLEAR "clear"
-        #define PAUSE "read -p \"Press enter key to continue...\" NULL"
+        #define PAUSE "bash -c \"read -p \'Press Enter to continue...\'\""
 #endif
 
 class admin {
@@ -227,8 +227,9 @@ void admin::delstudentinterface() {
 	int index;
 
 	system(CLEAR);
+	// this is a freakin table
 	cout << "Below is the table list of student\'s accounts... Enter the number of row that will be deleted account" << endl;
-	tb.displayteachers(); cout << endl;
+	tb.displaystudents(); cout << endl;
 	index = getFucked("Row number : ");
 
 	// delete this teacher's account
@@ -239,9 +240,13 @@ void admin::delstudentinterface() {
 
 void admin::displayaccinterface() {
 	system(CLEAR);
+
+	// display teacher credentials table
 	authtable tstable(secret);
 	tstable.displayteachers();
 	cout << endl << "==========================================" << endl << endl;
+
+	// display student credentials table
 	tstable.displaystudents();
 	system(PAUSE);
 }
@@ -254,6 +259,8 @@ void admin::changeaccinterface() {
 	cout << "================================" << endl;
 	cout << "         Account changes" << endl;
 	cout << "================================" << endl;
+
+	// inputsssscxz
 	cout << "Current username : ";
 	getline(cin >> ws, newuser);
 	cout << "Current password : ";
@@ -269,6 +276,7 @@ void admin::changeaccinterface() {
 
 		// change password
 		changeacc(newuser, newpass);
+		cout << "[+] Password changed!!" << endl;
 	} else {
 		// nah shit, change ur shit
 		cout << "[!] Error, credentials entered are not valid." << endl;
@@ -279,6 +287,8 @@ void admin::changeaccinterface() {
 void admin::addsubjectinterface() {
 	// variables, variables...
 	int choice;
+	bool breakme = 1;
+	short num;
 	creds* tchr;
 	string subjname;
 	string teachername;
@@ -303,23 +313,39 @@ void admin::addsubjectinterface() {
 	cout << "[+] Subject : " << subjname << " Added" << endl;
 	cout << "[*] Select teacher row below to assign a teacher" << endl;
 
-	// select from the teachers
+	// this displays table
+	// select from the teacher credentials
 	credstable teachtables(secret->getTeachers());
 	teachtables.displaytable();
 
-	// input
-	choice = getFucked("Select row : ");
-	tchr = secret->getTeachers()->getNode(choice);
+	// some variables needed
+	credential* tchrnode;
+	credential* node;
+	creds* chosen;
 
-	// get name from this node
-	teachername = tchr->name;
+	// input loop unless user entered valid input
+	while (breakme) {
+		choice = getFucked("Select row : ");
 
-	// some variables
-	bool breakme = 1;
-	short num;
-	// database setup
-	db->pseudonodecopy();
-	credential* node = db->returnpseudonode();
+		// retrieve node
+		tchrnode = secret->getTeachers();
+		chosen = tchrnode->getNode(choice);
+
+		// check if index is valid
+		if (chosen != NULL) {
+			// get name from this node
+			teachername = chosen->name;
+
+			// setup database values if chosen node is valid (not null)
+			db->pseudonodecopy();
+			node = db->returnpseudonode();
+			breakme = 0;
+		}
+	}
+
+	// reset breakme
+	breakme = 1;
+
 	while (breakme) {
 		system(CLEAR);
 		cout << "Below are list of students that are registered " << endl;

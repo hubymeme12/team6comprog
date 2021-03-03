@@ -78,11 +78,15 @@ void database::addnode(gradebook* gb, int index) {
 		// retrieve this nth node
 		creds* node;
 		node = pseudostudent->getNode(index);
-		gb->pushdata(node->name, 0.0);
-		addme->add(node->user, node->name, node->pass);
 
-		// delete this nth from pseudonode
-		pseudonodedelete(index);
+		if (node != NULL) {
+			// add name to gradebook
+			gb->pushdata(node->name, 0.0);
+			addme->add(node->user, node->name, node->pass);
+
+			// delete this nth from pseudonode
+			pseudonodedelete(index);
+		}
 	}
 }
 

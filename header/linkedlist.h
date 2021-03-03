@@ -363,7 +363,7 @@ void credential::remove(creds* firstnode, string username) {
 }
 
 void credential::remove(int index) {
-	if (index > linksize) {
+	if ((index > linksize) || (index == 0)) {
 		cout << "[-] The number you input exceeded the link size." << endl;
 	} else {
 		creds* node = first;
@@ -372,7 +372,10 @@ void credential::remove(int index) {
 		}
 
 		// re-route this node
-		if (node == first) {
+		if (linksize == 1) {
+			first = NULL;
+			last  = NULL;
+		} else if (node == first) {
 			// somehow release its value here to avoid memory leak lol
 			first = node->next;
 			first->prev = NULL;

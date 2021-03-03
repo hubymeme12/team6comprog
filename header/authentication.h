@@ -70,7 +70,6 @@ void auth::addTeacherAccount(string username, string name, string password) {
 
 void auth::addStudentAccount(string username, string name, string password) {
 	students->add(username, name, password);
-	// connect to database and add information (admin)
 }
 
 void auth::delStudentAccount(string username) {

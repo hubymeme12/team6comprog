@@ -14,7 +14,7 @@ using namespace std;
 	#define PAUSE "pause"
 #else
 	#define CLEAR "clear"
-	#define PAUSE "read -p \"Press enter key to continue...\" NULL"
+	#define PAUSE "bash -c \"read -p \'Press Enter to continue...\'\""
 #endif
 
 // global variables
@@ -56,9 +56,12 @@ int main() {
 			case 3:
 				Slogin();
 				break;
-			default:
+			case 4:
 				cout << "[-] Exitting..." << endl;
 				breakme = 0;
+				break;
+			default:
+				cout << "[!] Invalid input!" << endl;
 				break;
 		}
 	}
@@ -97,7 +100,6 @@ void Tlogin() {
 	gradebooklist* retrievedgb = authentication->loginTeacher(user, passw);
 	teacher maam(retrievedgb);
 	maam.teacherInterface();
-	system(PAUSE);
 }
 
 void Slogin() {
