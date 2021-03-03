@@ -95,6 +95,8 @@ void Tlogin() {
 
 	// login these input credentials
 	gradebooklist* retrievedgb = authentication->loginTeacher(user, passw);
+	teacher maam(retrievedgb);
+	maam.teacherInterface();
 	system(PAUSE);
 }
 

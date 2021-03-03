@@ -90,11 +90,13 @@ void auth::delTeacherAccount(int index) {
 }
 
 gradebooklist* auth::loginTeacher(string username, string password) {
-	if (teachers->matchData(teachers->getFirst(), username, password)) {
+	creds* fnode = teachers->getFirst();
+	if (teachers->matchData(fnode, username, password)) {
 		cout << "[+] Logged In!!" << endl;
 
 		// retrieve the gradebooklist of teacher
-		string name = teachers->search(teachers->getFirst(), username)->name;
+		string name = teachers->search(fnode, username)->name;
+		cout << "NAME RETRIEVED" << endl;
 		return db->retrieveGBTeacher(name);
 	} else {
 		cout << "[-] Invalid Username or Password!" << endl;

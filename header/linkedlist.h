@@ -104,7 +104,6 @@ class tridata {
 		tridata();
 
 		// data manipulation
-		void addData(gradebook*, string, string*, int, creds*);
 		void addData(gradebook*, string, credential*);
 		void removeSubject(string);
 		void removeStudent(string);
@@ -130,38 +129,6 @@ tridata::tridata() {
 	first = NULL;
 	last  = NULL;
 	linksize = 0;
-}
-
-void tridata::addData(gradebook* subject, string teacherUsername, string* namesArray, int size, creds* studentlist) {
-	credential *cute = new credential;
-	triad* tnode = new triad;
-	creds *node;
-
-	// push this data to the last
-	// checks for the first null
-	for (int i = 0; i < size; i++) {
-		node = cute->search(studentlist, namesArray[i]);
-		cute->add(node->user, node->name, node->pass);
-	}
-
-	// assign values to triad
-	tnode->subject = subject;
-	tnode->teacher = teacherUsername;
-	tnode->students = cute;
-
-	if (first == NULL) {
-		first = tnode;
-		last = tnode;
-	} else {
-		last->next = tnode;
-		tnode->prev = last;
-		tnode->next = NULL;
-
-		last = tnode;
-	}
-
-	// increment link size
-	linksize += 1;
 }
 
 void tridata::addData(gradebook* subj, string tname, credential* studdata) {
@@ -242,6 +209,8 @@ void tridata::retrieveTnodes(tridata* storage, string name) {
 				// push to the storage
 				storage->addData(pseudonode->subject, pseudonode->teacher, pseudonode->students);
 			}
+			// increment pseudonode
+			pseudonode = pseudonode->next;
 		}
 	}
 }
