@@ -98,8 +98,12 @@ void Tlogin() {
 
 	// login these input credentials
 	gradebooklist* retrievedgb = authentication->loginTeacher(user, passw);
-	teacher maam(retrievedgb);
-	maam.teacherInterface();
+	if (retrievedgb != NULL) {
+		teacher maam(retrievedgb);
+		maam.teacherInterface();
+	} else {
+		system(PAUSE);
+	}
 }
 
 void Slogin() {

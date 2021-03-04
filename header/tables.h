@@ -68,37 +68,71 @@ gbtable::gbtable() {
 
 // for displaying subject details
 gbtable::gbtable(gradebook* subj) {
-	islinked = false;
-	gb = subj;
-	longest = gb->largeststring(gb->getFirst(), 8);
-	student = gb->getFirst();
-	gbl = NULL;
+	if (subj != NULL) {
+		islinked = false;
+		gb = subj;
+		longest = gb->largeststring(gb->getFirst(), 8);
+		student = gb->getFirst();
+		gbl = NULL;
+	} else {
+		cout << "[Error] Null passed as parameter." << endl;
+		cout << "[*] No subjects will be presented." << endl;
+		islinked = false;
+		gb = NULL;
+		longest = 8;
+		student = NULL;
+		gbl = NULL;
+	}
 }
 
 // for displaying all subjects
 gbtable::gbtable(gradebooklist* glist) {
-	islinked = true;
-	longest = glist->largeststring(glist->getFirst(), 8);
-	gbl = glist;
-	gb = NULL;
+	if (glist != NULL) {
+		islinked = true;
+		longest = glist->largeststring(glist->getFirst(), 8);
+		gbl = glist;
+		gb = NULL;
+	} else {
+		cout << "[Error] Null passed as parameter." << endl;
+		cout << "[*] No subjects will be presented." << endl;
+		islinked = true;
+		longest = 8;
+		gbl = NULL;
+		gb = NULL;
+	}
 }
 
 
 // manual addition of data
 void gbtable::addData(gradebook* subj) {
-	islinked = false;
-	gb = subj;
-	longest = gb->largeststring(gb->getFirst(), 8);
-	student = gb->getFirst();
-	gbl = NULL;
+	if (subj != NULL) {
+		islinked = false;
+		gb = subj;
+		longest = gb->largeststring(gb->getFirst(), 8);
+		student = gb->getFirst();
+		gbl = NULL;
+	} else {
+		islinked = false;
+		gb = subj;
+		longest = 8;
+		student = NULL;
+		gbl = NULL;
+	}
 }
 
 // for displaying all subjects
 void gbtable::addData(gradebooklist* glist) {
-	islinked = true;
-	longest = glist->largeststring(glist->getFirst(), 8);
-	gbl = glist;
-	gb = NULL;
+	if (glist != NULL) {
+		islinked = true;
+		longest = glist->largeststring(glist->getFirst(), 8);
+		gbl = glist;
+		gb = NULL;
+	} else {
+		islinked = true;
+		longest = 0;
+		gbl = NULL;
+		gb = NULL;
+	}
 }
 
 // update data by re-callling the addData function
@@ -120,9 +154,15 @@ string gbtable::strmultiply(string str, int times) {
 // calculates the tables size by retrieving the size of student node/number of subjects
 void gbtable::settbsize() {
 	if (islinked) {
-		tbsize = gbl->listnum();
+		if (gbl != NULL)
+			tbsize = gbl->listnum();
+		else
+			tbsize = 0;
 	} else {
-		tbsize = gb->listnum();
+		if (gbl != NULL)
+			tbsize = gb->listnum();
+		else
+			tbsize = 0;
 	}
 }
 
@@ -132,15 +172,19 @@ void gbtable::displaytable() {
 	this->updateData();
 	this->settbsize();
 	if (islinked) {
-		// storage for the current node
-		gnode* maxdelta = gbl->getFirst();
-
 		// upper border
 		string bup = " -----  -" +  strmultiply("-", longest) + "-";
 
 		cout << bup << endl;
 		cout << "| NO. | SUBJECTS" << strmultiply(" ", longest - 8) << " |" << endl;
 		cout << bup << endl;
+
+		gnode* maxdelta;
+		if (gbl != NULL) {
+			// storage for the current node
+			maxdelta = gbl->getFirst();
+		}
+
 		for (int i = 0; i < tbsize; i++) {
 			// dipshit maths
 			string data = gbl->displaysubject(maxdelta);
@@ -149,18 +193,21 @@ void gbtable::displaytable() {
 		}
 		cout << bup << endl;
 	} else {
-		// storage for the current node
-		studentinfo* koala = student;
+		studentinfo* koala;
+		if (gb != NULL) {
+			// storage for the current node
+			koala = student;
 
-		// display upper messsage
-		gb->message();
-
+			// display upper messsage
+			gb->message();
+		}
 		// upper border design (no. names, grades)
 		string bup = " ----- -" + strmultiply("-", longest) + "- --------";
 
 		cout << bup << endl;
 		cout << "| NO. | NAMES" << strmultiply(" ", longest - 5) << " | GRADES |" << endl;
 		cout << bup << endl;
+
 		for (int i = 0; i < tbsize; i++) {
 			// data that will be used
 			string name = gb->displayname(koala);
