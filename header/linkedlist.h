@@ -143,6 +143,7 @@ void tridata::addData(gradebook* subj, string tname, credential* studdata) {
 
 	// push value:
 	if (first == NULL) {
+		node->prev = NULL;
 		first = node;
 		last  = node;
 	} else {

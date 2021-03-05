@@ -154,15 +154,17 @@ string gbtable::strmultiply(string str, int times) {
 // calculates the tables size by retrieving the size of student node/number of subjects
 void gbtable::settbsize() {
 	if (islinked) {
-		if (gbl != NULL)
+		if (gbl != NULL) {
 			tbsize = gbl->listnum();
-		else
+		} else {
 			tbsize = 0;
+		}
 	} else {
-		if (gbl != NULL)
+		if (gb != NULL) {
 			tbsize = gb->listnum();
-		else
+		} else {
 			tbsize = 0;
+		}
 	}
 }
 
@@ -193,7 +195,8 @@ void gbtable::displaytable() {
 		}
 		cout << bup << endl;
 	} else {
-		studentinfo* koala;
+		studentinfo* koala;			
+		cout << "The table size : " << tbsize << endl;
 		if (gb != NULL) {
 			// storage for the current node
 			koala = student;
@@ -449,7 +452,7 @@ credstable::credstable(credential* obj) {
 
 void credstable::displaytable() {
 	string name;
-	string ub = " -----  -" + strmultiply("-", longest) + "-";
+	string ub = " ----- -" + strmultiply("-", longest) + "-";
 
 	cout << ub << endl;
 	cout << "| NO. | NAME" << strmultiply(" ", longest - 4) << " |" << endl;
