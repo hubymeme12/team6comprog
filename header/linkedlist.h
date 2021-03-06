@@ -203,7 +203,6 @@ void tridata::retrieveTnodes(tridata* storage, string name) {
 		// crawl the node from the first and push the data to storage
 		triad* pseudonode = first;
 
-		cout << "Problem isnt here" << endl;
 		// matches the teacher name
 		while (pseudonode != NULL) {
 			// look for the teacher name
