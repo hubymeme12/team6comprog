@@ -99,6 +99,9 @@ void admin::maininterface() {
 	bool breakme = 1;
 	int choice;
 
+	secret->setDatabase(db);
+	secret->connectDatabase();
+
 	while (breakme) {
 		system(CLEAR);
 		cout << "======================================" << endl;
@@ -292,10 +295,6 @@ void admin::addsubjectinterface() {
 	creds* tchr;
 	string subjname;
 	string teachername;
-
-	// connect the authentication to database and vice versa
-	secret->setDatabase(db);
-	secret->connectDatabase();
 
 	system(CLEAR);
 	cout << "================================" << endl;

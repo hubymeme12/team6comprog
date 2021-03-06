@@ -96,6 +96,7 @@ gradebooklist* auth::loginTeacher(string username, string password) {
 		// retrieve the gradebooklist of teacher
 		string name = teachers->search(fnode, username)->name;
 		cout << "NAME RETRIEVED" << endl;
+
 		return db->retrieveGBTeacher(name);
 	} else {
 		cout << "[-] Invalid Username or Password!" << endl;
