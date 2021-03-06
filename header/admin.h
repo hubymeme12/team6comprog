@@ -115,7 +115,7 @@ void admin::maininterface() {
 		cout << " [7] Delete a subject" << endl;
 		cout << " **UTILITIES**" << endl;
 		cout << " [8] Change admin account" << endl;
-		cout << " [9] Exit" << endl << endl;
+		cout << " [9] Log out" << endl << endl;
 
 		choice = getFucked(": ");
 

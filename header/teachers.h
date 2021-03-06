@@ -44,7 +44,7 @@ void teacher::teacherInterface() {
 		cout << " [1] View subjects" << endl;
 		cout << " [2] View subject details" << endl;
 		cout << " [3] Edit grade" << endl;
-		cout << " [4] Exit" << endl << endl;
+		cout << " [4] Log out" << endl << endl;
 
 		choice = error(": ");
 
@@ -119,9 +119,9 @@ void teacher::editGrade() {
 
 	x = error("Edit grade on student no. : ");
 	y = error("New grade of student : ");
-
-	cout << endl;
 	data->editgrade(x, y);
+
+	system(CLEAR);
 	gbtable ntb(data);
 	ntb.displaytable();
 }

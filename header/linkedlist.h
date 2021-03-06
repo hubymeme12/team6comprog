@@ -578,6 +578,10 @@ string gradebooklist::displaysubject(gnode* node) const {
 }
 
 gradebook* gradebooklist::access(int index) const {
+	if (index == 0) {
+		return NULL;
+	}
+
 	if (index > linksize) {
 		cout << "[!] Error, size exceeded!" << endl;
 		return NULL;
