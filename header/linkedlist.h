@@ -228,6 +228,8 @@ void tridata::retrieveSnodes(tridata* storage, string name) {
 			if(pseudonode->students->searchname(pseudonode->students->getFirst(), name) != NULL) {
 				storage->addData(pseudonode->subject, pseudonode->teacher, pseudonode->students);
 			}
+			// increment pseudonode
+			pseudonode = pseudonode->next;
 		}
 	}
 }

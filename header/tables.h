@@ -12,8 +12,8 @@ using namespace std;
 //////////////////////////////////
 // 	GLOBAL UTILITIES	//
 //////////////////////////////////
-class gutilities {
-	friend string strmultiply(string str, int howmany) {
+struct gutilities {
+	string strmultiply(string str, int howmany) {
 		string returnme = "";
 		for (int i = 0; i < howmany; i++)
 			returnme += str;
@@ -195,8 +195,7 @@ void gbtable::displaytable() {
 		}
 		cout << bup << endl;
 	} else {
-		studentinfo* koala;			
-		cout << "The table size : " << tbsize << endl;
+		studentinfo* koala;
 		if (gb != NULL) {
 			// storage for the current node
 			koala = student;
@@ -478,4 +477,67 @@ string credstable::strmultiply(string str, int size) {
 //////////////////
 //	END	//
 //////////////////
+
+//////////////////////////////////
+//	STUDENT GRADES		//
+//////////////////////////////////
+class gradestbl : public gutilities {
+	private:
+		gradebooklist* gblist;
+		string name;
+		int longest;
+		int sz;
+	public:
+		gradestbl(gradebooklist*, string);		// use this gradebooklist for displaying table
+		void displaytable();
+};
+
+//////////////////////////
+//	definition	//
+//////////////////////////
+gradestbl::gradestbl(gradebooklist* lst, string sname) {
+	name = sname;
+	if (lst == NULL) {
+		longest = 8;
+		sz = 0;
+	} else {
+		gblist = lst;
+		longest = gblist->largeststring(gblist->getFirst(), 8);
+		sz = gblist->listnum();
+	}
+}
+
+void gradestbl::displaytable() {
+	// upper border calculations
+	string ub = " -" + strmultiply("-", longest) + "- --------";
+
+	// array for name and grade
+	string* subname = new string[sz];
+	float* grade = new float[sz];
+
+	// data retrieval
+	gnode* gnd = gblist->getFirst();
+	gradebook* curgb;
+	studentinfo* data;
+
+	for (int i = 0; i < sz; i++) {
+		curgb = gnd->value;
+		data = curgb->searchname(curgb->getFirst(), name);
+		subname[i] = curgb->getcourseName();
+		grade[i] = data->grade;
+
+		// increment node
+		gnd = gnd->next;
+	}
+
+	// table display
+	cout << "STUDENT NAME : " << name << endl;
+	cout << ub << endl;
+	cout << "| SUBJECTS " << strmultiply(" ", longest - 8) << "| GRADES |" << endl;
+	cout << ub << endl;
+	for (int i = 0; i < sz; i++) {
+		cout << "| " << subname[i] << strmultiply(" ", longest - subname[i].size()) << " | " << fixed << setprecision(2) << grade[i] << "   |" << endl;
+	}
+	cout << ub << endl;
+}
 #endif

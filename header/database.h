@@ -118,6 +118,27 @@ gradebooklist* database::retrieveGBTeacher(string teachername) {
 	return retrieved;
 }
 
+// retrieves the subjects for this student
+// ill be using username here to use less process
+gradebooklist* database::retrieveGBStudent(string studentname) {
+	// tridata object where retrieved triads will be stored
+	tridata* store = new tridata;
+	gradebooklist* gblist = new gradebooklist;
+	triad* fnode;
+
+	// retrieval
+	db_table.retrieveSnodes(store, studentname);
+	fnode = store->getFirst();
+
+	// recover and store to gradebook
+	while (fnode != NULL) {
+		gblist->pushBack(fnode->subject);
+		fnode = fnode->next;
+	}
+
+	return gblist;
+}
+
 credential* database::returnpseudonode() { return pseudostudent; }
 credential* database::addednode() { return addme; }
 tridata* database::retrievedata() { return &db_table; }
