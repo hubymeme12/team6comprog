@@ -101,6 +101,7 @@ void teacher::editGrade() {
 	system(CLEAR);
 	int x;
 	float y;
+	bool anji = 1;
 	cout << "=====================================" << endl;
 	cout << "             EDIT GRADES" << endl;
 	cout << "=====================================" << endl;
@@ -113,17 +114,22 @@ void teacher::editGrade() {
 	gradebook* data;
 	data = glist->access(x);
 
-	system(CLEAR);
-	gbtable tbl(data);
-	tbl.displaytable();
+	while (anji) {
+		system(CLEAR);
+		cout << "[NOTE] You can exit by entering \'0\'" << endl;
+		gbtable tbl(data);
+		tbl.displaytable();
 
-	x = error("Edit grade on student no. : ");
-	y = error("New grade of student : ");
-	data->editgrade(x, y);
+		x = error("Edit grade on student no. : ");
+		if (x == 0) { break; }
+		y = error("New grade of student : ");
 
-	system(CLEAR);
-	gbtable ntb(data);
-	ntb.displaytable();
+		data->editgrade(x, y);
+
+		system(CLEAR);
+		gbtable ntb(data);
+		ntb.displaytable();
+	}
 }
 
 float teacher::error(string shite) {
