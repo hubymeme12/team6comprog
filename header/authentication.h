@@ -74,9 +74,21 @@ void auth::addStudentAccount(string username, string name, string password) {
 
 void auth::delStudentAccount(string username) {
 	students->remove(students->getFirst(), username);
+	// do the same bullcrap here. But nahh.. not in mood to code
 }
 
 void auth::delStudentAccount(int index) {
+	creds* node = students->getNode(index);
+	// retrieve the subjects where the student is registered
+	gradebooklist* retrieved = db->retrieveGBStudent(node->name);
+	gnode* crawlme = retrieved->getFirst();
+
+	while (crawlme != NULL) {
+		// get the gradebook and delete the student data
+		crawlme->value->deletedata(node->name);
+		crawlme = crawlme->next;
+	}
+	// delete this node
 	students->remove(index);
 }
 

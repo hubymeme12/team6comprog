@@ -20,7 +20,7 @@ class database {
 
 		// data retrieval
 		gradebooklist* retrieveGBTeacher(string teachername);		// retrieves gradebooks with matched teachername
-		gradebooklist* retrieveGBStudent(string username);		// retrieves gradebooks with matched student username??
+		gradebooklist* retrieveGBStudent(string studname);		// retrieves gradebooks with matched student username??
 		credential* returnpseudonode();					// returns the pseudonode (for table)
 		credential* addednode();					// returns all selected node
 		tridata* retrievedata();

@@ -116,10 +116,9 @@ void admin::maininterface() {
 		cout << " [5] Display all accounts" << endl;
 		cout << " **SUBJECTS**" << endl;
 		cout << " [6] Add new subject" << endl;
-		cout << " [7] Delete a subject" << endl;
 		cout << " **UTILITIES**" << endl;
-		cout << " [8] Change admin account" << endl;
-		cout << " [9] Log out" << endl << endl;
+		cout << " [7] Change admin account" << endl;
+		cout << " [8] Log out" << endl << endl;
 
 		choice = getFucked(": ");
 
@@ -142,10 +141,10 @@ void admin::maininterface() {
 			case 6:
 				addsubjectinterface();
 				break;
-			case 8:
+			case 7:
 				changeaccinterface();
 				break;
-			case 9:
+			case 8:
 				breakme = 0;
 				break;
 			default:
@@ -238,7 +237,7 @@ void admin::delstudentinterface() {
 
 	// delete this teacher's account
 	secret->delStudentAccount(index);
-	cout << "[+] Account number " << index << " deleted!" << endl;
+	cout << "[+] Account no. " << index << " deleted!" << endl;
 	system(PAUSE);
 }
 
