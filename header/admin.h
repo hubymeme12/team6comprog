@@ -4,6 +4,7 @@
 #include <iostream>
 #include "authentication.h"
 #include "database.h"
+#include "tables.h"
 using namespace std;
 
 #if defined(_WIN32)

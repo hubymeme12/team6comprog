@@ -1,13 +1,11 @@
 #include <iostream>
 using namespace std;
 
-#include "header/linkedlist.h"
-#include "header/gradebook.h"
 #include "header/database.h"
 #include "header/authentication.h"
-#include "header/tables.h"
 #include "header/admin.h"
 #include "header/teachers.h"
+#include "header/students.h"
 
 #if defined(_WIN32)
 	#define CLEAR "cls"
@@ -119,6 +117,14 @@ void Slogin() {
 	getline(cin >> ws, passw);
 
 	// login these input credentials
-	authentication->loginStudent(user, passw);
-	system(PAUSE);
+	string studentname;
+	gradebooklist* retrievedgb = authentication->loginStudent(user, passw, studentname);
+	if (retrievedgb != NULL) {
+		system(CLEAR);
+		student stud(retrievedgb, studentname);
+		stud.maininterface();
+		system(PAUSE);
+	} else {
+		system(PAUSE);
+	}
 }

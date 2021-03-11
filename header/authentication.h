@@ -26,7 +26,7 @@ class auth {
 
 		// credentials validation
 		gradebooklist* loginTeacher(string, string);		// teacherDatatype
-		gradebooklist* loginStudent(string, string);		// studentDatatype
+		gradebooklist* loginStudent(string, string, string&);		// studentDatatype
 
 		// debug
 		database* retrieveDB();
@@ -102,13 +102,14 @@ gradebooklist* auth::loginTeacher(string username, string password) {
 	}
 }
 
-gradebooklist* auth::loginStudent(string username, string password) {
+gradebooklist* auth::loginStudent(string username, string password, string &stname) {
 	creds* fnode = students->getFirst();
 	if (students->matchData(fnode, username, password)) {
 		cout << "[+] Logged In!!" << endl;
 
 		// retrieve the student name
 		string name = students->search(fnode, username)->name;
+		stname = name;
 		return db->retrieveGBStudent(name);
 	} else {
 		cout << "[-] Invalid Username or Password!" << endl;
