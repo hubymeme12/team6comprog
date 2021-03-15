@@ -17,6 +17,7 @@ class database {
 
 		// add data
 		void pushdata(gradebook*, string, credential*);			// push these data to tridata
+		void deletedata(string tname);
 
 		// data retrieval
 		gradebooklist* retrieveGBTeacher(string teachername);		// retrieves gradebooks with matched teachername
@@ -93,6 +94,11 @@ void database::addnode(gradebook* gb, int index) {
 // pushes data to tridata
 void database::pushdata(gradebook* gb, string teachername, credential* stud) {
 	db_table.addData(gb, teachername, stud);
+}
+
+// deletes data on tridata
+void database::deletedata(string tname) {
+	db_table.removeSubject(tname);
 }
 
 // retrieves the subjects for this teacher

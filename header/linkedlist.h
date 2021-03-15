@@ -39,6 +39,7 @@ class gradebooklist {
 		void remove(gnode*, gradebook*);		// removes this gradebook address from the list
 		void countMatchedData(gnode*, string);	// counts how many name has matched on the gradebook list (stored in arrsize)
 		bool matchData(gnode*, string);		// returns true if the gradebook has matched student id
+
 		string displaysubject(gnode*) const;			// display subject of the node
 		gradebook* access(int) const;				// access the nth gradebook
 
@@ -154,6 +155,50 @@ void tridata::addData(gradebook* subj, string tname, credential* studdata) {
 
 	// increment size
 	linksize += 1;
+}
+
+// removes subject using teacher name
+void tridata::removeSubject(string tname) {
+	// retrieve first node
+	triad* node = first;
+
+	// look for teacher name
+	// re-route node
+	while (node != NULL) {
+		// check teacher name
+		if (node->teacher == tname) {
+			// look if this node is the only one
+			// delete node
+			if (linksize == 1) {
+				delete node->subject;
+				delete node->students;
+				first = NULL;
+				last  = NULL;
+				break;
+			} else if (node == first) {
+				delete first->subject;
+				delete first->students;
+				first = first->next;
+				first->prev = NULL;
+			} else if (node == last) {
+				delete last->subject;
+				delete last->students;
+				last = last->prev;
+				last->next = NULL;
+			} else {
+				delete node->subject;
+				delete node->students;
+				node->prev->next = node->next;
+				node->next->prev = node->prev;
+			}
+
+			// decrement the size
+			--linksize;
+		}
+
+		// increment
+		node = node->next;
+	}
 }
 
 // returns first node

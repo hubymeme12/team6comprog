@@ -93,10 +93,24 @@ void auth::delStudentAccount(int index) {
 }
 
 void auth::delTeacherAccount(string username) {
+	// retrieve the teacher's name
+	string name = teachers->getFirst()->name;
+
+	// remove subject:
+	db->deletedata(name);
+
+	// remove credential
 	teachers->remove(teachers->getFirst(), username);
 }
 
 void auth::delTeacherAccount(int index) {
+	// retrieve the teacher's name
+	string name = teachers->getFirst()->name;
+
+	// remove subject:
+	db->deletedata(name);
+
+	// remove credential
 	teachers->remove(index);
 }
 
