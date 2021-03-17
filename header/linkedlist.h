@@ -15,6 +15,13 @@ struct gnode {
 
 	gnode* next;
 	gnode* prev;
+	
+	// added default constructor for bugs in dev C++ (fucking compilers)
+	gnode() {
+		next = NULL;
+		prev = NULL;
+		value = NULL;
+	}
 };
 
 struct creds {
@@ -24,6 +31,12 @@ struct creds {
 
 	creds* next;
 	creds* prev;
+	
+	// added default constructor for bugs in dev C++ (fucking compilers)
+	creds() {
+		next = NULL;
+		prev = NULL;
+	}
 };
 
 
@@ -98,6 +111,14 @@ struct triad {
 
 	triad* next;
 	triad* prev;
+	
+	// for the fucking compiler... weack windows
+	triad() {
+		next = NULL;
+		prev = NULL;
+		subject = NULL;
+		students = NULL;
+	}
 };
 
 class tridata {
