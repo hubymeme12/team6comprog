@@ -25,21 +25,24 @@ class database {
 		credential* returnpseudonode();					// returns the pseudonode (for table)
 		credential* addednode();					// returns all selected node
 		tridata* retrievedata();
-		char* getbuffer();
+		char* getbuffer();						// get the data with followd format for file binary writing
+		int getbuffersize() const;				// returns the size of buffer
 	private:
 		tridata db_table;
 		credential* student;
 		credential* teacher;
 		credential* pseudostudent;
 		credential* addme;
+		
+		int buffersize;
 };
 
 // additional function for encryption
-string xorEnc(string password) {
+char* xorEnc(string password) {
 	char simple[] = "THISISAKEY";
 	char* returnme = new char[password.size()];
 
-	for (int i = 0; i < password.size(); i++) {
+	for (int i = 0; i < password.size() + 1; i++) {
 		returnme[i] = password[i] ^ simple[i % 10];
 	}
 
@@ -237,7 +240,13 @@ char* database::getbuffer() {
 		buffer[i] = data[i];
 	}
 
+	// assign size of buffer
+	buffersize = size;
 	return buffer;
+}
+
+int database::getbuffersize() const {
+	return buffersize;
 }
 
 //////////////////////////

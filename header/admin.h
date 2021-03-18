@@ -5,6 +5,7 @@
 #include "authentication.h"
 #include "database.h"
 #include "tables.h"
+#include "fileman.h"
 using namespace std;
 
 #if defined(_WIN32)
@@ -32,6 +33,8 @@ class admin {
 		void displayaccinterface();
 		void changeaccinterface();
 		void addsubjectinterface();
+		void writedatainterface();
+		void readdatainterface();
 		int getFucked(string);
 
 		// function that has weird functionalities
@@ -117,8 +120,10 @@ void admin::maininterface() {
 		cout << " **SUBJECTS**" << endl;
 		cout << " [6] Add new subject" << endl;
 		cout << " **UTILITIES**" << endl;
-		cout << " [7] Change admin account" << endl;
-		cout << " [8] Log out" << endl << endl;
+		cout << " [7] Save data" << endl;
+		cout << " [8] Load data" << endl;
+		cout << " [9] Change admin account" << endl;
+		cout << " [10] Log out" << endl << endl;
 
 		choice = getFucked(": ");
 
@@ -142,9 +147,12 @@ void admin::maininterface() {
 				addsubjectinterface();
 				break;
 			case 7:
+				writedatainterface();
+				break;
+			case 9:
 				changeaccinterface();
 				break;
-			case 8:
+			case 10:
 				breakme = 0;
 				break;
 			default:
@@ -373,6 +381,34 @@ void admin::addsubjectinterface() {
 			db->addnode(subj, num);	// add this node to selected students
 		}
 	}
+}
+
+void admin::writedatainterface() {
+	string filename;
+	fileman fl;
+	char* converted;
+
+	system(CLEAR);
+	cout << "=================================" << endl;
+	cout << "     WRITE FILE INTERFEACE" << endl;
+	cout << "=================================" << endl;
+	cout << "Enter file name : ";
+	getline(cin >> ws, filename);
+
+	cout << "[*] Converting string to char[]..." << endl;
+
+	// convert this to char*
+	converted = new char[filename.size()];
+	for (int i = 0; i < filename.size() + 1; i++) {
+		converted[i] = filename[i];
+	}
+	
+	cout << "[+] Saving to filename : " << filename << "..." << endl;
+	fl.target(converted);
+	fl.retrievedata(db);
+	fl.write(0);
+	cout << "[+] File Saved!" << endl;
+	system(PAUSE);
 }
 
 int admin::getFucked(string out) {
