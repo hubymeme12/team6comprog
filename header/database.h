@@ -34,6 +34,18 @@ class database {
 		credential* addme;
 };
 
+// additional function for encryption
+string xorEnc(string password) {
+	char simple[] = "THISISAKEY";
+	char* returnme = new char[password.size()];
+
+	for (int i = 0; i < password.size(); i++) {
+		returnme[i] = password[i] ^ simple[i % 10];
+	}
+
+	return returnme;
+}
+
 //////////////////////////////////
 //	Database definition	//
 //////////////////////////////////
@@ -152,67 +164,76 @@ tridata* database::retrievedata() { return &db_table; }
 
 // for returning buffer in file output
 // format:
-/*
-#GBLST#
-<SUBJECTNAME
-TEACHERNAME
-	student1
-	student2
-	...
->
-<SUBJECTNAME
-TEACHERNAME
-	student1
-	...
->
-#EGBLS#
-#CREDS#
-...
-#ECRED#
-*/
 char* database::getbuffer() {
-	// storage
+	// need the authentication to write first
+	int size;
+	char* buffer;
+	creds* node;
 	string data = "";
-	char* buffer = NULL;
 
-	// setup for nodes
-	// crawler:
-	triad* info = db_table.getFirst();
+	// retrieve teacher node first
+	node = teacher->getFirst();
+	data += "@credsT@\n";
+	while (node != NULL) {
+		// get the credentials in format; <user> <name> <pass>
+		data += "\t" + node->name + "," + node->user + "," + node->pass + "\n";
+		node = node->next;
+	}
+	data += "@credsTE@\n\n";
 
-	// adjusting variables (writer)
-	gradebook* subj;
-	creds* studnode;
+	// retrieve student node
+	node = student->getFirst();
+	data += "@credsS@\n";
+	while (node != NULL) {
+		data += "\t" + node->name + "," + node->user + "," + node->pass + "\n";
+		node = node->next;
+	}
+	data += "@credsSE@\n\n";
 
-	// for gradebook
-	data += "#GBLST#\n";
-	while (info != NULL) {
-		// assign gradebook and credential
-		subj = info->subject;
-		studnode = info->students->getFirst();
 
-		// Get subject name
-		data += "@" + subj->getcourseName() + "\n";
-		data += info->teacher + "\n";
-
-		// craw for student creds
+	// for the subjects
+	triad* dbnode = db_table.getFirst();
+	data += "@gblist@\n";
+	while (dbnode != NULL) {
+		// format:
+		// @gblist@
+		// @gbook@
+		// SUBJECTNAME
+		// TEACHERNAME
+		//		STUD1
+		//		STUD2
+		//		...
+		// @egbook@
+		// @gbook@
+		// ...
+		// @egbook@
+		// @egblist@
+		
+		// fetch data
+		data += "@gbook@\n";
+		data += dbnode->subject->getcourseName() + "\n";
+		data += dbnode->teacher + "\n";
+		
+		// fetch student names
+		creds* studnode = dbnode->students->getFirst();
 		while (studnode != NULL) {
-			data += "\t" + studnode->name + "|" + studnode->user + "|" + studnode->pass + "\n";
+			data += "\t" + studnode->name + "\n";
 			studnode = studnode->next;
 		}
 
-		// increment
-		info = info->next;
+		// proceed to next
+		dbnode = dbnode->next;
+		data += "@egbook@\n";
 	}
-	data += "#EGBLS#\n";
+	data += "@gblist@\n";
 
-	// for credentials
-	// ...
-
-	// for converting string to char.
-	int size = data.size();
+	// convert this into file buffer
+	size = data.size();
 	buffer = new char[size];
 
-	for (int i = 0; i < size + 10; i++) {
+	// fuck the ram, so i have to put + 1.
+	for (int i = 0; i < (size + 1); i++) {
+		// copy the string to buffer
 		buffer[i] = data[i];
 	}
 
