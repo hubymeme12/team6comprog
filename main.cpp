@@ -4,6 +4,7 @@ using namespace std;
 #include "header/database.h"
 #include "header/authentication.h"
 #include "header/admin.h"
+#include "header/fileman.h"
 #include "header/teachers.h"
 #include "header/students.h"
 

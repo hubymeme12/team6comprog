@@ -251,6 +251,12 @@ void admin::displayaccinterface() {
 
 	// display student credentials table
 	tstable.displaystudents();
+
+	// try the parser
+	char* fileo = db->getbuffer();
+	cout << "Sample file buffer : " << endl;
+	cout << fileo << endl;
+
 	system(PAUSE);
 }
 

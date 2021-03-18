@@ -25,6 +25,7 @@ class database {
 		credential* returnpseudonode();					// returns the pseudonode (for table)
 		credential* addednode();					// returns all selected node
 		tridata* retrievedata();
+		char* getbuffer();
 	private:
 		tridata db_table;
 		credential* student;
@@ -148,6 +149,76 @@ gradebooklist* database::retrieveGBStudent(string studentname) {
 credential* database::returnpseudonode() { return pseudostudent; }
 credential* database::addednode() { return addme; }
 tridata* database::retrievedata() { return &db_table; }
+
+// for returning buffer in file output
+// format:
+/*
+#GBLST#
+<SUBJECTNAME
+TEACHERNAME
+	student1
+	student2
+	...
+>
+<SUBJECTNAME
+TEACHERNAME
+	student1
+	...
+>
+#EGBLS#
+#CREDS#
+...
+#ECRED#
+*/
+char* database::getbuffer() {
+	// storage
+	string data = "";
+	char* buffer = NULL;
+
+	// setup for nodes
+	// crawler:
+	triad* info = db_table.getFirst();
+
+	// adjusting variables (writer)
+	gradebook* subj;
+	creds* studnode;
+
+	// for gradebook
+	data += "#GBLST#\n";
+	while (info != NULL) {
+		// assign gradebook and credential
+		subj = info->subject;
+		studnode = info->students->getFirst();
+
+		// Get subject name
+		data += "@" + subj->getcourseName() + "\n";
+		data += info->teacher + "\n";
+
+		// craw for student creds
+		while (studnode != NULL) {
+			data += "\t" + studnode->name + "|" + studnode->user + "|" + studnode->pass + "\n";
+			studnode = studnode->next;
+		}
+
+		// increment
+		info = info->next;
+	}
+	data += "#EGBLS#\n";
+
+	// for credentials
+	// ...
+
+	// for converting string to char.
+	int size = data.size();
+	buffer = new char[size];
+
+	for (int i = 0; i < size + 10; i++) {
+		buffer[i] = data[i];
+	}
+
+	return buffer;
+}
+
 //////////////////////////
 // 	E N D 		//
 //////////////////////////

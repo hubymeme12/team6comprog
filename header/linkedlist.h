@@ -15,7 +15,7 @@ struct gnode {
 
 	gnode* next;
 	gnode* prev;
-	
+
 	// added default constructor for bugs in dev C++ (fucking compilers)
 	gnode() {
 		next = NULL;
@@ -31,7 +31,7 @@ struct creds {
 
 	creds* next;
 	creds* prev;
-	
+
 	// added default constructor for bugs in dev C++ (fucking compilers)
 	creds() {
 		next = NULL;
@@ -111,7 +111,7 @@ struct triad {
 
 	triad* next;
 	triad* prev;
-	
+
 	// for the fucking compiler... weack windows
 	triad() {
 		next = NULL;
@@ -707,4 +707,5 @@ int gradebooklist::largeststring(gnode* fnode, int largest = 0) {
 int gradebooklist::numberMatch() {
 	return arrsize;
 }
+
 #endif

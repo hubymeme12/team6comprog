@@ -1,99 +1,37 @@
-#ifndef FILEMAN_H
-#define FILEMAN_H
-
 #include <fstream>
-#include <iostream>
-using namespace std;
+#include "database.h"
 
-// admin contains database and authentication
-// which are needed objects in this header file
-// admin contains all the data needed
-// so writing the bytes of admin is the easiest move we can do
-#include "admin.h"
-
+// pass this header to admin for writing file
+// writing file and file interpretation
+// since we are using linked list as database
+// we need to manually write the data
 class fileman {
 	private:
-		admin* data;
+		// file buffer and filename
+		char* buffer;
+		char* fname;
 	public:
+		// constructor for preparation of filename
 		fileman();
-		fileman(admin*);
+		fileman(char*);
 
-		// addition of data
-		void addData(admin*);
-		
-		// writing data
-		// using parameter as name or by default, using "binary.dat"
-		void save(char*);
-		void save();
+		// some process setup
+		void target(char*);
 
-		// reading data and store to first param
-		void read(admin*, char*);
-		void read(admin&, char*);
+		// read data
+		char* read();
+		void write();
 
-		// look through information
-		// look for numbers of teachers
-		// numbers of students
-		// numbers of subjects
+		// append the data to current file
+		void append();
 };
 
-// definition of fileman object
-fileman::fileman() {
-	data = NULL;
-}
+// use gradebook and pass to gradebook list
+// string buffer finder is a must
+class gbparser : public fileman {
 
-// use this param as the data to be saved
-fileman::fileman(admin* obj) {
-	data = obj;
-}
+};
 
-// manual addition of data
-void fileman::addData(admin* obj) {
-	data = obj;
-}
-
-// saving file with file name
-void fileman::save(char* fname) {
-	ofstream ofile(fname, ios::out | ios::binary);
-	
-	// writing file
-	ofile.write((char*)(&data), sizeof(data));
-	
-	// closing file
-	ofile.close();
-}
-
-// saving file by default
-void fileman::save() {
-	ofstream ofile("binary.dat", ios::out | ios::binary);
-
-	// writing file
-	ofile.write((char*)(&data), sizeof(data));
-
-	// closing file
-	ofile.close();
-}
-
-// reading file
-void fileman::read(admin* passme, char* name) {
-	ifstream infile(name, ios::in | ios::binary);
-
-	// variables needed
-	int size;
-	char* handler;
-
-	// calculates the size of binary
-	infile.seekg(0, infile.end);
-	size = infile.tellg();
-	infile.seekg(0, infile.beg);
-
-	// allocate array for binary of this file
-	handler = new char[size];
-	
-	// read the data
-	infile.read(handler, size);
-	
-	// pass the data
-	passme = (admin*)handler;
-}
-
-#endif
+//
+class authparser : public fileman {
+};
