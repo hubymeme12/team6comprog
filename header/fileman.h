@@ -10,7 +10,7 @@
 // since we are using linked list as database
 // we need to manually write the data
 class fileman {
-	private:
+	protected:
 		// file buffer and filename
 		char* buffer;
 		char* fname;
@@ -21,7 +21,7 @@ class fileman {
 		fileman(char*);
 
 		// some process setup
-		void target(char*);
+		void target(char*);							// setups target file
 		void retrievedata(database*);				// retrieves data from the database
 
 		// bool : flag for encrypted or not
@@ -37,6 +37,16 @@ class gbparser : public fileman {
 
 // parse authentication and pass to values
 class authparser : public fileman {
+	private:
+		auth* accounts;
+	public:
+		// constructor
+		authparser();
+		authparser(char*, auth*);
+
+		// utilities
+		void addauth(auth*);		// add target auth object to fill in values
+		void fillauth(bool);			// push in account values in auth object
 };
 
 
@@ -69,7 +79,7 @@ char* fileman::read(bool encrypted) {
 
 	// get size
 	filesize = reader.tellg();
-	
+
 	// allocate buffer
 	buffer = new char[filesize];
 
@@ -90,9 +100,160 @@ char* fileman::read(bool encrypted) {
 // writing file bytes
 void fileman::write(bool encrypted) {
 	ofstream writer(fname, ios::binary);
-	writer.write(buffer, filesize);
+	
+	if (encrypted)
+		writer.write(xorEnc(buffer), filesize);
+	else
+		writer.write(buffer, filesize);
 }
 //////////////////////////////////
 //	END OF FILEMAN DEFINITION	//
 //////////////////////////////////
+
+//////////////////////////////
+//	AUTH PARSER DEFINITION	//
+//////////////////////////////
+authparser::authparser() {
+	// initialize file manager values
+	fileman();
+
+	// initialize local variables values
+	accounts = NULL;
+}
+
+authparser::authparser(char* fname, auth* authaddress): fileman(fname) {
+	accounts = authaddress;
+}
+
+// add target authentication object
+void authparser::addauth(auth* target) {
+	accounts = target;
+}
+
+// parse file bytes by reading values
+// need to confirm if the file is encrypted first
+void authparser::fillauth(bool enc) {
+	// confirmation for filename
+	if (fname == NULL) {
+		cout << "[Error] No filename added!" << endl;
+	} else if (accounts == NULL) {
+		cout << "[Error] Setup auth object properly!" << endl;
+	} else {
+		// read filename bytes
+		// and store it to its local variable
+		// returning to nowhere
+		buffer = read(enc);
+		cout << "File size : " << filesize << endl;
+		cout << "Buffer : \n" << buffer << endl;
+		char flag[] = "@credsT@";
+		char flagend[] = "@credTE@";
+
+		int index = 0;
+		// walk through buffer until we find @credsT@
+		for (int i = 0; i < filesize - 8; i++) {
+			if (flag[0] == buffer[i] &&
+				flag[1] == buffer[i + 1] &&
+				flag[2] == buffer[i + 2] &&
+				flag[3] == buffer[i + 3] &&
+				flag[4] == buffer[i + 4] &&
+				flag[5] == buffer[i + 5] &&
+				flag[6] == buffer[i + 6] &&
+				flag[7] == buffer[i + 7]) {
+
+				cout << "MATCHEDD!!!" << endl;
+				// get the accounts of teachers here
+				// skip the current buffers
+				i += 8;
+
+				// 	loop for getting account and checking status
+				while (buffer[i] == '\n') {
+					// neglect the new spaces
+					++i;
+				}
+			} else if (flag[0] = buffer[i] &&
+				flagend[1] == buffer[i + 1] &&
+				flagend[2] == buffer[i + 2] &&
+				flagend[3] == buffer[i + 3] &&
+				flagend[4] == buffer[i + 4] &&
+				flagend[5] == buffer[i + 5] &&
+				flagend[6] == buffer[i + 6] &&
+				flagend[7] == buffer[i + 7]) {
+
+				// end of the fucking bitch ass checking
+				// of teacher accounts
+				break;
+			} else {
+				// check for tab:
+				// <tab><name>,<username>,<password><newline>
+				if (buffer[i] == '\t') {
+					// the next shits are credentials
+					// so next buffer will be compared
+					++i;
+					
+					// store username, name, password here
+					// so cursed (yeah bitch, initialize this dumb shit)
+					char name[100] = {'\0'};
+					char uname[100] = {'\0'};
+					char pass[100] = {'\0'};
+					int infind = 0;
+
+					// get name
+					while (buffer[i] != ',') {
+						name[infind] = buffer[i];
+						++i;
+						++infind;
+					} cout << "Name : " << name << endl;
+
+					// reset this shit
+					infind = 0;
+
+					// next of comma
+					++i;
+
+					// filter the junk shit
+					while (buffer[i] == '\n') {
+						// skip this mf
+						++i;
+					}
+
+					// get username
+					while (buffer[i] != ',') {
+						uname[infind] = buffer[i];
+						++i;
+						++infind;
+					} cout << "Username : " << uname << endl;
+
+					// reset this shit
+					infind = 0;
+
+					// next of comma
+					++i;
+
+					// filter the junk shit
+					while (buffer[i] == '\n') {
+						// skip this mf
+						++i;
+					}
+
+					// get password
+					while (buffer[i] != ',') {
+						pass[infind] = buffer[i];
+						++i;
+						++infind;
+					} cout << "Password : " << pass << endl;
+					// yeah, next of comma again
+					++i;
+				} else {
+					// filter out trash
+					while (buffer[i] == ' ' || buffer[i] == '\n') {
+						++i;
+					}
+
+					// this is hilarious, for loop almost done nothing
+					// jk, for loop is the real madlad here
+				}
+			}
+		}
+	}
+}
 #endif

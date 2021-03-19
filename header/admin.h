@@ -149,6 +149,9 @@ void admin::maininterface() {
 			case 7:
 				writedatainterface();
 				break;
+			case 8:
+				readdatainterface();
+				break;
 			case 9:
 				changeaccinterface();
 				break;
@@ -387,6 +390,7 @@ void admin::writedatainterface() {
 	string filename;
 	fileman fl;
 	char* converted;
+	char choice;
 
 	system(CLEAR);
 	cout << "=================================" << endl;
@@ -394,6 +398,8 @@ void admin::writedatainterface() {
 	cout << "=================================" << endl;
 	cout << "Enter file name : ";
 	getline(cin >> ws, filename);
+	cout << "Encrypt file? y/n : ";
+	cin >> choice;
 
 	cout << "[*] Converting string to char[]..." << endl;
 
@@ -406,8 +412,29 @@ void admin::writedatainterface() {
 	cout << "[+] Saving to filename : " << filename << "..." << endl;
 	fl.target(converted);
 	fl.retrievedata(db);
-	fl.write(0);
+	fl.write((choice == 'y'));
 	cout << "[+] File Saved!" << endl;
+	system(PAUSE);
+}
+
+void admin::readdatainterface() {
+	string fname;
+
+	system(CLEAR);
+	cout << "===========================" << endl;
+	cout << "        FILE LOADING" << endl;
+	cout << "===========================" << endl;
+	cout << "Enter file name : ";
+	getline(cin >> ws, fname);
+	
+	// convert to char[]
+	char* nfnam = new char[fname.size()];
+	for (int i = 0; i < fname.size() + 1; i++) {
+		nfnam[i] = fname[i];
+	}
+
+	authparser aparser(nfnam, secret);
+	aparser.fillauth(0);
 	system(PAUSE);
 }
 

@@ -182,7 +182,7 @@ char* database::getbuffer() {
 		data += "\t" + node->name + "," + node->user + "," + node->pass + "\n";
 		node = node->next;
 	}
-	data += "@credsTE@\n\n";
+	data += "@credTE@\n\n";
 
 	// retrieve student node
 	node = student->getFirst();
