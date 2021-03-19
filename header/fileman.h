@@ -160,16 +160,12 @@ void authparser::fillauth(bool enc) {
 				flag[6] == buffer[i + 6] &&
 				flag[7] == buffer[i + 7]) {
 
-				cout << "MATCHEDD!!!" << endl;
+				// cout << "MATCHEDD!!!" << endl;
 				// get the accounts of teachers here
 				// skip the current buffers
 				i += 8;
+				// cout << "Buffer after match : " << buffer[i] << " Fonr" << endl;
 
-				// 	loop for getting account and checking status
-				while (buffer[i] == '\n') {
-					// neglect the new spaces
-					++i;
-				}
 			} else if (flag[0] = buffer[i] &&
 				flagend[1] == buffer[i + 1] &&
 				flagend[2] == buffer[i + 2] &&
@@ -181,77 +177,45 @@ void authparser::fillauth(bool enc) {
 
 				// end of the fucking bitch ass checking
 				// of teacher accounts
+				// cout << "END MATCHED!!!" << endl;
 				break;
-			} else {
-				// check for tab:
-				// <tab><name>,<username>,<password><newline>
-				if (buffer[i] == '\t') {
-					// the next shits are credentials
-					// so next buffer will be compared
+			} else if (buffer[i] == '\t'){
+				// for the next character
+				++i;
+
+				// yeah damn it, crawl and find the commas bitch
+				char uname[100] = {'\0'};
+				char name[100] = {'\0'};
+				char pass[100] = {'\0'};
+				int indx = 0;
+
+				// name retrieval
+				while (buffer[i] != ',') {
+					name[indx] = buffer[i];
+					++indx;
 					++i;
-					
-					// store username, name, password here
-					// so cursed (yeah bitch, initialize this dumb shit)
-					char name[100] = {'\0'};
-					char uname[100] = {'\0'};
-					char pass[100] = {'\0'};
-					int infind = 0;
+				} cout << "Name : " << name << endl;
+				++i;
+				indx = 0;
 
-					// get name
-					while (buffer[i] != ',') {
-						name[infind] = buffer[i];
-						++i;
-						++infind;
-					} cout << "Name : " << name << endl;
-
-					// reset this shit
-					infind = 0;
-
-					// next of comma
+				// username retrieval
+				while (buffer[i] != ',') {
+					uname[indx] = buffer[i];
+					++indx;
 					++i;
+				} cout << "Username : " << uname << endl;
+				++i;
+				indx = 0;
 
-					// filter the junk shit
-					while (buffer[i] == '\n') {
-						// skip this mf
-						++i;
-					}
-
-					// get username
-					while (buffer[i] != ',') {
-						uname[infind] = buffer[i];
-						++i;
-						++infind;
-					} cout << "Username : " << uname << endl;
-
-					// reset this shit
-					infind = 0;
-
-					// next of comma
+				// password retrieval
+				while (buffer[i] != '\n') {
+					pass[indx] = buffer[i];
+					++indx;
 					++i;
-
-					// filter the junk shit
-					while (buffer[i] == '\n') {
-						// skip this mf
-						++i;
-					}
-
-					// get password
-					while (buffer[i] != ',') {
-						pass[infind] = buffer[i];
-						++i;
-						++infind;
-					} cout << "Password : " << pass << endl;
-					// yeah, next of comma again
-					++i;
-				} else {
-					// filter out trash
-					while (buffer[i] == ' ' || buffer[i] == '\n') {
-						++i;
-					}
-
-					// this is hilarious, for loop almost done nothing
-					// jk, for loop is the real madlad here
-				}
+				} cout << "Password : " << pass << endl;
+				
+				// append these data to linked list
+				accounts->addTeacherAccount(uname, name, pass);
 			}
 		}
 	}

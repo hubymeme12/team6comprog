@@ -401,7 +401,7 @@ void admin::writedatainterface() {
 	cout << "Encrypt file? y/n : ";
 	cin >> choice;
 
-	cout << "[*] Converting string to char[]..." << endl;
+	cout << "[*] Converting string to char*..." << endl;
 
 	// convert this to char*
 	converted = new char[filename.size()];
@@ -412,13 +412,14 @@ void admin::writedatainterface() {
 	cout << "[+] Saving to filename : " << filename << "..." << endl;
 	fl.target(converted);
 	fl.retrievedata(db);
-	fl.write((choice == 'y'));
+	fl.write((choice == 'y' || choice == 'Y'));
 	cout << "[+] File Saved!" << endl;
 	system(PAUSE);
 }
 
 void admin::readdatainterface() {
 	string fname;
+	char choice;
 
 	system(CLEAR);
 	cout << "===========================" << endl;
@@ -426,6 +427,8 @@ void admin::readdatainterface() {
 	cout << "===========================" << endl;
 	cout << "Enter file name : ";
 	getline(cin >> ws, fname);
+	cout << "Encrypted? Y/N  : ";
+	cin >> choice;
 	
 	// convert to char[]
 	char* nfnam = new char[fname.size()];
@@ -434,7 +437,7 @@ void admin::readdatainterface() {
 	}
 
 	authparser aparser(nfnam, secret);
-	aparser.fillauth(0);
+	aparser.fillauth((choice == 'y' || choice == 'Y'));
 	system(PAUSE);
 }
 
