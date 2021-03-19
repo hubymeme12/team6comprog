@@ -191,7 +191,7 @@ char* database::getbuffer() {
 		data += "\t" + node->name + "," + node->user + "," + node->pass + "\n";
 		node = node->next;
 	}
-	data += "@credsSE@\n\n";
+	data += "@credSE@\n\n";
 
 
 	// for the subjects

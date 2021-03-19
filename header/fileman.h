@@ -143,12 +143,13 @@ void authparser::fillauth(bool enc) {
 		// and store it to its local variable
 		// returning to nowhere
 		buffer = read(enc);
-		cout << "File size : " << filesize << endl;
-		cout << "Buffer : \n" << buffer << endl;
 		char flag[] = "@credsT@";
 		char flagend[] = "@credTE@";
+		
+		// this will be used as first value in next loop
+		int updated;
 
-		int index = 0;
+		cout << "[+] Loading accounts (Teachers) :" << endl;
 		// walk through buffer until we find @credsT@
 		for (int i = 0; i < filesize - 8; i++) {
 			if (flag[0] == buffer[i] &&
@@ -166,7 +167,7 @@ void authparser::fillauth(bool enc) {
 				i += 8;
 				// cout << "Buffer after match : " << buffer[i] << " Fonr" << endl;
 
-			} else if (flag[0] = buffer[i] &&
+			} else if (flagend[0] = buffer[i] &&
 				flagend[1] == buffer[i + 1] &&
 				flagend[2] == buffer[i + 2] &&
 				flagend[3] == buffer[i + 3] &&
@@ -174,6 +175,83 @@ void authparser::fillauth(bool enc) {
 				flagend[5] == buffer[i + 5] &&
 				flagend[6] == buffer[i + 6] &&
 				flagend[7] == buffer[i + 7]) {
+
+				// end of the fucking bitch ass checking
+				// teacher accounts
+				// cout << "END MATCHED!!!" << endl;
+				break;
+			} else if (buffer[i] == '\t'){
+				// for the next character
+				++i;
+
+				// yeah damn it, crawl and find the commas bitch
+				char uname[100] = {'\0'};
+				char name[100] = {'\0'};
+				char pass[100] = {'\0'};
+				int indx = 0;
+
+				// name retrieval
+				while (buffer[i] != ',') {
+					name[indx] = buffer[i];
+					++indx;
+					++i;
+				} cout << "Name : " << name << endl;
+				++i;
+				indx = 0;
+
+				// username retrieval
+				while (buffer[i] != ',') {
+					uname[indx] = buffer[i];
+					++indx;
+					++i;
+				} cout << "Username : " << uname << endl;
+				++i;
+				indx = 0;
+
+				// password retrieval
+				while (buffer[i] != '\n') {
+					pass[indx] = buffer[i];
+					++indx;
+					++i;
+				} cout << "Password : " << pass << endl << endl;
+
+				// append these data to linked list
+				accounts->addTeacherAccount(uname, name, pass);
+			}
+
+			// where the loop stops
+			updated = i;
+		}
+
+		char sflag[] = "@credsS@";
+		char sflagend[] = "@credSE@";
+
+		cout << "[+] Loading accounts (Students) :" << endl;
+		// walk through buffer until we find @credsT@
+		for (int i = updated; i < filesize - 8; i++) {
+			if (sflag[0] == buffer[i] &&
+				sflag[1] == buffer[i + 1] &&
+				sflag[2] == buffer[i + 2] &&
+				sflag[3] == buffer[i + 3] &&
+				sflag[4] == buffer[i + 4] &&
+				sflag[5] == buffer[i + 5] &&
+				sflag[6] == buffer[i + 6] &&
+				sflag[7] == buffer[i + 7]) {
+
+				// cout << "MATCHEDD!!!" << endl;
+				// get the accounts of teachers here
+				// skip the current buffers
+				i += 8;
+				// cout << "Buffer after match : " << buffer[i] << " Fonr" << endl;
+
+			} else if (sflagend[0] = buffer[i] &&
+				sflagend[1] == buffer[i + 1] &&
+				sflagend[2] == buffer[i + 2] &&
+				sflagend[3] == buffer[i + 3] &&
+				sflagend[4] == buffer[i + 4] &&
+				sflagend[5] == buffer[i + 5] &&
+				sflagend[6] == buffer[i + 6] &&
+				sflagend[7] == buffer[i + 7]) {
 
 				// end of the fucking bitch ass checking
 				// of teacher accounts
@@ -212,10 +290,10 @@ void authparser::fillauth(bool enc) {
 					pass[indx] = buffer[i];
 					++indx;
 					++i;
-				} cout << "Password : " << pass << endl;
-				
+				} cout << "Password : " << pass << endl << endl;
+
 				// append these data to linked list
-				accounts->addTeacherAccount(uname, name, pass);
+				accounts->addStudentAccount(uname, name, pass);
 			}
 		}
 	}
