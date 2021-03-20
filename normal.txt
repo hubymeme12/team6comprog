@@ -1,0 +1,17 @@
+@credsT@
+	Melanie Samudio,melai@2021,password2021
+	Kristian Ramos,kristian@2021,password2021
+	Dr. Aries Natividad Magnaye,aries@2021,passwordnawa
+@credTE@
+
+@credsS@
+	Hubert F. Espinola I,20-05845,passwordhubert
+	Clyde Edward P. Paglinawan,20-01234,passclyde
+	Emman Giataw,20-02345,passwordemman
+	Angel Mc Kenneth,20-03456,passwordmacky
+	Angel Arsenio,arsenio@2021,passwordarsenio
+	Chauncey Chuuuuu,chu@2021,passwordchu
+@credSE@
+
+@gblist@
+@gblist@

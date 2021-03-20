@@ -46,7 +46,7 @@ class authparser : public fileman {
 
 		// utilities
 		void addauth(auth*);		// add target auth object to fill in values
-		void fillauth(bool);			// push in account values in auth object
+		bool fillauth(bool);			// push in account values in auth object
 };
 
 
@@ -77,34 +77,45 @@ void fileman::retrievedata(database* ptr) {
 char* fileman::read(bool encrypted) {
 	ifstream reader(fname, ios::binary | ios::ate);
 
-	// get size
-	filesize = reader.tellg();
-
-	// allocate buffer
-	buffer = new char[filesize];
-
-	// back to normal
-	reader.seekg(0, reader.beg);
+	// error checking
+	if (!reader.fail()) {
+		// get size
+		filesize = reader.tellg();
 	
-	// read and pass to buffer
-	reader.read(buffer, filesize);
+		// allocate buffer
+		buffer = new char[filesize];
 	
-	// check if encrypted or not
-	if (encrypted) {
-		return xorEnc(buffer);
+		// back to normal
+		reader.seekg(0, reader.beg);
+		
+		// read and pass to buffer
+		reader.read(buffer, filesize);
+		
+		// check if encrypted or not
+		if (encrypted) {
+			return xorEnc(buffer);
+		} else {
+			return buffer;
+		}
 	} else {
-		return buffer;
+		cerr << "[Error] The filename had a shit name." << endl;
+		cerr << "Returning NULL..." << endl;
+		return NULL;
 	}
 }
 
 // writing file bytes
 void fileman::write(bool encrypted) {
 	ofstream writer(fname, ios::binary);
-	
-	if (encrypted)
-		writer.write(xorEnc(buffer), filesize);
-	else
-		writer.write(buffer, filesize);
+
+	if (!writer.fail()) {
+		if (encrypted)
+			writer.write(xorEnc(buffer), filesize);
+		else
+			writer.write(buffer, filesize);
+	} else {
+		cerr << "[Error] Uhh.. I donno... probably the file name u entered is in use." << endl;
+	}
 }
 //////////////////////////////////
 //	END OF FILEMAN DEFINITION	//
@@ -113,10 +124,7 @@ void fileman::write(bool encrypted) {
 //////////////////////////////
 //	AUTH PARSER DEFINITION	//
 //////////////////////////////
-authparser::authparser() {
-	// initialize file manager values
-	fileman();
-
+authparser::authparser(): fileman(){
 	// initialize local variables values
 	accounts = NULL;
 }
@@ -132,7 +140,7 @@ void authparser::addauth(auth* target) {
 
 // parse file bytes by reading values
 // need to confirm if the file is encrypted first
-void authparser::fillauth(bool enc) {
+bool authparser::fillauth(bool enc) {
 	// confirmation for filename
 	if (fname == NULL) {
 		cout << "[Error] No filename added!" << endl;
@@ -145,7 +153,12 @@ void authparser::fillauth(bool enc) {
 		buffer = read(enc);
 		char flag[] = "@credsT@";
 		char flagend[] = "@credTE@";
-		
+
+		// too lazy to adjust the whole codee
+		if (buffer == NULL) {
+			return 0;
+		}
+
 		// this will be used as first value in next loop
 		int updated;
 
@@ -296,6 +309,12 @@ void authparser::fillauth(bool enc) {
 				accounts->addStudentAccount(uname, name, pass);
 			}
 		}
+		
+		// yeah shit
+		return true;
 	}
 }
+//////////////////////////
+//	END OF AUTHPARSER	//
+//////////////////////////
 #endif

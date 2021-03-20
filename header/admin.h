@@ -437,7 +437,9 @@ void admin::readdatainterface() {
 	}
 
 	authparser aparser(nfnam, secret);
-	aparser.fillauth((choice == 'y' || choice == 'Y'));
+	if (!aparser.fillauth((choice == 'y' || choice == 'Y'))) {
+		cerr << "[!] An error occured." << endl;
+	}
 	system(PAUSE);
 }
 
