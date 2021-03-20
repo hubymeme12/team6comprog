@@ -200,20 +200,20 @@ char* database::getbuffer() {
 	while (dbnode != NULL) {
 		// format:
 		// @gblist@
-		// @gbook@
+		// @sgbook@
 		// SUBJECTNAME
 		// TEACHERNAME
 		//		STUD1
 		//		STUD2
 		//		...
 		// @egbook@
-		// @gbook@
+		// @sgbook@
 		// ...
 		// @egbook@
 		// @egblist@
 		
 		// fetch data
-		data += "@gbook@\n";
+		data += "@sgbook@\n";
 		data += dbnode->subject->getcourseName() + "\n";
 		data += dbnode->teacher + "\n";
 		
@@ -228,7 +228,7 @@ char* database::getbuffer() {
 		dbnode = dbnode->next;
 		data += "@egbook@\n";
 	}
-	data += "@gblist@\n";
+	data += "@egblis@\n";
 
 	// convert this into file buffer
 	size = data.size();

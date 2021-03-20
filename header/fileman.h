@@ -32,7 +32,17 @@ class fileman {
 // use gradebook and pass to gradebook list
 // string buffer finder is a must
 class gbparser : public fileman {
+	private:
+		database* db;
+	public:
+		// constructor
+		gbparser();
+		gbparser(char*, database*);
 
+		// utilities
+		// manual addition of data
+		void dbadd(database*);
+		bool filldb(bool);
 };
 
 // parse authentication and pass to values
@@ -153,6 +163,8 @@ bool authparser::fillauth(bool enc) {
 		buffer = read(enc);
 		char flag[] = "@credsT@";
 		char flagend[] = "@credTE@";
+
+		cout << "File buffer : \n" << buffer << endl;
 
 		// too lazy to adjust the whole codee
 		if (buffer == NULL) {
@@ -311,10 +323,75 @@ bool authparser::fillauth(bool enc) {
 		}
 		
 		// yeah shit
-		return true;
+		return 1;
 	}
 }
 //////////////////////////
 //	END OF AUTHPARSER	//
 //////////////////////////
+
+//////////////////////////////////
+//	GRADEBOOK PARSER DEFINITION	//
+//////////////////////////////////
+gbparser::gbparser() : fileman(){
+	db = NULL;
+}
+
+gbparser::gbparser(char* name, database* dbaddr) : fileman(name) {
+	db = dbaddr;
+}
+
+// manual addition of target:
+void gbparser::dbadd(database* dbaddr) {
+	db = dbaddr;
+}
+
+// the whole parsing process
+bool gbparser::filldb(bool enc) {
+	// read file bytes
+	buffer = read(enc);
+
+	if (buffer == NULL) {
+		return 0;
+	}
+
+	// flags (for checking where to parse)
+	char gbls[] = "@gblist@";
+	char gble[] = "@egblis@";
+	char gbs[] = "@sgbook@";
+	char gbe[] = "@egbook@";
+
+	// loops for checking
+	for (int i = 0; i < (filesize - 8); i++) {
+		if (gbls[0] == buffer[i] &&
+			gbls[1] == buffer[i + 1] &&
+			gbls[2] == buffer[i + 2] &&
+			gbls[3] == buffer[i + 3] &&
+			gbls[4] == buffer[i + 4] &&
+			gbls[5] == buffer[i + 5] &&
+			gbls[6] == buffer[i + 6] &&
+			gbls[7] == buffer[i + 7]) {
+
+			// this is the start
+			// another for-loop for checking
+			// of
+		} else if (gble[0] == buffer[i] &&
+			gble[1] == buffer[i + 1] &&
+			gble[2] == buffer[i + 2] &&
+			gble[3] == buffer[i + 3] &&
+			gble[4] == buffer[i + 4] &&
+			gble[5] == buffer[i + 5] &&
+			gble[6] == buffer[i + 6] &&
+			gble[7] == buffer[i + 7]) {
+
+			// this is the end
+			// ...
+		}
+	}
+	
+	return 1;
+}
+//////////////////////////////
+//	END OF GRADEBOOKPARSER	//
+//////////////////////////////
 #endif
