@@ -398,8 +398,8 @@ void admin::writedatainterface() {
 	cout << "=================================" << endl;
 	cout << "Enter file name : ";
 	getline(cin >> ws, filename);
-	cout << "Encrypt file? y/n : ";
-	cin >> choice;
+	//cout << "Encrypt file? y/n : ";
+	//cin >> choice;
 
 	cout << "[*] Converting string to char*..." << endl;
 
@@ -412,7 +412,9 @@ void admin::writedatainterface() {
 	cout << "[+] Saving to filename : " << filename << "..." << endl;
 	fl.target(converted);
 	fl.retrievedata(db);
-	fl.write((choice == 'y' || choice == 'Y'));
+	//fl.write((choice == 'y' || choice == 'Y'));
+
+	fl.write(0);
 	cout << "[+] File Saved!" << endl;
 	system(PAUSE);
 }
@@ -427,8 +429,9 @@ void admin::readdatainterface() {
 	cout << "===========================" << endl;
 	cout << "Enter file name : ";
 	getline(cin >> ws, fname);
-	cout << "Encrypted? Y/N  : ";
-	cin >> choice;
+
+	// cout << "Encrypted? Y/N  : ";
+	// cin >> choice;
 
 	// convert to char[]
 	char* nfnam = new char[fname.size()];
@@ -438,13 +441,15 @@ void admin::readdatainterface() {
 
 	// parse accounts
 	authparser aparser(nfnam, secret);
-	if (!aparser.fillauth((choice == 'y' || choice == 'Y'))) {
-		cerr << "[!] An error occured." << endl;
+	if (!aparser.fillauth(0)) {
+		cerr << "[!] An error occured in parsing credentials." << endl;
 	}
 
 	// parse gradebook
 	gbparser gbookparse(nfnam, db);
-	gbookparse.filldb(0);
+	if (!gbookparse.filldb(0)) {
+		cerr << "[!] An error occured in parsing database values." << endl;
+	}
 
 	system(PAUSE);
 }

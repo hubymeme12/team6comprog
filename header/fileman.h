@@ -431,6 +431,8 @@ bool gbparser::filldb(bool enc) {
 								++i;
 							} cout << "Student : " << studname << endl;
 
+							// connect these data to database
+
 							// reset index and values
 							indx = 0;
 							while (studname[indx] != '\0') {
