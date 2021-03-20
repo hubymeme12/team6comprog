@@ -408,7 +408,7 @@ void admin::writedatainterface() {
 	for (int i = 0; i < filename.size() + 1; i++) {
 		converted[i] = filename[i];
 	}
-	
+
 	cout << "[+] Saving to filename : " << filename << "..." << endl;
 	fl.target(converted);
 	fl.retrievedata(db);
@@ -429,17 +429,23 @@ void admin::readdatainterface() {
 	getline(cin >> ws, fname);
 	cout << "Encrypted? Y/N  : ";
 	cin >> choice;
-	
+
 	// convert to char[]
 	char* nfnam = new char[fname.size()];
 	for (int i = 0; i < fname.size() + 1; i++) {
 		nfnam[i] = fname[i];
 	}
 
+	// parse accounts
 	authparser aparser(nfnam, secret);
 	if (!aparser.fillauth((choice == 'y' || choice == 'Y'))) {
 		cerr << "[!] An error occured." << endl;
 	}
+
+	// parse gradebook
+	gbparser gbookparse(nfnam, db);
+	gbookparse.filldb(0);
+
 	system(PAUSE);
 }
 

@@ -164,7 +164,7 @@ bool authparser::fillauth(bool enc) {
 		char flag[] = "@credsT@";
 		char flagend[] = "@credTE@";
 
-		cout << "File buffer : \n" << buffer << endl;
+		//cout << "File buffer : \n" << buffer << endl;
 
 		// too lazy to adjust the whole codee
 		if (buffer == NULL) {
@@ -355,36 +355,98 @@ bool gbparser::filldb(bool enc) {
 	}
 
 	// flags (for checking where to parse)
-	char gbls[] = "@gblist@";
-	char gble[] = "@egblis@";
 	char gbs[] = "@sgbook@";
 	char gbe[] = "@egbook@";
 
 	// loops for checking
 	for (int i = 0; i < (filesize - 8); i++) {
-		if (gbls[0] == buffer[i] &&
-			gbls[1] == buffer[i + 1] &&
-			gbls[2] == buffer[i + 2] &&
-			gbls[3] == buffer[i + 3] &&
-			gbls[4] == buffer[i + 4] &&
-			gbls[5] == buffer[i + 5] &&
-			gbls[6] == buffer[i + 6] &&
-			gbls[7] == buffer[i + 7]) {
+		if (gbs[0] == buffer[i] &&
+			gbs[1] == buffer[i + 1] &&
+			gbs[2] == buffer[i + 2] &&
+			gbs[3] == buffer[i + 3] &&
+			gbs[4] == buffer[i + 4] &&
+			gbs[5] == buffer[i + 5] &&
+			gbs[6] == buffer[i + 6] &&
+			gbs[7] == buffer[i + 7]) {
 
-			// this is the start
-			// another for-loop for checking
-			// of
-		} else if (gble[0] == buffer[i] &&
-			gble[1] == buffer[i + 1] &&
-			gble[2] == buffer[i + 2] &&
-			gble[3] == buffer[i + 3] &&
-			gble[4] == buffer[i + 4] &&
-			gble[5] == buffer[i + 5] &&
-			gble[6] == buffer[i + 6] &&
-			gble[7] == buffer[i + 7]) {
+			// a gradebook is detected (skip the new line)
+			i += 9;
 
-			// this is the end
-			// ...
+			// start a loop, until it reaches the end
+			while (!(gbe[0] == buffer[i] &&
+				gbe[1] == buffer[i + 1] &&
+				gbe[2] == buffer[i + 2] &&
+				gbe[3] == buffer[i + 3] &&
+				gbe[4] == buffer[i + 4] &&
+				gbe[5] == buffer[i + 5] &&
+				gbe[6] == buffer[i + 6] &&
+				gbe[7] == buffer[i + 7])) {
+
+				// variables needed for storing data
+				char subjname[100] = {'\0'};
+				char studname[100] = {'\0'};
+				char tchrname[100] = {'\0'};
+				int indx = 0;
+
+				// retrieve subject name
+				if (buffer[i] == '\n') {	// double check
+					++i;
+				} else {
+					// retrieve subject name
+					while (buffer[i] != '\n') {
+						subjname[indx] = buffer[i];
+						++indx;
+						++i;
+					} cout << "Added subject : " << subjname << endl;
+
+					// adjust to ignore next line
+					++i;
+					indx = 0;
+
+					// retrieve teacher name
+					while (buffer[i] != '\n') {
+						tchrname[indx] = buffer[i];
+						++indx;
+						++i;
+					} cout << "Teacher name : " << tchrname << endl;
+
+					// adjust to ignore next line
+					++i;
+					indx = 0;
+
+					// retrieve student names
+					while (buffer[i] != '\n') {
+						// start after tab
+						if (buffer[i] == '\t' || buffer[i] == ',') {
+							// crawl name
+							++i;
+
+							// I admit it, this is so fuxking disgusting
+							while (buffer[i] != ',') {
+								if (buffer[i] == '\n')
+									break;
+
+								studname[indx] = buffer[i];
+								++indx;
+								++i;
+							} cout << "Student : " << studname << endl;
+
+							// reset index and values
+							indx = 0;
+							while (studname[indx] != '\0') {
+								studname[indx] = '\0';
+								++indx;
+							}
+							indx = 0;
+						}
+					}
+
+					// End of student retrieval
+					++i;
+					cout << endl;
+
+				}
+			}
 		}
 	}
 

@@ -13,39 +13,13 @@
 	Chauncey Chuuuuu,chu@2021,passwordchu
 @credSE@
 
-@gblist@
 @sgbook@
-Statistics and Probabilit
+Statistics
 Dr. Aries Natividad Magnaye
-	Hubert F. Espinola I
-	Clyde Edward P. Paglinawan
-	Emman Giataw
-	Angel Mc Kenneth
-	Angel Arsenio
-	Chauncey Chuuuuu
-@egbook@
-@sgbook@
-General Mathematics
-Dr. Aries Natividad Magnaye
-	Hubert F. Espinola I
-	Clyde Edward P. Paglinawan
-	Emman Giataw
-	Angel Mc Kenneth
-	Angel Arsenio
-	Chauncey Chuuuuu
+	Hubert F. Espinola I,Clyde Edward P. Paglinawan,Emman Giataw,Angel Mc Kenneth,Angel Arsenio,Chauncey Chuuuuu
 @egbook@
 @sgbook@
 Biology
 Melanie Samudio
-	Hubert F. Espinola I
-	Emman Giataw
-	Angel Arsenio
+	Hubert F. Espinola I,Emman Giataw,Clyde Edward P. Paglinawan,Angel Arsenio
 @egbook@
-@sgbook@
-Biology
-Kristian Ramos
-	Clyde Edward P. Paglinawan
-	Angel Mc Kenneth
-	Chauncey Chuuuuu
-@egbook@
-@egblis@

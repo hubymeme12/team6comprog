@@ -33,7 +33,7 @@ class database {
 		credential* teacher;
 		credential* pseudostudent;
 		credential* addme;
-		
+
 		int buffersize;
 };
 
@@ -196,7 +196,8 @@ char* database::getbuffer() {
 
 	// for the subjects
 	triad* dbnode = db_table.getFirst();
-	data += "@gblist@\n";
+
+	// data += "@gblist@\n";
 	while (dbnode != NULL) {
 		// format:
 		// @gblist@
@@ -211,24 +212,33 @@ char* database::getbuffer() {
 		// ...
 		// @egbook@
 		// @egblist@
-		
+
 		// fetch data
 		data += "@sgbook@\n";
 		data += dbnode->subject->getcourseName() + "\n";
 		data += dbnode->teacher + "\n";
-		
+
 		// fetch student names
 		creds* studnode = dbnode->students->getFirst();
-		while (studnode != NULL) {
-			data += "\t" + studnode->name + "\n";
+
+		if (studnode != NULL) {
+			data += "\t" + studnode->name;
 			studnode = studnode->next;
 		}
+
+		while (studnode != NULL) {
+			data += "," + studnode->name;
+			studnode = studnode->next;
+		}
+
+		// student names done
+		data += "\n";
 
 		// proceed to next
 		dbnode = dbnode->next;
 		data += "@egbook@\n";
 	}
-	data += "@egblis@\n";
+	// data += "@egblis@\n";
 
 	// convert this into file buffer
 	size = data.size();
