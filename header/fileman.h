@@ -91,16 +91,16 @@ char* fileman::read(bool encrypted) {
 	if (!reader.fail()) {
 		// get size
 		filesize = reader.tellg();
-	
+
 		// allocate buffer
 		buffer = new char[filesize];
-	
+
 		// back to normal
 		reader.seekg(0, reader.beg);
-		
+
 		// read and pass to buffer
 		reader.read(buffer, filesize);
-		
+
 		// check if encrypted or not
 		if (encrypted) {
 			return xorEnc(buffer);
@@ -192,7 +192,7 @@ bool authparser::fillauth(bool enc) {
 				i += 8;
 				// cout << "Buffer after match : " << buffer[i] << " Fonr" << endl;
 
-			} else if (flagend[0] = buffer[i] &&
+			} else if (flagend[0] == buffer[i] &&
 				flagend[1] == buffer[i + 1] &&
 				flagend[2] == buffer[i + 2] &&
 				flagend[3] == buffer[i + 3] &&
@@ -269,7 +269,7 @@ bool authparser::fillauth(bool enc) {
 				i += 8;
 				// cout << "Buffer after match : " << buffer[i] << " Fonr" << endl;
 
-			} else if (sflagend[0] = buffer[i] &&
+			} else if (sflagend[0] == buffer[i] &&
 				sflagend[1] == buffer[i + 1] &&
 				sflagend[2] == buffer[i + 2] &&
 				sflagend[3] == buffer[i + 3] &&
@@ -321,10 +321,9 @@ bool authparser::fillauth(bool enc) {
 				accounts->addStudentAccount(uname, name, pass);
 			}
 		}
-		
-		// yeah shit
-		return 1;
 	}
+
+	return 1;
 }
 //////////////////////////
 //	END OF AUTHPARSER	//
@@ -388,7 +387,7 @@ bool gbparser::filldb(bool enc) {
 			// ...
 		}
 	}
-	
+
 	return 1;
 }
 //////////////////////////////

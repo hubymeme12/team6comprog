@@ -79,17 +79,21 @@ void auth::delStudentAccount(string username) {
 
 void auth::delStudentAccount(int index) {
 	creds* node = students->getNode(index);
-	// retrieve the subjects where the student is registered
-	gradebooklist* retrieved = db->retrieveGBStudent(node->name);
-	gnode* crawlme = retrieved->getFirst();
+	if (node != NULL) {
+		// retrieve the subjects where the student is registered
+		gradebooklist* retrieved = db->retrieveGBStudent(node->name);
+		gnode* crawlme = retrieved->getFirst();
 
-	while (crawlme != NULL) {
-		// get the gradebook and delete the student data
-		crawlme->value->deletedata(node->name);
-		crawlme = crawlme->next;
+		while (crawlme != NULL) {
+			// get the gradebook and delete the student data
+			crawlme->value->deletedata(node->name);
+			crawlme = crawlme->next;
+		}
+		// delete this node
+		students->remove(index);
+	} else {
+		cerr << "[!] Cannot fetch node (nonexistent)." << endl;
 	}
-	// delete this node
-	students->remove(index);
 }
 
 void auth::delTeacherAccount(string username) {
