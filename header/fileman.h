@@ -224,7 +224,7 @@ bool authparser::fillauth(bool enc) {
 						++indx;
 					}
 					++i;
-				} cout << "Name : " << name << "<--"<< endl;
+				} cout << "Name : " << name << endl;
 				++i;
 				indx = 0;
 
@@ -233,7 +233,7 @@ bool authparser::fillauth(bool enc) {
 					uname[indx] = buffer[i];
 					++indx;
 					++i;
-				} cout << "Username : " << uname  << "<--"<< endl;
+				} cout << "Username : " << uname  << endl;
 				++i;
 				indx = 0;
 
@@ -244,7 +244,7 @@ bool authparser::fillauth(bool enc) {
 						++indx;
 					}
 					++i;
-				} cout << "Password : " << pass << "<--" << endl << endl;
+				} cout << "Password : " << pass << endl << endl;
 
 				// convert these account into string
 				string username = uname;
@@ -411,6 +411,7 @@ bool gbparser::filldb(bool enc) {
 				char subjname[100] = {'\0'};
 				char studname[100] = {'\0'};
 				char tchrname[100] = {'\0'};
+				string teachername;
 				int indx = 0;
 
 				// retrieve subject name
@@ -429,6 +430,9 @@ bool gbparser::filldb(bool enc) {
 					// make new gradebook node with subject name
 					gbooknode = new gradebook;
 
+					// assign subject name
+					gbooknode->setcourseName(subjname);
+
 					// adjust to ignore next line
 					++i;
 					indx = 0;
@@ -443,16 +447,14 @@ bool gbparser::filldb(bool enc) {
 						}
 						++i;
 					} cout << "Teacher name : " << tchrname << endl;
+					teachername = tchrname;
 					////////////////////////////////
 					// end teacher name retrieval //
-					///////////////////////////////
+					////////////////////////////////
 
 					// adjust to ignore next line
 					++i;
 					indx = 0;
-
-					// assign subject name
-					gbooknode->setcourseName(subjname);
 
 					////////////////////////////
 					// retrieve student names //
@@ -495,7 +497,7 @@ bool gbparser::filldb(bool enc) {
 					++i;
 
 					// then push this to the database
-					db->pushdata(gbooknode, tchrname, db->addednode());
+					db->pushdata(gbooknode, teachername, db->addednode());
 					cout << "[+] Pushed subject : (" << gbooknode->getcourseName() << ":" << tchrname << ")"<< endl << endl;
 
 				}
