@@ -224,7 +224,7 @@ bool authparser::fillauth(bool enc) {
 						++indx;
 					}
 					++i;
-				} cout << "Name : " << name << "<--"<< endl;
+				} cout << "Name : " << name << endl;
 				++i;
 				indx = 0;
 
@@ -233,7 +233,7 @@ bool authparser::fillauth(bool enc) {
 					uname[indx] = buffer[i];
 					++indx;
 					++i;
-				} cout << "Username : " << uname  << "<--"<< endl;
+				} cout << "Username : " << uname  << endl;
 				++i;
 				indx = 0;
 
@@ -244,7 +244,7 @@ bool authparser::fillauth(bool enc) {
 						++indx;
 					}
 					++i;
-				} cout << "Password : " << pass << "<--" << endl << endl;
+				} cout << "Password : " << pass << endl << endl;
 
 				// convert these account into string
 				string username = uname;
@@ -338,7 +338,11 @@ bool authparser::fillauth(bool enc) {
 				string username = uname;
 				string accountname = name;
 				string password = pass;
+<<<<<<< HEAD
 
+=======
+				
+>>>>>>> gbookparser
 				accounts->addStudentAccount(username, accountname, password);
 			}
 		}
@@ -379,8 +383,8 @@ bool gbparser::filldb(bool enc) {
 	char gbs[] = "@sgbook@";
 	char gbe[] = "@egbook@";
 
-	// make new gradebook node with subject name
-	gradebook* gbooknode = new gradebook;
+	// will be needed latur
+	gradebook* gbooknode;
 
 	// loops for checking
 	for (int i = 0; i < (filesize - 8); i++) {
@@ -393,7 +397,7 @@ bool gbparser::filldb(bool enc) {
 			gbs[6] == buffer[i + 6] &&
 			gbs[7] == buffer[i + 7]) {
 
-			// a gradebook is detected (skip the new line)
+			// a gradebook is detected (skip the new line
 			i += 9;
 			db->pseudonodecopy();
 
@@ -411,6 +415,7 @@ bool gbparser::filldb(bool enc) {
 				char subjname[100] = {'\0'};
 				char studname[100] = {'\0'};
 				char tchrname[100] = {'\0'};
+				string teachername;
 				int indx = 0;
 
 				// retrieve subject name
@@ -428,6 +433,12 @@ bool gbparser::filldb(bool enc) {
 						++i;
 					} cout << "Added subject : " << subjname << endl;
 
+					// make new gradebook node with subject name
+					gbooknode = new gradebook;
+
+					// assign subject name
+					gbooknode->setcourseName(subjname);
+
 					// adjust to ignore next line
 					++i;
 					indx = 0;
@@ -442,11 +453,16 @@ bool gbparser::filldb(bool enc) {
 						}
 						++i;
 					} cout << "Teacher name : " << tchrname << endl;
+					teachername = tchrname;
+					////////////////////////////////
+					// end teacher name retrieval //
+					////////////////////////////////
 
 					// adjust to ignore next line
 					++i;
 					indx = 0;
 
+<<<<<<< HEAD
 					// assign subject name//
 					string subjectname = subjname;
 					gbooknode->setcourseName(subjectname);
@@ -455,10 +471,14 @@ bool gbparser::filldb(bool enc) {
 					// retrieve student names//
 					///////////////////////////
 					// loop while new line isn't found
+=======
+					////////////////////////////
+					// retrieve student names //
+					////////////////////////////
+>>>>>>> gbookparser
 					while (buffer[i] != '\n') {
 						// start after tab
 						if (buffer[i] == '\t' || buffer[i] == ',') {
-
 							// crawl name
 							++i;
 
@@ -488,6 +508,7 @@ bool gbparser::filldb(bool enc) {
 							indx = 0;
 						}
 					}
+<<<<<<< HEAD
 
 					// End of student retrieval
 					// adjust the buffer
@@ -496,6 +517,17 @@ bool gbparser::filldb(bool enc) {
 					// then push this to the database
 					db->pushdata(gbooknode, tchrname, db->addednode());
 					cout << "[+] Subject pushed! (" << tchrname << ":" << gbooknode->getcourseName() << ")" << endl << endl;
+=======
+					//////////////////////////////
+					// End of student retrieval //
+					//////////////////////////////
+					++i;
+
+					// then push this to the database
+					db->pushdata(gbooknode, teachername, db->addednode());
+					cout << "[+] Pushed subject : (" << gbooknode->getcourseName() << ":" << tchrname << ")"<< endl << endl;
+
+>>>>>>> gbookparser
 				}
 			}
 		}

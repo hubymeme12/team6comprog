@@ -98,7 +98,9 @@ void auth::delStudentAccount(int index) {
 
 void auth::delTeacherAccount(string username) {
 	// retrieve the teacher's name
-	string name = teachers->getFirst()->name;
+	string name = teachers->search(teachers->getFirst(), username)->name;
+	cout << "Name that will be used : " << name << endl;
+	system("pause");
 
 	// remove subject:
 	db->deletedata(name);
@@ -109,7 +111,9 @@ void auth::delTeacherAccount(string username) {
 
 void auth::delTeacherAccount(int index) {
 	// retrieve the teacher's name
-	string name = teachers->getFirst()->name;
+	// get node
+	creds* nod = teachers->getNode(index);
+	string name = nod->name;
 
 	// remove subject:
 	db->deletedata(name);
