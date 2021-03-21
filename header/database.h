@@ -82,15 +82,11 @@ void database::pseudonodecopy() {
 		// from first to last node
 		creds* node = student->getFirst();
 
-		cout << "=== copied account ====" << endl;
 		// walk through
 		while (node != NULL) {
 			pseudostudent->add(node->user, node->name, node->pass);
-
-			cout << node->user << " : " << node->name << " : " << node->pass << endl;
 			node = node->next;
 		}
-		cout << "=== done account c ====" << endl;
 
 	} else {
 		cout << "[!] Cannot copy! no students are present" << endl;
@@ -134,7 +130,7 @@ void database::addnode(gradebook* gb, int index) {
 // add node to addme node from pseudostudent
 void database::addnode(gradebook* gb, string name) {
 	// debug
-	printpseudonode();
+	// printpseudonode();
 	creds* node = pseudostudent->searchname(pseudostudent->getFirst(), name);
 
 	if (node != NULL) {
@@ -146,8 +142,8 @@ void database::addnode(gradebook* gb, string name) {
 		// deletes this node
 		pseudonodedelete(node->user);
 
-		cout << "After removal : " << endl;
-		printpseudonode();
+		//cout << "After removal : " << endl;
+		//printpseudonode();
 	}
 }
 
@@ -236,53 +232,6 @@ char* database::getbuffer() {
 		node = node->next;
 	}
 	data += "@credSE@\n\n";
-
-
-	// for the subjects
-	triad* dbnode = db_table.getFirst();
-
-	// data += "@gblist@\n";
-	while (dbnode != NULL) {
-		// format:
-		// @gblist@
-		// @sgbook@
-		// SUBJECTNAME
-		// TEACHERNAME
-		//		STUD1
-		//		STUD2
-		//		...
-		// @egbook@
-		// @sgbook@
-		// ...
-		// @egbook@
-		// @egblist@
-
-		// fetch data
-		data += "@sgbook@\n";
-		data += dbnode->subject->getcourseName() + "\n";
-		data += dbnode->teacher + "\n";
-
-		// fetch student names
-		creds* studnode = dbnode->students->getFirst();
-
-		if (studnode != NULL) {
-			data += "\t" + studnode->name;
-			studnode = studnode->next;
-		}
-
-		while (studnode != NULL) {
-			data += "," + studnode->name;
-			studnode = studnode->next;
-		}
-
-		// student names done
-		data += "\n";
-
-		// proceed to next
-		dbnode = dbnode->next;
-		data += "@egbook@\n";
-	}
-	// data += "@egblis@\n";
 
 	// convert this into file buffer
 	size = data.size();

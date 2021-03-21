@@ -1,7 +1,7 @@
 @credsT@
 	Melanie Samudio,melai@2021,password2021
 	Kristian Ramos,kristian@2021,password2021
-	Dr Aries Natividad Magnaye,aries@2021,passwordnawa
+	Dr. Aries Natividad Magnaye,aries@2021,passwordnawa
 @credTE@
 
 @credsS@
@@ -12,14 +12,3 @@
 	Angel Arsenio,arsenio@2021,passwordarsenio
 	Chauncey Chuuuuu,chu@2021,passwordchu
 @credSE@
-
-@sgbook@
-Statistics
-Dr. Aries Natividad Magnaye
-	Hubert F. Espinola I,Clyde Edward P. Paglinawan,Emman Giataw,Angel Mc Kenneth,Angel Arsenio,Chauncey Chuuuuu
-@egbook@
-@sgbook@
-Biology
-Melanie Samudio
-	Hubert F. Espinola I,Emman Giataw,Clyde Edward P. Paglinawan,Angel Arsenio
-@egbook@
