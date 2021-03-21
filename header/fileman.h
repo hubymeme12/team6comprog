@@ -339,7 +339,6 @@ bool authparser::fillauth(bool enc) {
 				string accountname = name;
 				string password = pass;
 				
-				cout << uname << ":" << accountname << ":" << password << endl;
 				accounts->addStudentAccount(username, accountname, password);
 			}
 		}
@@ -431,7 +430,9 @@ bool gbparser::filldb(bool enc) {
 					++i;
 					indx = 0;
 
-					// retrieve teacher name
+					//////////////////////////
+					// retrieve teacher name//
+					//////////////////////////
 					while (buffer[i] != '\n') {
 						if (buffer[i] > 31) {
 							tchrname[indx] = buffer[i];
@@ -439,6 +440,9 @@ bool gbparser::filldb(bool enc) {
 						}
 						++i;
 					} cout << "Teacher name : " << tchrname << endl;
+					////////////////////////////////
+					// end teacher name retrieval //
+					///////////////////////////////
 
 					// adjust to ignore next line
 					++i;
@@ -447,11 +451,12 @@ bool gbparser::filldb(bool enc) {
 					// assign subject name
 					gbooknode->setcourseName(subjname);
 
-					// retrieve student names
+					////////////////////////////
+					// retrieve student names //
+					////////////////////////////
 					while (buffer[i] != '\n') {
 						// start after tab
 						if (buffer[i] == '\t' || buffer[i] == ',') {
-
 							// crawl name
 							++i;
 
@@ -469,7 +474,7 @@ bool gbparser::filldb(bool enc) {
 
 							// push this student to the subject
 							string studentname = studname;
-							cout << "Student : " << studentname << "<---" << endl;
+							cout << "Student : " << studentname << endl;
 							db->addnode(gbooknode, studentname);
 
 							// reset index and values
@@ -481,12 +486,14 @@ bool gbparser::filldb(bool enc) {
 							indx = 0;
 						}
 					}
-
-					// End of student retrieval
+					//////////////////////////////
+					// End of student retrieval //
+					//////////////////////////////
 					++i;
 					cout << endl;
 
 					cout << "no problem in adding..." << endl;
+
 					// then push this to the database
 					db->pushdata(gbooknode, tchrname, db->addednode());
 

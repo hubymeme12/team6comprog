@@ -52,6 +52,32 @@ class admin {
 		void login();
 };
 
+string passlogin(string display) {
+	char pw;
+	char* longpass;
+	string password;
+
+	cout << display;
+	while (1) {
+		pw = getch();
+		if (pw == '\r') {
+			break;
+		} else if (pw == '\b')  {
+			if (password.size() > 0) {
+				password.erase((password.end() - 1));
+				cout << "\b \b";
+			}
+		} else {
+			password.push_back(pw);
+			display.push_back('*');
+			cout << '*';
+		}
+	}
+
+	cout << endl;
+	return password;
+}
+
 //////////////////////////
 //	admin		//
 //////////////////////////
@@ -88,9 +114,8 @@ void admin::login() {
 	cout << "=========================" << endl;
 	cout << "Username : ";
 	getline(cin >> ws, u);
-	cout << "Password : ";
-	getline(cin >> ws, p);
-
+	p = passlogin("Password : ");
+	
 	if (adminuser == u && adminpass == p) {
 		maininterface();
 	} else {
@@ -120,8 +145,8 @@ void admin::maininterface() {
 		cout << " **SUBJECTS**" << endl;
 		cout << " [6] Add new subject" << endl;
 		cout << " **UTILITIES**" << endl;
-		cout << " [7] Save data" << endl;
-		cout << " [8] Load data" << endl;
+		cout << " [7] Save accounts" << endl;
+		cout << " [8] Load accounts" << endl;
 		cout << " [9] Change admin account" << endl;
 		cout << " [10] Log out" << endl << endl;
 
