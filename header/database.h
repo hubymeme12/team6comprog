@@ -233,53 +233,6 @@ char* database::getbuffer() {
 	}
 	data += "@credSE@\n\n";
 
-
-	// for the subjects
-	triad* dbnode = db_table.getFirst();
-
-	// data += "@gblist@\n";
-	while (dbnode != NULL) {
-		// format:
-		// @gblist@
-		// @sgbook@
-		// SUBJECTNAME
-		// TEACHERNAME
-		//		STUD1
-		//		STUD2
-		//		...
-		// @egbook@
-		// @sgbook@
-		// ...
-		// @egbook@
-		// @egblist@
-
-		// fetch data
-		data += "@sgbook@\n";
-		data += dbnode->subject->getcourseName() + "\n";
-		data += dbnode->teacher + "\n";
-
-		// fetch student names
-		creds* studnode = dbnode->students->getFirst();
-
-		if (studnode != NULL) {
-			data += "\t" + studnode->name;
-			studnode = studnode->next;
-		}
-
-		while (studnode != NULL) {
-			data += "," + studnode->name;
-			studnode = studnode->next;
-		}
-
-		// student names done
-		data += "\n";
-
-		// proceed to next
-		dbnode = dbnode->next;
-		data += "@egbook@\n";
-	}
-	// data += "@egblis@\n";
-
 	// convert this into file buffer
 	size = data.size();
 	buffer = new char[size];
