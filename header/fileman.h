@@ -338,8 +338,7 @@ bool authparser::fillauth(bool enc) {
 				string username = uname;
 				string accountname = name;
 				string password = pass;
-				
-				cout << uname << ":" << accountname << ":" << password << endl;
+
 				accounts->addStudentAccount(username, accountname, password);
 			}
 		}
@@ -418,7 +417,9 @@ bool gbparser::filldb(bool enc) {
 				if (buffer[i] == '\n') {	// double check
 					++i;
 				} else {
-					// retrieve subject name
+					//////////////////////////
+					// retrieve subject name//
+					//////////////////////////
 					while (buffer[i] != '\n') {
 						if (buffer[i] > 31) {
 							subjname[indx] = buffer[i];
@@ -431,7 +432,9 @@ bool gbparser::filldb(bool enc) {
 					++i;
 					indx = 0;
 
-					// retrieve teacher name
+					//////////////////////////
+					// retrieve teacher name//
+					//////////////////////////
 					while (buffer[i] != '\n') {
 						if (buffer[i] > 31) {
 							tchrname[indx] = buffer[i];
@@ -444,10 +447,14 @@ bool gbparser::filldb(bool enc) {
 					++i;
 					indx = 0;
 
-					// assign subject name
-					gbooknode->setcourseName(subjname);
+					// assign subject name//
+					string subjectname = subjname;
+					gbooknode->setcourseName(subjectname);
 
-					// retrieve student names
+					///////////////////////////
+					// retrieve student names//
+					///////////////////////////
+					// loop while new line isn't found
 					while (buffer[i] != '\n') {
 						// start after tab
 						if (buffer[i] == '\t' || buffer[i] == ',') {
@@ -469,7 +476,7 @@ bool gbparser::filldb(bool enc) {
 
 							// push this student to the subject
 							string studentname = studname;
-							cout << "Student : " << studentname << "<---" << endl;
+							cout << "Student : " << studentname << endl;
 							db->addnode(gbooknode, studentname);
 
 							// reset index and values
@@ -483,13 +490,12 @@ bool gbparser::filldb(bool enc) {
 					}
 
 					// End of student retrieval
+					// adjust the buffer
 					++i;
-					cout << endl;
 
-					cout << "no problem in adding..." << endl;
 					// then push this to the database
 					db->pushdata(gbooknode, tchrname, db->addednode());
-
+					cout << "[+] Subject pushed! (" << tchrname << ":" << gbooknode->getcourseName() << ")" << endl << endl;
 				}
 			}
 		}

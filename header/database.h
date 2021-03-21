@@ -82,15 +82,11 @@ void database::pseudonodecopy() {
 		// from first to last node
 		creds* node = student->getFirst();
 
-		cout << "=== copied account ====" << endl;
 		// walk through
 		while (node != NULL) {
 			pseudostudent->add(node->user, node->name, node->pass);
-
-			cout << node->user << " : " << node->name << " : " << node->pass << endl;
 			node = node->next;
 		}
-		cout << "=== done account c ====" << endl;
 
 	} else {
 		cout << "[!] Cannot copy! no students are present" << endl;
@@ -134,7 +130,7 @@ void database::addnode(gradebook* gb, int index) {
 // add node to addme node from pseudostudent
 void database::addnode(gradebook* gb, string name) {
 	// debug
-	printpseudonode();
+	// printpseudonode();
 	creds* node = pseudostudent->searchname(pseudostudent->getFirst(), name);
 
 	if (node != NULL) {
@@ -146,8 +142,8 @@ void database::addnode(gradebook* gb, string name) {
 		// deletes this node
 		pseudonodedelete(node->user);
 
-		cout << "After removal : " << endl;
-		printpseudonode();
+		//cout << "After removal : " << endl;
+		//printpseudonode();
 	}
 }
 

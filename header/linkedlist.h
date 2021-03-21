@@ -410,7 +410,7 @@ void credential::add(string username, string name, string password) {
 
 // checks for username of the student (unique) so this node can be deleted
 void credential::remove(creds* firstnode, string username) {
-	cout << "current username (linked list): " << firstnode->user << endl;
+	// cout << "current username (linked list): " << firstnode->user << endl;
 	// cout << "next account : " << firstnode->next->name << endl;
 	if (firstnode->user == username) {
 		if (linksize == 1) {
