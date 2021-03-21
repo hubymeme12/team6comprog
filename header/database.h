@@ -13,6 +13,7 @@ class database {
 		void connect(credential* stud, credential* teac);		// connects the node from authentication to database
 		void pseudonodecopy();						// copies the original node (student) to pseudostudent (for table purposes)
 		void pseudonodedelete(int);					// deletes node from pseudostudent nodes
+		void pseudonodedelete(string);				// deletes node with use of name
 		void addnode(gradebook*, int);					// adds node from pseudostudent to addme (that will be passed in triad)
 		void addnode(gradebook*, string);				// same as addnode, but uses name as parameter instead of index
 
@@ -28,6 +29,18 @@ class database {
 		tridata* retrievedata();
 		char* getbuffer();						// get the data with followd format for file binary writing
 		int getbuffersize() const;				// returns the size of buffer
+		
+		// some debug
+		void printpseudonode() {
+			creds* x = pseudostudent->getFirst();
+			
+			cout << endl << "======= pseudonodes debug ========" << endl;
+			while (x != NULL) {
+				cout << "Current user : " << x->name << endl;
+				x = x->next;
+			}
+			cout << "========== pseudonode debug done =========" << endl << endl;
+		}
 	private:
 		tridata db_table;
 		credential* student;
@@ -69,11 +82,16 @@ void database::pseudonodecopy() {
 		// from first to last node
 		creds* node = student->getFirst();
 
+		cout << "=== copied account ====" << endl;
 		// walk through
 		while (node != NULL) {
 			pseudostudent->add(node->user, node->name, node->pass);
+
+			cout << node->user << " : " << node->name << " : " << node->pass << endl;
 			node = node->next;
 		}
+		cout << "=== done account c ====" << endl;
+
 	} else {
 		cout << "[!] Cannot copy! no students are present" << endl;
 	}
@@ -86,6 +104,12 @@ void database::pseudonodedelete(int index) {
 	} else {
 		pseudostudent->remove(index);
 	}
+}
+
+// deletes node throug =h name
+void database::pseudonodedelete(string name) {
+	// retrieve name
+	pseudostudent->remove(pseudostudent->getFirst(), name);
 }
 
 // add node to addme node from pseudostudent
@@ -109,14 +133,21 @@ void database::addnode(gradebook* gb, int index) {
 
 // add node to addme node from pseudostudent
 void database::addnode(gradebook* gb, string name) {
+	// debug
+	printpseudonode();
 	creds* node = pseudostudent->searchname(pseudostudent->getFirst(), name);
+
 	if (node != NULL) {
 		// add this node to addme and delete it
 		gb->pushdata(node->name, 0.0);
+
 		addme->add(node->user, node->name, node->pass);
 
 		// deletes this node
-		pseudostudent->remove(node, node->user);
+		pseudonodedelete(node->user);
+
+		cout << "After removal : " << endl;
+		printpseudonode();
 	}
 }
 

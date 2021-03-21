@@ -354,7 +354,7 @@ bool authparser::fillauth(bool enc) {
 //////////////////////////////////
 //	GRADEBOOK PARSER DEFINITION	//
 //////////////////////////////////
-gbparser::gbparser() : fileman(){
+gbparser::gbparser() : fileman() {
 	db = NULL;
 }
 
@@ -380,6 +380,9 @@ bool gbparser::filldb(bool enc) {
 	char gbs[] = "@sgbook@";
 	char gbe[] = "@egbook@";
 
+	// make new gradebook node with subject name
+	gradebook* gbooknode = new gradebook;
+
 	// loops for checking
 	for (int i = 0; i < (filesize - 8); i++) {
 		if (gbs[0] == buffer[i] &&
@@ -393,6 +396,7 @@ bool gbparser::filldb(bool enc) {
 
 			// a gradebook is detected (skip the new line)
 			i += 9;
+			db->pseudonodecopy();
 
 			// start a loop, until it reaches the end
 			while (!(gbe[0] == buffer[i] &&
@@ -416,8 +420,10 @@ bool gbparser::filldb(bool enc) {
 				} else {
 					// retrieve subject name
 					while (buffer[i] != '\n') {
-						subjname[indx] = buffer[i];
-						++indx;
+						if (buffer[i] > 31) {
+							subjname[indx] = buffer[i];
+							++indx;
+						}
 						++i;
 					} cout << "Added subject : " << subjname << endl;
 
@@ -427,8 +433,10 @@ bool gbparser::filldb(bool enc) {
 
 					// retrieve teacher name
 					while (buffer[i] != '\n') {
-						tchrname[indx] = buffer[i];
-						++indx;
+						if (buffer[i] > 31) {
+							tchrname[indx] = buffer[i];
+							++indx;
+						}
 						++i;
 					} cout << "Teacher name : " << tchrname << endl;
 
@@ -436,14 +444,8 @@ bool gbparser::filldb(bool enc) {
 					++i;
 					indx = 0;
 
-					// make new gradebook node with subject name
-					gradebook* gbooknode = new gradebook;
-
 					// assign subject name
 					gbooknode->setcourseName(subjname);
-
-					// add node to database
-					db->pseudonodecopy();
 
 					// retrieve student names
 					while (buffer[i] != '\n') {
@@ -458,13 +460,17 @@ bool gbparser::filldb(bool enc) {
 								if (buffer[i] == '\n')
 									break;
 
-								studname[indx] = buffer[i];
-								++indx;
+								if (buffer[i] > 31) {
+									studname[indx] = buffer[i];
+									++indx;
+								}
 								++i;
-							} cout << "Student : " << studname << endl;
+							}
 
 							// push this student to the subject
-							db->addnode(gbooknode, studname);
+							string studentname = studname;
+							cout << "Student : " << studentname << "<---" << endl;
+							db->addnode(gbooknode, studentname);
 
 							// reset index and values
 							indx = 0;
@@ -479,7 +485,8 @@ bool gbparser::filldb(bool enc) {
 					// End of student retrieval
 					++i;
 					cout << endl;
-					
+
+					cout << "no problem in adding..." << endl;
 					// then push this to the database
 					db->pushdata(gbooknode, tchrname, db->addednode());
 

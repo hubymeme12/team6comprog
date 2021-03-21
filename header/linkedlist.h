@@ -352,10 +352,11 @@ creds* credential::search(creds* firstnode, string username) {
 
 // searches for the matched name
 creds* credential::searchname(creds* firstnode, string name) {
+	// bug here, cannot compare value of creds since it is NULL
 	if (firstnode->name == name)
 		return firstnode;
 	else
-		if (firstnode->next!= NULL)
+		if (firstnode->next != NULL)
 			return searchname(firstnode->next, name);
 		else
 			return NULL;
@@ -409,9 +410,13 @@ void credential::add(string username, string name, string password) {
 
 // checks for username of the student (unique) so this node can be deleted
 void credential::remove(creds* firstnode, string username) {
+	cout << "current username (linked list): " << firstnode->user << endl;
+	// cout << "next account : " << firstnode->next->name << endl;
 	if (firstnode->user == username) {
-		// reroute node
-		if (firstnode == first) {
+		if (linksize == 1) {
+			first = NULL;
+			last = NULL;
+		} else if (firstnode == first) {
 			first = first->next;
 			first->prev = NULL;
 		} else if (firstnode == last) {
@@ -421,14 +426,16 @@ void credential::remove(creds* firstnode, string username) {
 			firstnode->prev->next = firstnode->next;
 			firstnode->next->prev = firstnode->prev;
 		}
+
+		// decrement link size
+		linksize -= 1;
 	} else {
 		if (firstnode->next != NULL) {
 			remove(firstnode->next, username);
 		}
 	}
 
-	// decrement link size
-	linksize -= 1;
+
 }
 
 void credential::remove(int index) {
