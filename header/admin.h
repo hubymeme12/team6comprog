@@ -52,6 +52,32 @@ class admin {
 		void login();
 };
 
+string passlogin(string display) {
+	char pw;
+	char* longpass;
+	string password;
+
+	cout << display;
+	while (1) {
+		pw = getch();
+		if (pw == '\r') {
+			break;
+		} else if (pw == '\b')  {
+			if (password.size() > 0) {
+				password.erase((password.end() - 1));
+				cout << "\b \b";
+			}
+		} else {
+			password.push_back(pw);
+			display.push_back('*');
+			cout << '*';
+		}
+	}
+
+	cout << endl;
+	return password;
+}
+
 //////////////////////////
 //	admin		//
 //////////////////////////
@@ -88,9 +114,8 @@ void admin::login() {
 	cout << "=========================" << endl;
 	cout << "Username : ";
 	getline(cin >> ws, u);
-	cout << "Password : ";
-	getline(cin >> ws, p);
-
+	p = passlogin("Password : ");
+	
 	if (adminuser == u && adminpass == p) {
 		maininterface();
 	} else {
@@ -444,9 +469,6 @@ void admin::readdatainterface() {
 	if (!aparser.fillauth(0)) {
 		cerr << "[!] An error occured in parsing credentials." << endl;
 	}
-
-	// setup pseudonodes for this parser
-	//db->pseudonodecopy();
 
 	// parse gradebook
 	gbparser gbookparse(nfnam, db);

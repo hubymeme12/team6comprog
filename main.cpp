@@ -1,4 +1,5 @@
 #include <iostream>
+#include <conio.h>
 using namespace std;
 
 #include "header/database.h"
@@ -85,6 +86,7 @@ float input(string message) {
 
 void Tlogin() {
 	string user, passw;
+	char pw;
 
 	system(CLEAR);
 	cout << "==========================" << endl;
@@ -92,8 +94,7 @@ void Tlogin() {
 	cout << "==========================" << endl;
 	cout << "Enter username : ";
 	getline(cin >> ws, user);
-	cout << "Enter password : ";
-	getline(cin >> ws, passw);
+	passw = passlogin("Enter password : ");
 
 	// login these input credentials
 	gradebooklist* retrievedgb = authentication->loginTeacher(user, passw);
@@ -107,6 +108,7 @@ void Tlogin() {
 
 void Slogin() {
 	string user, passw;
+	char pw;
 
 	system(CLEAR);
 	cout << "==========================" << endl;
@@ -114,8 +116,7 @@ void Slogin() {
 	cout << "==========================" << endl;
 	cout << "Enter username : ";
 	getline(cin >> ws, user);
-	cout << "Enter password : ";
-	getline(cin >> ws, passw);
+	passw = passlogin("Enter password : ");
 
 	// login these input credentials
 	string studentname;
