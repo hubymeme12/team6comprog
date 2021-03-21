@@ -446,10 +446,10 @@ void admin::readdatainterface() {
 	}
 
 	// parse gradebook
-	gbparser gbookparse(nfnam, db);
+/*gbparser gbookparse(nfnam, db);
 	if (!gbookparse.filldb(0)) {
 		cerr << "[!] An error occured in parsing database values." << endl;
-	}
+	}*/
 
 	system(PAUSE);
 }

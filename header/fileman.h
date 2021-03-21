@@ -217,10 +217,14 @@ bool authparser::fillauth(bool enc) {
 
 				// name retrieval
 				while (buffer[i] != ',') {
-					name[indx] = buffer[i];
-					++indx;
+					// check for valid characters
+					// ignore 0-31
+					if (buffer[i] > 31) {
+						name[indx] = buffer[i];
+						++indx;
+					}
 					++i;
-				} cout << "Name : " << name << endl;
+				} cout << "Name : " << name << "<--"<< endl;
 				++i;
 				indx = 0;
 
@@ -229,19 +233,26 @@ bool authparser::fillauth(bool enc) {
 					uname[indx] = buffer[i];
 					++indx;
 					++i;
-				} cout << "Username : " << uname << endl;
+				} cout << "Username : " << uname  << "<--"<< endl;
 				++i;
 				indx = 0;
 
 				// password retrieval
 				while (buffer[i] != '\n') {
-					pass[indx] = buffer[i];
-					++indx;
+					if (buffer[i] > 31) {
+						pass[indx] = buffer[i];
+						++indx;
+					}
 					++i;
-				} cout << "Password : " << pass << endl << endl;
+				} cout << "Password : " << pass << "<--" << endl << endl;
+
+				// convert these account into string
+				string username = uname;
+				string accountname = name;
+				string password = pass;
 
 				// append these data to linked list
-				accounts->addTeacherAccount(uname, name, pass);
+				accounts->addTeacherAccount(username, accountname, password);
 			}
 
 			// where the loop stops
@@ -294,8 +305,10 @@ bool authparser::fillauth(bool enc) {
 
 				// name retrieval
 				while (buffer[i] != ',') {
-					name[indx] = buffer[i];
-					++indx;
+					if (buffer[i] > 31) {
+						name[indx] = buffer[i];
+						++indx;
+					}
 					++i;
 				} cout << "Name : " << name << endl;
 				++i;
@@ -303,8 +316,10 @@ bool authparser::fillauth(bool enc) {
 
 				// username retrieval
 				while (buffer[i] != ',') {
-					uname[indx] = buffer[i];
-					++indx;
+					if (buffer[i] > 31) {
+						uname[indx] = buffer[i];
+						++indx;
+					}
 					++i;
 				} cout << "Username : " << uname << endl;
 				++i;
@@ -312,13 +327,20 @@ bool authparser::fillauth(bool enc) {
 
 				// password retrieval
 				while (buffer[i] != '\n') {
-					pass[indx] = buffer[i];
-					++indx;
+					if (buffer[i] > 31) {
+						pass[indx] = buffer[i];
+						++indx;
+					}
 					++i;
 				} cout << "Password : " << pass << endl << endl;
 
 				// append these data to linked list
-				accounts->addStudentAccount(uname, name, pass);
+				string username = uname;
+				string accountname = name;
+				string password = pass;
+				
+				cout << uname << ":" << accountname << ":" << password << endl;
+				accounts->addStudentAccount(username, accountname, password);
 			}
 		}
 	}
@@ -414,10 +436,20 @@ bool gbparser::filldb(bool enc) {
 					++i;
 					indx = 0;
 
+					// make new gradebook node with subject name
+					gradebook* gbooknode = new gradebook;
+
+					// assign subject name
+					gbooknode->setcourseName(subjname);
+
+					// add node to database
+					db->pseudonodecopy();
+
 					// retrieve student names
 					while (buffer[i] != '\n') {
 						// start after tab
 						if (buffer[i] == '\t' || buffer[i] == ',') {
+
 							// crawl name
 							++i;
 
@@ -431,7 +463,8 @@ bool gbparser::filldb(bool enc) {
 								++i;
 							} cout << "Student : " << studname << endl;
 
-							// connect these data to database
+							// push this student to the subject
+							db->addnode(gbooknode, studname);
 
 							// reset index and values
 							indx = 0;
@@ -446,6 +479,9 @@ bool gbparser::filldb(bool enc) {
 					// End of student retrieval
 					++i;
 					cout << endl;
+					
+					// then push this to the database
+					db->pushdata(gbooknode, tchrname, db->addednode());
 
 				}
 			}

@@ -14,6 +14,7 @@ class database {
 		void pseudonodecopy();						// copies the original node (student) to pseudostudent (for table purposes)
 		void pseudonodedelete(int);					// deletes node from pseudostudent nodes
 		void addnode(gradebook*, int);					// adds node from pseudostudent to addme (that will be passed in triad)
+		void addnode(gradebook*, string);				// same as addnode, but uses name as parameter instead of index
 
 		// add data
 		void pushdata(gradebook*, string, credential*);			// push these data to tridata
@@ -89,12 +90,11 @@ void database::pseudonodedelete(int index) {
 
 // add node to addme node from pseudostudent
 void database::addnode(gradebook* gb, int index) {
-	if (index > pseudostudent->getlistnum()) {
+	if (index > pseudostudent->getlistnum() || index == 0) {
 		cout << "[!] Cannot add node! Index exceeded the size of node" << endl;
 	} else {
 		// retrieve this nth node
-		creds* node;
-		node = pseudostudent->getNode(index);
+		creds* node = pseudostudent->getNode(index);
 
 		if (node != NULL) {
 			// add name to gradebook
@@ -104,6 +104,19 @@ void database::addnode(gradebook* gb, int index) {
 			// delete this nth from pseudonode
 			pseudonodedelete(index);
 		}
+	}
+}
+
+// add node to addme node from pseudostudent
+void database::addnode(gradebook* gb, string name) {
+	creds* node = pseudostudent->searchname(pseudostudent->getFirst(), name);
+	if (node != NULL) {
+		// add this node to addme and delete it
+		gb->pushdata(node->name, 0.0);
+		addme->add(node->user, node->name, node->pass);
+
+		// deletes this node
+		pseudostudent->remove(node, node->user);
 	}
 }
 

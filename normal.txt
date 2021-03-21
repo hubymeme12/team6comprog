@@ -1,7 +1,7 @@
 @credsT@
 	Melanie Samudio,melai@2021,password2021
 	Kristian Ramos,kristian@2021,password2021
-	Dr. Aries Natividad Magnaye,aries@2021,passwordnawa
+	Dr Aries Natividad Magnaye,aries@2021,passwordnawa
 @credTE@
 
 @credsS@
