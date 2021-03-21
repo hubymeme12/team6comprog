@@ -379,8 +379,8 @@ bool gbparser::filldb(bool enc) {
 	char gbs[] = "@sgbook@";
 	char gbe[] = "@egbook@";
 
-	// make new gradebook node with subject name
-	gradebook* gbooknode = new gradebook;
+	// will be needed latur
+	gradebook* gbooknode;
 
 	// loops for checking
 	for (int i = 0; i < (filesize - 8); i++) {
@@ -393,7 +393,7 @@ bool gbparser::filldb(bool enc) {
 			gbs[6] == buffer[i + 6] &&
 			gbs[7] == buffer[i + 7]) {
 
-			// a gradebook is detected (skip the new line)
+			// a gradebook is detected (skip the new line
 			i += 9;
 			db->pseudonodecopy();
 
@@ -425,6 +425,9 @@ bool gbparser::filldb(bool enc) {
 						}
 						++i;
 					} cout << "Added subject : " << subjname << endl;
+
+					// make new gradebook node with subject name
+					gbooknode = new gradebook;
 
 					// adjust to ignore next line
 					++i;
@@ -490,12 +493,10 @@ bool gbparser::filldb(bool enc) {
 					// End of student retrieval //
 					//////////////////////////////
 					++i;
-					cout << endl;
-
-					cout << "no problem in adding..." << endl;
 
 					// then push this to the database
 					db->pushdata(gbooknode, tchrname, db->addednode());
+					cout << "[+] Pushed subject : (" << gbooknode->getcourseName() << ":" << tchrname << ")"<< endl << endl;
 
 				}
 			}

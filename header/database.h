@@ -10,6 +10,8 @@
 class database {
 	public:
 		// setup
+		database();
+
 		void connect(credential* stud, credential* teac);		// connects the node from authentication to database
 		void pseudonodecopy();						// copies the original node (student) to pseudostudent (for table purposes)
 		void pseudonodedelete(int);					// deletes node from pseudostudent nodes
@@ -42,7 +44,7 @@ class database {
 			cout << "========== pseudonode debug done =========" << endl << endl;
 		}
 	private:
-		tridata db_table;
+		tridata* db_table;
 		credential* student;
 		credential* teacher;
 		credential* pseudostudent;
@@ -66,6 +68,10 @@ char* xorEnc(string password) {
 //////////////////////////////////
 //	Database definition	//
 //////////////////////////////////
+// constructor
+database::database() {
+	db_table = new tridata;
+}
 // connects address for changes
 void database::connect(credential* stud, credential* teac) {
 	student = stud;
@@ -82,15 +88,12 @@ void database::pseudonodecopy() {
 		// from first to last node
 		creds* node = student->getFirst();
 
-		cout << "=== copied account ====" << endl;
 		// walk through
 		while (node != NULL) {
 			pseudostudent->add(node->user, node->name, node->pass);
-
-			cout << node->user << " : " << node->name << " : " << node->pass << endl;
 			node = node->next;
 		}
-		cout << "=== done account c ====" << endl;
+
 
 	} else {
 		cout << "[!] Cannot copy! no students are present" << endl;
@@ -133,8 +136,6 @@ void database::addnode(gradebook* gb, int index) {
 
 // add node to addme node from pseudostudent
 void database::addnode(gradebook* gb, string name) {
-	// debug
-	printpseudonode();
 	creds* node = pseudostudent->searchname(pseudostudent->getFirst(), name);
 
 	if (node != NULL) {
@@ -145,20 +146,17 @@ void database::addnode(gradebook* gb, string name) {
 
 		// deletes this node
 		pseudonodedelete(node->user);
-
-		cout << "After removal : " << endl;
-		printpseudonode();
 	}
 }
 
 // pushes data to tridata
 void database::pushdata(gradebook* gb, string teachername, credential* stud) {
-	db_table.addData(gb, teachername, stud);
+	db_table->addData(gb, teachername, stud);
 }
 
 // deletes data on tridata
 void database::deletedata(string tname) {
-	db_table.removeSubject(tname);
+	db_table->removeSubject(tname);
 }
 
 // retrieves the subjects for this teacher
@@ -171,7 +169,7 @@ gradebooklist* database::retrieveGBTeacher(string teachername) {
 	triad* fnode;
 
 	// retrieve triads with matched teachers and push values to retrievedtriads
-	db_table.retrieveTnodes(retrievedtriads, teachername);
+	db_table->retrieveTnodes(retrievedtriads, teachername);
 	fnode = retrievedtriads->getFirst();
 
 	// recover the gradebooks
@@ -193,7 +191,7 @@ gradebooklist* database::retrieveGBStudent(string studentname) {
 	triad* fnode;
 
 	// retrieval
-	db_table.retrieveSnodes(store, studentname);
+	db_table->retrieveSnodes(store, studentname);
 	fnode = store->getFirst();
 
 	// recover and store to gradebook
@@ -207,7 +205,7 @@ gradebooklist* database::retrieveGBStudent(string studentname) {
 
 credential* database::returnpseudonode() { return pseudostudent; }
 credential* database::addednode() { return addme; }
-tridata* database::retrievedata() { return &db_table; }
+tridata* database::retrievedata() { return db_table; }
 
 // for returning buffer in file output
 // format:
@@ -239,7 +237,7 @@ char* database::getbuffer() {
 
 
 	// for the subjects
-	triad* dbnode = db_table.getFirst();
+	triad* dbnode = db_table->getFirst();
 
 	// data += "@gblist@\n";
 	while (dbnode != NULL) {
