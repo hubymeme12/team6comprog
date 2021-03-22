@@ -7,8 +7,11 @@ Gotta admit, i struggled a lot in making the file parser (??? is it? IDK if u ca
 Task assigned:
 >Angelika Amatus:
 >>initial interface 1 (first gradebook)
+>>
 >>teacher.h
+>>
 >>password field
+
 >Carurucan JM:
 >>initial interface 2 (first gradebook)
 >>student.h
