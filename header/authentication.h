@@ -13,8 +13,10 @@ class auth {
 		// constructors
 		auth();
 		auth(database*);
+		~auth();
 
 		// account management
+		void release();
 		void setDatabase(database*);
 		void connectDatabase();
 		void addTeacherAccount(string, string, string);
@@ -52,6 +54,24 @@ auth::auth(database* dbaddress) {
 
 	db = dbaddress;
 }
+
+// deallocate used memory
+auth::~auth() {
+	// deletion of database will be done on admin
+	cout << "[!] Releasing memory : " << &teachers << endl;
+	delete teachers;
+	
+	cout << "[!] Releasing memory : " << &students << endl;
+	delete students;
+}
+
+//void auth::release() {
+//	cout << "[!] Releasing memory : " << &teachers << endl;
+//	delete teachers;
+//	
+//	cout << "[!] Releasing memory : " << &students << endl;
+//	delete students;
+//}
 
 void auth::setDatabase(database* thisdb) {
 	db = thisdb;
@@ -99,8 +119,6 @@ void auth::delStudentAccount(int index) {
 void auth::delTeacherAccount(string username) {
 	// retrieve the teacher's name
 	string name = teachers->search(teachers->getFirst(), username)->name;
-	cout << "Name that will be used : " << name << endl;
-	system("pause");
 
 	// remove subject:
 	db->deletedata(name);

@@ -11,27 +11,30 @@ class database {
 	public:
 		// setup
 		database();
+		~database();
 
 		void connect(credential* stud, credential* teac);		// connects the node from authentication to database
-		void pseudonodecopy();						// copies the original node (student) to pseudostudent (for table purposes)
-		void pseudonodedelete(int);					// deletes node from pseudostudent nodes
-		void pseudonodedelete(string);				// deletes node with use of name
-		void addnode(gradebook*, int);					// adds node from pseudostudent to addme (that will be passed in triad)
-		void addnode(gradebook*, string);				// same as addnode, but uses name as parameter instead of index
+		void pseudonodecopy();									// copies the original node (student) to pseudostudent (for table purposes)
+		void pseudonodedelete(int);								// deletes node from pseudostudent nodes
+		void pseudonodedelete(string);							// deletes node with use of name
+		void addnode(gradebook*, int);							// adds node from pseudostudent to addme (that will be passed in triad)
+		void addnode(gradebook*, string);						// same as addnode, but uses name as parameter instead of index
 
 		// add data
 		void pushdata(gradebook*, string, credential*);			// push these data to tridata
-		void deletedata(string tname);
+		void deletedata(string tname);							// deletes subject through teacher name
+		void deletedata(int index);								// deletes subject through index
 
 		// data retrieval
-		gradebooklist* retrieveGBTeacher(string teachername);		// retrieves gradebooks with matched teachername
+		gradebooklist* retrieveGBTeacher(string teachername);	// retrieves gradebooks with matched teachername
 		gradebooklist* retrieveGBStudent(string studname);		// retrieves gradebooks with matched student username??
-		credential* returnpseudonode();					// returns the pseudonode (for table)
-		credential* addednode();					// returns all selected node
+		gradebooklist* retrieveglist();							// retrieves all subjects registered
+		credential* returnpseudonode();							// returns the pseudonode (for table)
+		credential* addednode();								// returns all selected node
 		tridata* retrievedata();
-		char* getbuffer();						// get the data with followd format for file binary writing
-		int getbuffersize() const;				// returns the size of buffer
-		
+		char* getbuffer();										// get the data with followd format for file binary writing
+		int getbuffersize() const;								// returns the size of buffer
+	
 		// some debug
 		void printpseudonode() {
 			creds* x = pseudostudent->getFirst();
@@ -72,6 +75,17 @@ char* xorEnc(string password) {
 database::database() {
 	db_table = new tridata;
 }
+
+// self destruct
+database::~database() {
+	cout << "[!] releasing memory : " << &db_table << endl;
+	delete db_table;
+	cout << "[!] releasing memory : " << &db_table << endl;
+	cout << "[!] releasing memory : " << &db_table << endl;
+	cout << "[!] releasing memory : " << &db_table << endl;
+	cout << "[!] releasing memory : " << &db_table << endl;
+}
+
 // connects address for changes
 void database::connect(credential* stud, credential* teac) {
 	student = stud;
@@ -159,6 +173,11 @@ void database::deletedata(string tname) {
 	db_table->removeSubject(tname);
 }
 
+// deletes data on tridata through index
+void database::deletedata(int index) {
+	db_table->removeSubject(index);
+}
+
 // retrieves the subjects for this teacher
 gradebooklist* database::retrieveGBTeacher(string teachername) {
 	// makes graedebooklist where data will be pushed
@@ -201,6 +220,10 @@ gradebooklist* database::retrieveGBStudent(string studentname) {
 	}
 
 	return gblist;
+}
+
+gradebooklist* database::retrieveglist() {
+	return db_table->retrieveall();
 }
 
 credential* database::returnpseudonode() { return pseudostudent; }

@@ -128,6 +128,7 @@ class tridata {
 		// data manipulation
 		void addData(gradebook*, string, credential*);
 		void removeSubject(string);
+		void removeSubject(int);
 		void removeStudent(string);
 
 		// tools
@@ -136,6 +137,7 @@ class tridata {
 
 		// utilities
 		triad* getFirst();
+		gradebooklist* retrieveall();
 		void getlongestfuckingstring(int&, int&, int&);
 	private:
 		triad* first;
@@ -222,9 +224,66 @@ void tridata::removeSubject(string tname) {
 	}
 }
 
+void tridata::removeSubject(int index) {
+	// retrieves and crawls for index
+	triad* tnode = first;
+
+	if (index > linksize  || index == 0) {
+		cout << "[!] Cannot delete node (overlapping/zero value)" << endl;
+	} else {
+		for (int i = 1; i < index; i++) {
+			tnode = tnode->next;
+		}
+
+		// delete this node
+		if (linksize == 1) {
+			delete tnode->students;
+			delete tnode->subject;
+
+			first = NULL;
+			last = NULL;
+		} else if (tnode == first) {
+			first = first->next;
+
+			delete first->prev->students;
+			delete first->prev->subject;
+			first->prev = NULL;
+		} else if (tnode == last) {
+			last = last->prev;
+
+			delete last->next->students;
+			delete last->next->subject;
+			last->next = NULL;
+		} else {
+			delete tnode->students;
+			delete tnode->students;
+
+			tnode->next->prev = tnode->prev;
+			tnode->prev->next = tnode->next;
+		}
+	}
+}
+
 // returns first node
 triad* tridata::getFirst() {
 	return first;
+}
+
+// retrieve all as gradebooklist
+gradebooklist* tridata::retrieveall() {
+	// crawl the nodes til end
+	triad* subnode = first;
+
+	// make new gradebook list to append data on
+	gradebooklist* ggez = new gradebooklist;
+
+	// crawl up to end
+	while (subnode != NULL) {
+		ggez->pushBack(subnode->subject);
+		subnode = subnode->next;
+	}
+	
+	return ggez;
 }
 
 // assign their fucking values

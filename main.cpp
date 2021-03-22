@@ -18,8 +18,8 @@ using namespace std;
 #endif
 
 // global variables
-admin* administrator = new admin;
-auth* authentication = administrator->getauth();
+admin administrator;
+auth *authentication = administrator.getauth();
 
 // input filter
 float input(string message);
@@ -48,7 +48,7 @@ int main() {
 
 		switch (inp) {
 			case 1:
-				administrator->login();
+				administrator.login();
 				break;
 			case 2:
 				Tlogin();

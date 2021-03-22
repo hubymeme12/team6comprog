@@ -35,21 +35,22 @@ class admin {
 		void addsubjectinterface();
 		void writedatainterface();
 		void readdatainterface();
-		int getFucked(string);
+		void deletesubjectinterface();
 
-		// function that has weird functionalities
-		void selectstudents();
+		// input filter
+		int getFucked(string);
 	public:
 		// constructors
 		admin();
 		admin(string, string);
+		~admin();
 
 		// utilities
-		void changeacc(string, string);
-		auth* getauth() const;
+		void changeacc(string, string);				// changes account of admin
+		auth* getauth() const;						// so auth object can be used outside (for logging in)
 
 		// interface/s
-		void login();
+		void login();								// login admin account (only public member to access the private functions)
 };
 
 string passlogin(string display) {
@@ -69,7 +70,6 @@ string passlogin(string display) {
 			}
 		} else {
 			password.push_back(pw);
-			display.push_back('*');
 			cout << '*';
 		}
 	}
@@ -96,6 +96,15 @@ admin::admin(string username, string password) {
 	adminpass = password;
 }
 
+// destructor
+admin::~admin() {
+	cout << "[!] Releasing memory : " << &db << endl;
+	delete db;
+
+	cout << "[!] Releasing memory : " << &secret << endl;
+	delete secret;
+}
+
 void admin::changeacc(string username, string password) {
 	adminuser = username;
 	adminpass = password;
@@ -115,7 +124,7 @@ void admin::login() {
 	cout << "Username : ";
 	getline(cin >> ws, u);
 	p = passlogin("Password : ");
-	
+
 	if (adminuser == u && adminpass == p) {
 		maininterface();
 	} else {
@@ -144,11 +153,12 @@ void admin::maininterface() {
 		cout << " [5] Display all accounts" << endl;
 		cout << " **SUBJECTS**" << endl;
 		cout << " [6] Add new subject" << endl;
+		cout << " [7] Delete subject" << endl;
 		cout << " **UTILITIES**" << endl;
-		cout << " [7] Save data" << endl;
-		cout << " [8] Load data" << endl;
-		cout << " [9] Change admin account" << endl;
-		cout << " [10] Log out" << endl << endl;
+		cout << " [8] Save data" << endl;
+		cout << " [9] Load data" << endl;
+		cout << " [10] Change admin account" << endl;
+		cout << " [11] Log out" << endl << endl;
 
 		choice = getFucked(": ");
 
@@ -172,15 +182,18 @@ void admin::maininterface() {
 				addsubjectinterface();
 				break;
 			case 7:
-				writedatainterface();
+				deletesubjectinterface();
 				break;
 			case 8:
-				readdatainterface();
+				writedatainterface();
 				break;
 			case 9:
-				changeaccinterface();
+				readdatainterface();
 				break;
 			case 10:
+				changeaccinterface();
+				break;
+			case 11:
 				breakme = 0;
 				break;
 			default:
@@ -479,6 +492,33 @@ void admin::readdatainterface() {
 		cerr << "[!] An error occured in parsing database values." << endl;
 	}
 
+	system(PAUSE);
+}
+
+void admin::deletesubjectinterface() {
+	system(CLEAR);
+	cout << "================================" << endl;
+	cout << "         DELETE SUBJECT" << endl;
+	cout << "================================" << endl;
+	cout << "Enter index of subject you want to delete" << endl;
+	
+	// retrieve all gradebook list for table display
+	gradebooklist* all = db->retrieveglist();
+
+	// display table
+	gbtable subtable(all);
+	subtable.displaytable();
+
+	// get input
+	int index = getFucked("Enter Index : ");
+
+	// delete subject
+	db->deletedata(index);
+
+	// re-display table
+	all = db->retrieveglist();
+	gbtable newtable(all);
+	newtable.displaytable();
 	system(PAUSE);
 }
 
