@@ -24,7 +24,7 @@ struct gutilities {
 //////////////////////////////////
 // 	G R A D E B O O K	//
 //////////////////////////////////
-class gbtable {
+class gbtable : gutilities {
 	public:
 		gbtable();
 		gbtable(gradebook*);
@@ -34,9 +34,6 @@ class gbtable {
 		void addData(gradebook*);
 		void addData(gradebooklist*);
 		void updateData();
-
-		// utilities
-		string strmultiply(string, int);
 		void settbsize();
 
 		// visuals
@@ -143,14 +140,6 @@ void gbtable::updateData() {
 		addData(gb);
 }
 
-// string multiply
-string gbtable::strmultiply(string str, int times) {
-	string ret = "";
-	for (int i = 0; i < times; i++)
-		ret += str;
-	return ret;
-}
-
 // calculates the tables size by retrieving the size of student node/number of subjects
 void gbtable::settbsize() {
 	if (islinked) {
@@ -233,7 +222,7 @@ void gbtable::displaytable() {
 //////////////////////////////////
 //	D A T A B A S E		//
 //////////////////////////////////
-class dbtable {
+class dbtable : gutilities{
 	public:
 		// constructor
 		dbtable();
@@ -252,7 +241,7 @@ class dbtable {
 //////////////////////////////////////////
 //	A U T H E N T I C A T I O N	//
 //////////////////////////////////////////
-class authtable {
+class authtable : gutilities{
 	public:
 		authtable();
 		authtable(auth*);
@@ -421,7 +410,7 @@ string authtable::strmultiply(string str, int size) {
 //////////////////////////////////
 //	C R E D E N T I A L	//
 //////////////////////////////////
-class credstable {
+class credstable : gutilities{
 	private:
 		credential* data;
 		int longest;
@@ -481,7 +470,7 @@ string credstable::strmultiply(string str, int size) {
 //////////////////////////////////
 //	STUDENT GRADES		//
 //////////////////////////////////
-class gradestbl : public gutilities {
+class gradestbl : gutilities {
 	private:
 		gradebooklist* gblist;
 		string name;

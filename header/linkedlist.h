@@ -239,25 +239,21 @@ void tridata::removeSubject(int index) {
 		if (linksize == 1) {
 			delete tnode->students;
 			delete tnode->subject;
-
 			first = NULL;
 			last = NULL;
 		} else if (tnode == first) {
+			delete first->subject;
+			delete first->students;
 			first = first->next;
-
-			delete first->prev->students;
-			delete first->prev->subject;
 			first->prev = NULL;
 		} else if (tnode == last) {
+			delete last->subject;
+			delete last->students;
 			last = last->prev;
-
-			delete last->next->students;
-			delete last->next->subject;
 			last->next = NULL;
 		} else {
 			delete tnode->students;
 			delete tnode->students;
-
 			tnode->next->prev = tnode->prev;
 			tnode->prev->next = tnode->next;
 		}
