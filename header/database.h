@@ -93,10 +93,7 @@ void database::pseudonodecopy() {
 			pseudostudent->add(node->user, node->name, node->pass);
 			node = node->next;
 		}
-<<<<<<< HEAD
-=======
 
->>>>>>> gbookparser
 
 	} else {
 		cout << "[!] Cannot copy! no students are present" << endl;
@@ -139,11 +136,6 @@ void database::addnode(gradebook* gb, int index) {
 
 // add node to addme node from pseudostudent
 void database::addnode(gradebook* gb, string name) {
-<<<<<<< HEAD
-	// debug
-	// printpseudonode();
-=======
->>>>>>> gbookparser
 	creds* node = pseudostudent->searchname(pseudostudent->getFirst(), name);
 
 	if (node != NULL) {
@@ -154,12 +146,6 @@ void database::addnode(gradebook* gb, string name) {
 
 		// deletes this node
 		pseudonodedelete(node->user);
-<<<<<<< HEAD
-
-		//cout << "After removal : " << endl;
-		//printpseudonode();
-=======
->>>>>>> gbookparser
 	}
 }
 
@@ -249,8 +235,6 @@ char* database::getbuffer() {
 	}
 	data += "@credSE@\n\n";
 
-<<<<<<< HEAD
-=======
 
 	// for the subjects
 	triad* dbnode = db_table->getFirst();
@@ -298,7 +282,6 @@ char* database::getbuffer() {
 	}
 	// data += "@egblis@\n";
 
->>>>>>> gbookparser
 	// convert this into file buffer
 	size = data.size();
 	buffer = new char[size];

@@ -11,9 +11,8 @@
 	Angel Mc Kenneth,20-03456,passwordmacky
 	Angel Arsenio,arsenio@2021,passwordarsenio
 	Chauncey Chuuuuu,chu@2021,passwordchu
+	Angelika Amatus,20-05361,passwordanji
 @credSE@
-<<<<<<< HEAD
-=======
 
 @sgbook@
 Statistics
@@ -30,4 +29,3 @@ Calculus
 Dr. Aries Natividad Magnaye
 	Hubert F. Espinola I,Emman Giataw,Chauncey Chuuuuu
 @egbook@
->>>>>>> gbookparser

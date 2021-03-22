@@ -145,8 +145,8 @@ void admin::maininterface() {
 		cout << " **SUBJECTS**" << endl;
 		cout << " [6] Add new subject" << endl;
 		cout << " **UTILITIES**" << endl;
-		cout << " [7] Save accounts" << endl;
-		cout << " [8] Load accounts" << endl;
+		cout << " [7] Save data" << endl;
+		cout << " [8] Load data" << endl;
 		cout << " [9] Change admin account" << endl;
 		cout << " [10] Log out" << endl << endl;
 
@@ -470,11 +470,14 @@ void admin::readdatainterface() {
 		cerr << "[!] An error occured in parsing credentials." << endl;
 	}
 
+	// setup pseudonodes for this parser
+	//db->pseudonodecopy();
+
 	// parse gradebook
-	// gbparser gbookparse(nfnam, db);
-	// if (!gbookparse.filldb(0)) {
-	// 	cerr << "[!] An error occured in parsing database values." << endl;
-	// }
+	gbparser gbookparse(nfnam, db);
+	if (!gbookparse.filldb(0)) {
+		cerr << "[!] An error occured in parsing database values." << endl;
+	}
 
 	system(PAUSE);
 }
