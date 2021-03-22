@@ -153,7 +153,7 @@ void admin::maininterface() {
 		cout << " [5] Display all accounts" << endl;
 		cout << " **SUBJECTS**" << endl;
 		cout << " [6] Add new subject" << endl;
-		cout << " [7] Delete subject" << endl;
+		cout << " [7] Delete/View subject" << endl;
 		cout << " **UTILITIES**" << endl;
 		cout << " [8] Save data" << endl;
 		cout << " [9] Load data" << endl;
@@ -501,6 +501,7 @@ void admin::deletesubjectinterface() {
 	cout << "         DELETE SUBJECT" << endl;
 	cout << "================================" << endl;
 	cout << "Enter index of subject you want to delete" << endl;
+	cout << "You can enter \'0\' to exit" << endl;
 	
 	// retrieve all gradebook list for table display
 	gradebooklist* all = db->retrieveglist();
@@ -512,14 +513,16 @@ void admin::deletesubjectinterface() {
 	// get input
 	int index = getFucked("Enter Index : ");
 
-	// delete subject
-	db->deletedata(index);
+	if (index != 0) {
+		// delete subject
+		db->deletedata(index);
 
-	// re-display table
-	all = db->retrieveglist();
-	gbtable newtable(all);
-	newtable.displaytable();
-	system(PAUSE);
+		// re-display table
+		all = db->retrieveglist();
+		gbtable newtable(all);
+		newtable.displaytable();
+		system(PAUSE);
+	}
 }
 
 int admin::getFucked(string out) {
