@@ -14,13 +14,17 @@ Task assigned:
 
 >Carurucan JM:
 >>initial interface 2 (first gradebook)
+>>
 >>student.h
 
 Finished tasks:
 >Angelika Amatus:
 >>initial interface 1 (first gradebook)
+>>
 >>teacher.h
+>>
 >>password field
+>>
 >Carurucan JM:
 >>initial interface 2 (first gradebook) - 65%
 
