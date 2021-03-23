@@ -131,13 +131,15 @@ void auth::delTeacherAccount(int index) {
 	// retrieve the teacher's name
 	// get node
 	creds* nod = teachers->getNode(index);
-	string name = nod->name;
+	if (nod != NULL) {
+		string name = nod->name;
 
-	// remove subject:
-	db->deletedata(name);
+		// remove subject:
+		db->deletedata(name);
 
-	// remove credential
-	teachers->remove(index);
+		// remove credential
+		teachers->remove(index);
+	}
 }
 
 gradebooklist* auth::loginTeacher(string username, string password) {
