@@ -30,5 +30,9 @@ Finished tasks:
 
 Ideas (or tasks were given by):
 Angelika Amatus
+
 Hubert Espinola
+
 Sr. Poul
+
+The rest of program is made by me Hubert!! anw.. join my cult :0
