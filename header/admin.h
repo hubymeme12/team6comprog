@@ -388,6 +388,11 @@ void admin::addsubjectinterface() {
 		tchrnode = secret->getTeachers();
 		chosen = tchrnode->getNode(choice);
 
+		if (choice == 0) {
+			breakme = 0;
+			break;
+		}
+
 		// check if index is valid
 		if (chosen != NULL) {
 			// get name from this node
@@ -397,9 +402,6 @@ void admin::addsubjectinterface() {
 			db->pseudonodecopy();
 			node = db->returnpseudonode();
 			breakme2 = 0;
-		} else if (choice == 0) {
-			breakme2 = 0;
-			breakme = 0;
 		}
 	}
 
