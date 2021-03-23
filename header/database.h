@@ -80,10 +80,10 @@ database::database() {
 database::~database() {
 	cout << "[!] releasing memory : " << &db_table << endl;
 	delete db_table;
-	cout << "[!] releasing memory : " << &db_table << endl;
-	cout << "[!] releasing memory : " << &db_table << endl;
-	cout << "[!] releasing memory : " << &db_table << endl;
-	cout << "[!] releasing memory : " << &db_table << endl;
+	cout << "[!] releasing memory : " << &pseudostudent << endl;
+	delete pseudostudent;
+	cout << "[!] releasing memory : " << &addme << endl;
+	delete addme;
 }
 
 // connects address for changes

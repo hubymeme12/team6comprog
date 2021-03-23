@@ -2,6 +2,7 @@
 #define ADMIN_H
 
 #include <iostream>
+#include <conio.h>
 #include "authentication.h"
 #include "database.h"
 #include "tables.h"
