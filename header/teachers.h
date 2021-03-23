@@ -92,9 +92,13 @@ void teacher::viewSubjectdetail() {
 	gradebook* data;
 	data = glist->access(x);
 
-	system(CLEAR);
-	gbtable tbl(data);
-	tbl.displaytable();
+	if (data != NULL) {
+		system(CLEAR);
+		gbtable tbl(data);
+		tbl.displaytable();
+	} else {
+		cout << "[!] Cannot display table of nonexistent subject!" << endl;
+	}
 }
 
 void teacher::editGrade() {
@@ -114,6 +118,11 @@ void teacher::editGrade() {
 	gradebook* data;
 	data = glist->access(x);
 
+	// fix this bug when accessing nonexistent subject
+	if (data == NULL)
+		anji = 0;
+	
+	// so loop doesnt start
 	while (anji) {
 		system(CLEAR);
 		cout << "[NOTE] You can exit by entering \'0\'" << endl;
