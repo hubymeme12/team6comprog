@@ -101,6 +101,9 @@ char* fileman::read(bool encrypted) {
 		// read and pass to buffer
 		reader.read(buffer, filesize);
 
+		// close file
+		reader.close();
+
 		// check if encrypted or not
 		if (encrypted) {
 			return xorEnc(buffer);
@@ -123,6 +126,9 @@ void fileman::write(bool encrypted) {
 			writer.write(xorEnc(buffer), filesize);
 		else
 			writer.write(buffer, filesize);
+
+		// close file after
+		writer.close();
 	} else {
 		cerr << "[Error] Uhh.. I donno... probably the file name u entered is in use." << endl;
 	}
