@@ -347,6 +347,7 @@ void admin::addsubjectinterface() {
 	// variables, variables...
 	int choice;
 	bool breakme = 1;
+	bool breakme2 = 1;
 	short num;
 	creds* tchr;
 	string subjname;
@@ -367,6 +368,7 @@ void admin::addsubjectinterface() {
 	// some display
 	cout << "[+] Subject : " << subjname << " Added" << endl;
 	cout << "[*] Select teacher row below to assign a teacher" << endl;
+	cout << "Enter \'0\' to exit" << endl;
 
 	// this displays table
 	// select from the teacher credentials
@@ -379,7 +381,7 @@ void admin::addsubjectinterface() {
 	creds* chosen;
 
 	// input loop unless user entered valid input
-	while (breakme) {
+	while (breakme2) {
 		choice = getFucked("Select row : ");
 
 		// retrieve node
@@ -394,12 +396,12 @@ void admin::addsubjectinterface() {
 			// setup database values if chosen node is valid (not null)
 			db->pseudonodecopy();
 			node = db->returnpseudonode();
+			breakme2 = 0;
+		} else if (choice == 0) {
+			breakme2 = 0;
 			breakme = 0;
 		}
 	}
-
-	// reset breakme
-	breakme = 1;
 
 	while (breakme) {
 		system(CLEAR);
@@ -520,6 +522,9 @@ void admin::deletesubjectinterface() {
 
 		// re-display table
 		all = db->retrieveglist();
+		
+		system(CLEAR);
+		cout << "Updated subject/s list :" << endl;
 		gbtable newtable(all);
 		newtable.displaytable();
 		system(PAUSE);
