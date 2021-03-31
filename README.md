@@ -1,4 +1,4 @@
-# HueHueberry's Cult
+# HueHueberry
 My Team's activity in Computer Programming
 
 This is just a program of a college freshman, so do not expect this to be something that is fancy wancy.
@@ -29,10 +29,11 @@ Finished tasks:
 >>initial interface 2 (first gradebook) - 65%
 
 Ideas (or tasks were given by):
+
 Angelika Amatus
 
 Hubert Espinola
 
 Sr. Poul
 
-The rest of program is made by me Hubert!! anw.. join my cult :0
+The rest of program is made by me Hubert :0
